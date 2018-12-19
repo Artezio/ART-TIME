@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui">
+
+	<h:panelGroup styleClass="tab-content" layout="block">
+		<h:panelGroup styleClass="settings-block" layout="block">
+			<h2><ui:insert name="tabTitle"/></h2>
+			<ui:insert name="settings"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="settings-block" layout="block">
+			<h2>
+				<h:outputFormat value="#{messages['settings.connection.common']}" styleClass="title">
+					<o:param>#{implementationName}</o:param>
+				</h:outputFormat>
+			</h2>
+			<h:panelGroup styleClass="settings-group" layout="block">
+				<h:panelGroup styleClass="shared-info" layout="block">
+					<i class="fa fa-info-circle"/>
+					<h:outputFormat value="#{messages['settings.connection.shareInformation']}" escape="false">
+						<o:param>
+							<p:outputLabel>#{implementationName}</p:outputLabel>
+						</o:param>
+					</h:outputFormat>
+				</h:panelGroup>
+				<h:panelGrid columns="4" styleClass="panelGridDetails">
+					<ui:include src="/pages/settings/#{implementationName.toLowerCase()}/connection.xhtml"/>
+				</h:panelGrid>
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:panelGroup>
+</ui:composition>

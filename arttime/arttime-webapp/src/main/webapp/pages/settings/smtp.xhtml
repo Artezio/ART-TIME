@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">
+		#{messages['mainMenu.settings']} / #{messages['smtp.title']}
+	</ui:define>
+	
+	<ui:define name="titleBody">
+		#{messages['mainMenu.settings']} / <p:outputLabel>#{messages['smtp.title']}</p:outputLabel>
+	</ui:define>
+
+	<ui:define name="rightToolbarGroup">
+		<p:commandButton value="#{messages['button.save']}" 	    		
+	    		styleClass="avoidChangeTracking cancelTrackedChanges" ajax="false"
+	    		action="smtp" actionListener="#{settingsService.update(settingsBean.settings)}"
+	    		icon="fa fa-save"/>
+	</ui:define>
+	
+	<ui:define name="content">
+
+		<h:outputText value="#{messages['settings.applyNotification']}" styleClass="warning fa fa-warning" escape="false"/>
+
+		<h:panelGroup styleClass="settings-group" layout="block">
+			<h:panelGrid columns="4" styleClass="panelGridDetails">
+				<p:outputLabel for="smtpHost" value="#{messages['smtp.host.label']}" />
+				<h:inputText id="smtpHost" value="#{settingsBean.settings.smtpHostName}"/>
+				<h:message for="smtpHost"/>
+				<h:outputText value="#{messages['smtp.host.description']}"/>
+
+				<p:outputLabel for="smtpPort" value="#{messages['smtp.port.label']}" />
+				<h:inputText id="smtpPort" value="#{settingsBean.settings.smtpPortNumber}"/>
+				<h:message for="smtpPort"/>
+				<h:outputText value="#{messages['smtp.port.description']}"/>
+
+				<p:outputLabel for="smtpUser" value="#{messages['smtp.user.label']}" />
+				<h:inputText id="smtpUser" value="#{settingsBean.settings.smtpUsername}"/>
+				<h:message for="smtpUser"/>
+				<h:outputText value="#{messages['smtp.user.description']}"/>
+
+				<p:outputLabel for="smtpPassword" value="#{messages['smtp.password.label']}" />
+				<p:password id="smtpPassword" value="#{settingsBean.settings.smtpPassword}" redisplay="true"/>
+				<h:message for="smtpPassword"/>
+				<h:outputText value="#{messages['smtp.password.description']}"/>
+
+				<p:outputLabel for="smtpSender" value="#{messages['smtp.sender.label']}" />
+				<h:inputText id="smtpSender" value="#{settingsBean.settings.smtpSender}"/>
+				<h:message for="smtpSender"/>
+				<h:outputText value="#{messages['smtp.sender.description']}"/>
+
+			</h:panelGrid>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

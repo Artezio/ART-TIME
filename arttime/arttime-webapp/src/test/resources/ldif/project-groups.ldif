@@ -1,0 +1,9 @@
+dn: ou=projectGroup1,ou=users,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: projectGroup1
+
+dn: ou=projectGroup2,ou=users,dc=example,dc=com
+objectClass: top
+objectClass: organizationalUnit
+ou: projectGroup2

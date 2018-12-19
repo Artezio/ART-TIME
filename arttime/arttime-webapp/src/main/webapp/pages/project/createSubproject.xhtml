@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui" 
+    template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">#{messages['createSubproject.title']}</ui:define>
+
+    <ui:define name="titleBody">
+        <h:outputText value="#{messages['project.button.details']}:"
+                      rendered="#{projectBean.selectedTab == 'details' or projectBean.selectedTab == null}"/>
+        <h:outputText value="#{messages['project.button.importSettings']}:"
+                      rendered="#{projectBean.selectedTab == 'importSettings'}"/>
+        <h:outputText value="#{messages['project.button.team']}:"
+                      rendered="#{projectBean.selectedTab == 'team'}"/>
+        #{projectBean.project.master.code} <p:outputLabel> / #{messages['createSubproject.title']}</p:outputLabel>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup">
+        <c:set var="project" value="#{projectBean.project}"/>
+        <p:commandButton value="#{messages['button.cancel']}"
+                         action="cancel"
+                         immediate="true"
+                         styleClass="avoidChangeTracking cancelTrackedChanges"
+                         ajax="false"/>
+
+        <p:commandButton value="#{messages['button.back']}" onclick="PF('createProjectWizard').back();"
+                         styleClass="avoidChangeTracking cancelTrackedChanges"
+                         update="@form"
+                         rendered="#{projectBean.selectedTab != null and projectBean.selectedTab != 'details'}"/>
+    </ui:define>
+
+    <ui:define name="rightToolbarGroup">
+        <c:set var="project" value="#{projectBean.project}"/>
+        <p:commandButton value="#{messages['button.next']}" onclick="PF('createProjectWizard').next();"
+                         styleClass="avoidChangeTracking cancelTrackedChanges"
+                         update="@form" oncomplete="$(window).trigger('resize');"
+                         rendered="#{projectBean.selectedTab != 'team'}"/>
+
+        <p:commandButton value="#{messages['button.create']}" ajax="false"
+                         action="create" actionListener="#{projectBean.create()}"
+                         styleClass="avoidChangeTracking cancelTrackedChanges"
+                         rendered="#{projectBean.selectedTab == 'team'}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:wizard showNavBar="false" widgetVar="createProjectWizard" flowListener="#{projectBean.onWizardFlow}">
+            <p:tab titleStyle="display:none;" id="details">
+                <ui:include src="/pages/project/projectDetails.xhtml">
+                    <ui:param name="project" value="#{projectBean.project}"/>
+                    <ui:param name="isNewProject" value="true"/>
+                </ui:include>
+            </p:tab>
+            <p:tab titleStyle="display:none;" id="importSettings">
+                <ui:include src="/pages/project/importSettings.xhtml">
+                    <ui:param name="project" value="#{projectBean.project}"/>
+                </ui:include>
+            </p:tab>
+            <p:tab titleStyle="display:none;" id="team">
+                <ui:include src="/pages/project/projectTeam.xhtml">
+                    <ui:param name="project" value="#{projectBean.project}"/>
+                </ui:include>
+            </p:tab>
+        </p:wizard>
+    </ui:define>
+
+</ui:composition>

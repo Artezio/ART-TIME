@@ -1,0 +1,136 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">
+        <h:panelGroup>#{messages['mainMenu.settings']}</h:panelGroup> / #{messages['settings.externalDataProviders']}
+    </ui:define>
+
+    <ui:define name="titleBody">
+        #{messages['mainMenu.settings']} / <p:outputLabel>#{messages['settings.externalDataProviders']}</p:outputLabel>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup">
+        <h:panelGrid columns="1" id="leftButtonsPanel">
+            <h:panelGrid columns="5" styleClass="tabbedButtonsPanel">
+                <p:commandButton value="#{messages['settings.externalDataProviders.tabs.employees']}"
+                                 action="#{settingsBean.setSelectedTabIndex(0)}"
+                                 ajax="true"
+                                 update="trackingSystemTabs leftButtonsPanel"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges leftPositionButton
+								  			#{(settingsBean.selectedTabIndex == 0 or settingsBean.selectedTabIndex == null) ? 'selected' : ''}">
+                </p:commandButton>
+                <p:commandButton value="#{messages['settings.externalDataProviders.tabs.teams']}"
+                                 action="#{settingsBean.setSelectedTabIndex(1)}"
+                                 ajax="true"
+                                 update="trackingSystemTabs leftButtonsPanel"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges middlePositionButton
+								 			 #{settingsBean.selectedTabIndex == 1 ? 'selected' : ''}">
+                </p:commandButton>
+                <p:commandButton value="#{messages['settings.externalDataProviders.tabs.departments']}"
+                                 action="#{settingsBean.setSelectedTabIndex(2)}"
+                                 ajax="true"
+                                 update="trackingSystemTabs leftButtonsPanel"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges rightPositionButton
+											#{settingsBean.selectedTabIndex == 2 ? 'selected' : ''}">
+                </p:commandButton>
+                <p:separator/>
+                <p:commandButton value="#{messages['button.save']}"
+                                 ajax="false"
+                                 actionListener="#{settingsService.update(settingsBean.settings)}"
+                                 styleClass="cancelTrackedChanges avoidChangeTracking"
+                                 icon="fa fa-save">
+                </p:commandButton>
+            </h:panelGrid>
+        </h:panelGrid>
+
+    </ui:define>
+
+    <ui:define name="content">
+        <c:set var="emplSystemName" value="#{settingsBean.settings.employeeTrackingSystemName}"/>
+        <c:set var="teamSystemName" value="#{settingsBean.settings.teamTrackingSystemName}"/>
+        <c:set var="deptSystemName" value="#{settingsBean.settings.departmentTrackingSystemName}"/>
+
+        <h:outputText value="#{messages['settings.applyNotification']}" styleClass="warning fa fa-warning"
+                      escape="false"/>
+
+        <p:tabView activeIndex="#{settingsBean.selectedTabIndex}" id="trackingSystemTabs" styleClass="trackingSystemTabs">
+            <p:tab id="employeeTab" title="#{messages['settings.externalDataProviders.tabs.employees']}">
+                <h:panelGroup styleClass="data-provider-selection" layout="block">
+                    <p:outputLabel for="employeeDataProvider"
+                                   value="#{messages['settings.employee.dataProvider.label']}"/>
+                    <p:selectOneMenu id="employeeDataProvider"
+                                     styleClass="avoidChangeTracking cancelTrackedChanges"
+                                     label=""
+                                     value="#{settingsBean.settings.employeeTrackingSystemName}"
+                                     onchange="submit()">
+                        <p:ajax listener="#{settingsService.update(settingsBean.settings)}"/>
+                        <f:selectItem itemLabel=""
+                                      noSelectionOption="true"
+                                      itemDisabled="true"
+                                      itemValue="#{null}"/>
+                        <f:selectItems value="#{trackingSystemProducer.employeeTrackingSystemNames}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <c:if test="#{(not empty emplSystemName) and (settingsBean.selectedTabIndex == 0)}">
+                    <ui:include src="/pages/settings/#{emplSystemName.toLowerCase()}/employee.xhtml">
+                        <ui:param name="implementationName" value="#{emplSystemName}"/>
+                    </ui:include>
+                </c:if>
+            </p:tab>
+
+            <p:tab id="teamTab" title="#{messages['settings.externalDataProviders.tabs.teams']}">
+                <h:panelGroup styleClass="data-provider-selection" layout="block">
+                    <p:outputLabel for="teamDataProvider" value="#{messages['settings.team.dataProvider.label']}"/>
+                    <p:selectOneMenu id="teamDataProvider"
+                                     styleClass="avoidChangeTracking cancelTrackedChanges"
+                                     label=""
+                                     value="#{settingsBean.settings.teamTrackingSystemName}"
+                                     onchange="submit()">
+                        <p:ajax listener="#{settingsService.update(settingsBean.settings)}"/>
+                        <f:selectItem itemLabel=""
+                                      noSelectionOption="true"
+                                      itemDisabled="true"
+                                      itemValue="#{null}"/>
+                        <f:selectItems value="#{trackingSystemProducer.teamTrackingSystemNames}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <c:if test="#{(not empty teamSystemName) and (settingsBean.selectedTabIndex == 1)}">
+                    <ui:include src="/pages/settings/#{teamSystemName.toLowerCase()}/team.xhtml">
+                        <ui:param name="implementationName" value="#{teamSystemName}"/>
+                    </ui:include>
+                </c:if>
+            </p:tab>
+
+            <p:tab id="departmentTab" title="#{messages['settings.externalDataProviders.tabs.departments']}">
+                <h:panelGroup styleClass="data-provider-selection" layout="block">
+                    <p:outputLabel for="departmentDataProvider"
+                                   value="#{messages['settings.department.dataProvider.label']}"/>
+                    <p:selectOneMenu id="departmentDataProvider"
+                                     styleClass="avoidChangeTracking cancelTrackedChanges "
+                                     label=""
+                                     value="#{settingsBean.settings.departmentTrackingSystemName}"
+                                     onchange="submit()">
+                        <p:ajax listener="#{settingsService.update(settingsBean.settings)}"/>
+                        <f:selectItem itemLabel=""
+                                      noSelectionOption="true"
+                                      itemDisabled="true"
+                                      itemValue="#{null}"/>
+                        <f:selectItems value="#{trackingSystemProducer.departmentTrackingSystemNames}"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+
+                <c:if test="#{(not empty deptSystemName) and (settingsBean.selectedTabIndex == 2)}">
+                    <ui:include src="/pages/settings/#{deptSystemName.toLowerCase()}/department.xhtml">
+                        <ui:param name="implementationName" value="#{deptSystemName}"/>
+                    </ui:include>
+                </c:if>
+            </p:tab>
+        </p:tabView>
+    </ui:define>
+
+</ui:composition>

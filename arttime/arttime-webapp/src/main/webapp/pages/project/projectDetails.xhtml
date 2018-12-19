@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:panelGrid columns="3" styleClass="panelGridDetails projectDetails">
+        <p:outputLabel for="code" value="#{messages['projectDetails.label.code']}:"/>
+        <p:inputText id="code" value="#{project.code}" maxlength="255" required="true"/>
+        <p:message for="code" display="tooltip"/>
+
+        <p:outputLabel for="description" value="#{messages['projectDetails.label.description']}:"/>
+        <p:inputTextarea id="description" value="#{project.description}" cols="30" rows="5" maxlength="1000"/>
+        <p:message for="description" display="tooltip"/>
+
+        <p:outputLabel for="managers" value="#{messages['projectDetails.label.managers']}:"/>
+        <p:autoComplete id="managers"
+                        inputStyleClass="input-field"
+                        panelStyleClass="azazat"
+                        value="#{project.managers}"
+                        required="true"
+                        completeMethod="#{employeeTrackingSystem.findEmployeesByFullName}"
+                        var="employee"
+                        itemValue="#{employee}"
+                        itemLabel="#{employee.fullName}"
+                        dropdown="true"
+                        forceSelection="true"
+                        onclick="PF('managerSelector').search('');"
+                        cache="true"
+                        scrollHeight="150"
+                        effect="fade"
+                        multiple="true"
+                        widgetVar="managerSelector"
+                        styleClass="#{component.valid ? '':'ui-state-error'} multiselect"
+                        queryDelay="500"
+                        converter="employeeConverter">
+        </p:autoComplete>
+        <h:panelGroup>
+            <p:tooltip for="managers" rendered="#{not empty facesContext.getMessageList(p:component('managers'))}">
+                <p:message for="managers" display="text"/>
+            </p:tooltip>
+        </h:panelGroup>
+
+        <p:outputLabel for="status" value="#{messages['projectDetails.label.status']}:"/>
+        <p:selectOneRadio id="status"
+                          value="#{project.status}"
+                          required="true"
+                          layout="lineDirection">
+            <f:selectItems value="#{projectBean.statuses}" var="status" itemLabel="#{messages[status.key]}"/>
+        </p:selectOneRadio>
+        <h:panelGroup>
+            <p:tooltip for="status" rendered="#{not empty facesContext.getMessageList(p:component('status'))}">
+                <p:message for="status" display="text"/>
+            </p:tooltip>
+        </h:panelGroup>
+
+        <p:outputLabel for="accountableHours" value="#{messages['projectDetails.label.accauntableHours']}:"/>
+        <h:panelGroup layout="block"
+                      styleClass="selectManyCheckbox #{projectsBean.hourTypesCheckbox.valid ? '' : 'ui-state-error'}">
+            <p:selectManyCheckbox id="accountableHours"
+                                  value="#{project.accountableHours}"
+                                  layout="pageDirection" collectionType="java.util.ArrayList"
+                                  converter="omnifaces.SelectItemsConverter"
+                                  required="true"
+                                  binding="#{projectsBean.hourTypesCheckbox}">
+                <f:selectItems value="#{hourTypeService.all}" var="hourType" itemLabel="#{hourType.type}"/>
+            </p:selectManyCheckbox>
+        </h:panelGroup>
+        <h:panelGroup>
+            <p:tooltip for="accountableHours"
+                       rendered="#{not empty facesContext.getMessageList(p:component('accountableHours'))}">
+                <p:message for="accountableHours" display="text"/>
+            </p:tooltip>
+        </h:panelGroup>
+
+        <p:outputLabel for="allowEmployeeReportTime"
+                       value="#{messages['projectDetails.label.allowEmployeeReportTime']}:"/>
+        <p:selectBooleanCheckbox id="allowEmployeeReportTime" value="#{project.allowEmployeeReportTime}"/>
+        <p:message for="allowEmployeeReportTime"/>
+    </h:panelGrid>
+
+</ui:composition>

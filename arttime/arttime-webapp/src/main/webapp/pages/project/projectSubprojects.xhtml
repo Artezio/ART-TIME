@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable
+		value="#{projectBean.subprojects}"
+		var="subproject" id="projectTable" sortMode="single"
+		sortBy="#{subproject.code.toLowerCase()}" stickyHeader="true"
+		styleClass="dictionaryTable"
+		emptyMessage="#{messages['warning.datatable.empty']}">
+
+		<p:column sortBy="#{subproject.code.toLowerCase()}">
+			<f:facet name="header">#{messages['projects.column.code']}</f:facet>
+			<h:outputText value="#{subproject.code}" />
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">#{messages['projects.column.description']}</f:facet>
+	   		#{subproject.description}
+	   	</p:column>
+
+		<p:column>
+			<f:facet name="header">#{messages['projects.column.manager']}</f:facet>
+			<ui:repeat var="manager" value="#{projectBean.getManagersOrdered(subproject)}"
+				varStatus="status">
+	   					#{manager.fullName}#{status.last ? '' : ', '}
+	   		</ui:repeat>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">#{messages['projects.column.status']}</f:facet>
+	   		#{messages[subproject.status.key]}		
+	   	</p:column>		
+
+		<p:column>
+			<f:facet name="header">#{messages['projects.column.action']}</f:facet>
+			<p:button value="" includeViewParams="true" icon="fa fa-pencil"
+				outcome="editProject"
+				styleClass="avoidChangeTracking invisibleBorder">
+				<f:param name="project" value="#{subproject.id}" />
+			</p:button>
+			<p:commandButton value="#{messages['button.delete']}"
+				actionListener="#{projectBean.remove(subproject)}"
+				onclick="return confirm('#{messages['label.confirm.delete']}');"
+				icon="fa fa-trash" ajax="false"
+				styleClass="avoidChangeTracking invisibleBorder ui-fa" />
+		</p:column>
+	</p:dataTable>
+
+	<style type="text/css">
+		.ui-datatable .ui-datatable-sticky thead th {
+			height: 0px;
+			visibility: hidden;
+		}
+	</style>
+
+</ui:composition>

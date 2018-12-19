@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:o="http://omnifaces.org/ui">
+
+	<p:dialog styleClass="session-expired-dlg"
+			  header="#{messages['session.expired.message.title']}"
+			  minHeight="40"
+			  visible="false"
+			  modal="true"
+			  closable="false"
+			  closeOnEscape="false"
+			  fitViewport="true"
+			  widgetVar="sessionExpiredDialog">
+		<h:outputText value="#{messages['session.expired.message.body']}" />
+		<h:panelGroup layout="block" styleClass="ui-dialog-actions">
+			<p:button value="#{messages['session.expired.link.refreshPage']}"
+							 styleClass="ui-fa avoidChangeTracking cancelTrackedChanges"
+							 icon="fa fa-refresh"/>
+		</h:panelGroup>
+	</p:dialog>
+
+    <h:outputScript name="sessionExpiry.js?v=#{buildInfo['application.version']}" library="js"/>
+    <o:socket channel="session-expiration-channel" onclose="sessionExpirationSocketCloseListener" scope="session"/>
+
+</ui:composition>

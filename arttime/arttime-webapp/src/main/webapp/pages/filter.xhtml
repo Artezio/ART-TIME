@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:p="http://primefaces.org/ui">
+
+	<h:outputScript name="selectManyMenu.js?v=#{buildInfo['application.version']}" library="js"/>
+
+	<c:if test="#{empty showHourTypesSelector}">
+		<c:set var="showHourTypesSelector" value="true"/>
+	</c:if>
+	<c:if test="#{empty showProjectsSelector}">
+		<c:set var="showProjectsSelector" value="true"/>
+	</c:if>
+
+	<p:panel id="projects"
+			 styleClass="ui-selectcheckboxmenu-wrapper"
+			 rendered="#{showProjectsSelector}" layout="block">
+		<p:selectCheckboxMenu
+				id="availableProjects"
+				value="#{filterBean.selectedProjects}"
+				styleClass="avoidChangeTracking"
+				panelStyleClass="avoidChangeTracking cancelTrackedChanges hideSelectAll"
+				filter="true"
+				filterMatchMode="contains"
+				panelStyle="width:250px"
+				label="#{messages['filter.label.projects.all']}"
+				updateLabel="true"
+				converter="projectConverter"
+				widgetVar="projectsMenu">
+			<f:selectItems id="projectselect" value="#{filterBean.projects}" var="prj" itemLabel="#{!prj.subproject ? prj.code : prj.displayCode}"/>
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+		</p:selectCheckboxMenu>
+	</p:panel>
+
+	<p:panel id="location" styleClass="ui-selectcheckboxmenu-wrapper" layout="block">
+		<p:selectCheckboxMenu
+				id="availableDepartments"
+				styleClass="avoidChangeTracking"
+				panelStyleClass="avoidChangeTracking cancelTrackedChanges hideSelectAll"
+				value="#{filterBean.selectedDepartments}"
+				filter="true"
+				filterMatchMode="contains"
+				label="#{messages['filter.label.departments.all']}"
+				updateLabel="true"
+				widgetVar="departmentsMenu">
+			<f:selectItems id="departmentSelect"
+						   value="#{filterBean.departments}"
+						   var="dept"
+						   itemLabel='#{not empty dept ? dept : messages["department.label.noDepartment"]}'/>
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+		</p:selectCheckboxMenu>
+	</p:panel>
+
+	<p:panel id="employees" styleClass="ui-selectcheckboxmenu-wrapper" layout="block">
+		<p:selectCheckboxMenu
+				id="availableEmployees"
+				styleClass="avoidChangeTracking"
+				panelStyleClass="avoidChangeTracking cancelTrackedChanges hideSelectAll"
+				value="#{filterBean.selectedEmployees}"
+				filter="true"
+				filterMatchMode="contains"
+				converter="employeeConverter"
+				panelStyle="width:250px"
+				label="#{messages['filter.label.employees.all']}"
+				updateLabel="true"
+				widgetVar="employeesMenu">
+			<f:selectItems id="employeeSelect" value="#{filterBean.employees}" var="empl" itemLabel="#{empl.fullName}" itemDescription="#{empl.email}"/>
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+		</p:selectCheckboxMenu>
+	</p:panel>
+
+	<p:panel id="hourTypes" rendered="#{showHourTypesSelector}" styleClass="ui-selectcheckboxmenu-wrapper" layout="block">
+		<p:selectCheckboxMenu
+				id="availableHourtypes"
+				styleClass="avoidChangeTracking"
+				panelStyleClass="avoidChangeTracking cancelTrackedChanges hideSelectAll"
+				value="#{filterBean.selectedHourTypes}"
+				filter="true"
+				filterMatchMode="contains"
+				converter="hourTypeConverter"
+				panelStyle="width:250px"
+				label="#{messages['filter.label.hourTypes.all']}"
+				updateLabel="true"
+				widgetVar="hourTypesMenu">
+			<f:selectItems id="hourtypeSelect" value="#{filterBean.hourTypes}" var="ht" itemLabel="#{ht.type}"/>
+			<f:attribute name="collectionType" value="java.util.ArrayList" />
+		</p:selectCheckboxMenu>
+	</p:panel>
+
+	<h:outputScript name="filterUtils.js?v=#{buildInfo['application.version']}" library="js"/>
+
+	<script>
+		$(document).ready(function() {
+			var btnClearMsg = "#{messages['filter.clear']}";
+			var filterClearMsg = "#{messages['filter.input.clear']}";
+			FilterUtils.reconfigureFilter('projectsMenu', "#{messages['filter.label.projects.all']}", btnClearMsg, filterClearMsg);
+			FilterUtils.reconfigureFilter('departmentsMenu', "#{messages['filter.label.departments.all']}", btnClearMsg, filterClearMsg);
+			FilterUtils.reconfigureFilter('employeesMenu', "#{messages['filter.label.employees.all']}", btnClearMsg, filterClearMsg);
+			FilterUtils.reconfigureFilter('hourTypesMenu', "#{messages['filter.label.hourTypes.all']}", btnClearMsg, filterClearMsg);
+			FilterUtils.addHighlightingFoundTerms();
+			FilterUtils.addAutofocusOnSearchField();
+		});
+	</script>
+
+</ui:composition>

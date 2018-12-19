@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface componentType="customPeriodSelector">
+        <composite:attribute name="period"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <f:event type="postAddToView" listener="#{cc.init}" />
+        <h:panelGroup id="customPeriodSelector" styleClass="periodSelector"  layout="block">
+
+            <p:calendar id="customPeriodStart"
+                        value="#{cc.attrs.period.start}"
+                        required="true"
+                        styleClass="calendar fa fa-calendar">
+            </p:calendar>
+
+            <p:calendar id="customPeriodFinish"
+                        value="#{cc.attrs.period.finish}"
+                        required="true"
+                        validator="periodValidator"
+                        styleClass="calendar fa fa-calendar">
+                <f:attribute name="start" value="customPeriodStart"/>
+            </p:calendar>
+
+            <p:tooltip for="customPeriodStart" rendered="#{not empty facesContext.getMessageList(p:component('customPeriodStart'))}">
+                <p:message for="customPeriodStart" display="text"/>
+            </p:tooltip>
+            <p:tooltip for="customPeriodFinish" rendered="#{not empty facesContext.getMessageList(p:component('customPeriodFinish'))}">
+                <p:message for="customPeriodFinish" display="text"/>
+            </p:tooltip>
+
+        </h:panelGroup>
+    </composite:implementation>
+</html>

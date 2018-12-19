@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml">
+
+    <ui:define
+            name="titleHead">#{messages['mainMenu.dictionaries']} / #{messages['accessToDepartments.title']}</ui:define>
+
+    <ui:define name="titleBody">
+        #{messages['mainMenu.dictionaries']} / <p:outputLabel>#{messages['accessToDepartments.title']}</p:outputLabel>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup">
+        <p:commandButton value="#{messages['button.save']}"
+                         action="#{departmentAccessBean.save()}"
+                         ajax="false"
+                         styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+                         icon="fa fa-save">
+        </p:commandButton>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <h:outputText value="#{messages['accessToDepartments.warning']}" styleClass="warning fa fa-warning" />
+
+        <p:dataTable id="accesses"
+                     var="department"
+                     value="#{departmentService.all}"
+                     sortBy="#{department}"
+                     emptyMessage="#{messages['warning.datatable.empty']}"
+                     scrollable="true"
+                     styleClass="dictionaryTable departments-access"
+                     filterDelay="1000">
+
+            <p:column id="departmentColumn" filterBy="#{department}" filterMatchMode="contains" width="150">
+                <f:facet name="header">#{messages['accessToDepartments.column.department']}</f:facet>
+                <h:outputText value="#{department}" title="#{department}"/>
+            </p:column>
+            <p:column id="employeesColumn" filterable="false">
+                <f:facet name="header">#{messages['accessToDepartments.column.employees']}</f:facet>
+                <p:autoComplete id="employeesAutocomplete"
+                                multiple="true"
+                                value="#{departmentAccessBean.accessToDepartments[department]}"
+                                completeMethod="#{employeesBean.findByFullName}"
+                                queryDelay="500"
+                                unique="true"
+                                inputStyleClass="avoidChangeTracking"
+                                placeholder="#{messages['accessToDepartments.addNewEmployee']}"
+                                var="employee"
+                                maxResults="10"
+                                itemLabel="#{employee.fullName}"
+                                itemValue="#{employee}"
+                                converter="employeeConverter"
+                                forceSelection="false">
+                        <h:outputText value="#{employee.fullName}"/>
+                </p:autoComplete>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>

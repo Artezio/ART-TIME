@@ -1,0 +1,3930 @@
+@font-face {
+    font-family: 'Art-time';
+    src:url('fonts/Art-time.eot?-3bgg5y');
+    src:url('fonts/Art-time.eot?#iefix-3bgg5y') format('embedded-opentype'),
+        url('fonts/Art-time.woff?-3bgg5y') format('woff'),
+        url('fonts/Art-time.ttf?-3bgg5y') format('truetype'),
+        url('fonts/Art-time.svg?-3bgg5y#Art-time') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*@font-face{
+    font-family: 'wf_SegoeUILight';
+    src:url('fonts/Segoe-UI-Cyrillic-Light.eot');
+    src:url('fonts/Segoe-UI-Cyrillic-Light.eot?#iefix') format('embedded-opentype'),
+           url('fonts/Segoe-UI-Cyrillic-Light.woff') format('woff'),
+           url('fonts/Segoe-UI-Cyrillic-Light.ttf') format('truetype'),
+           url('fonts/Segoe-UI-Cyrillic-Light.svg#web') format('svg');
+    font-weight: normal;
+    font-style: normal;
+} 
+
+@font-face {
+    font-family: 'robotoregular';
+    src: url('fonts/Roboto-Regular-webfont.eot');
+    src: url('fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/Roboto-Regular-webfont.woff2') format('woff2'),
+         url('fonts/Roboto-Regular-webfont.woff') format('woff'),
+         url('fonts/Roboto-Regular-webfont.ttf') format('truetype'),
+         url('fonts/Roboto-Regular-webfont.svg#robotoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}*/
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, select, textarea,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font: normal 14px Arial, Geneva, sans-serif;
+}
+
+.body-flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#form {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    max-height: calc(100% - 48px - 22px); /* 100% - header - footer */
+}
+
+.left-panel {
+    background: #e9e9e9;
+    min-width: 100px;
+    width: 250px;
+    position: absolute;
+    height: 100%;
+    left: -250px;
+    z-index: 10;
+    border-right: 1px solid #ccc;
+}
+
+.left-panel.pin {
+    display: block;
+    position: relative;
+}
+
+.left-panel.animate {
+    display: block;
+    position: absolute;
+    height: 100%;
+}
+
+.left-panel.show {
+    display: block;
+}
+
+.left-panel > .content{
+    flex: 1;
+}
+
+.left-panel + .content {
+    padding-left: 20px;
+}
+
+.pin.left-panel + .content {
+    padding-left: 0;
+}
+
+a.filter-pin-button,
+a.filter-pin-button:hover,
+a.filter-pin-button:focus {
+    color: black;
+    text-decoration: none;
+    position: absolute;
+    right: -9px;
+    padding: 2px 2px 2px 6px;
+    display: block;
+    font-size: 11px;
+    top: 0;
+    border: none;
+    border-radius: 3px;
+}
+
+a.filter-pin-button .fa {
+    font-size: 10px;
+}
+
+.left-panel a.filter-pin-button .unpinned-icon,
+.left-panel.pin a.filter-pin-button .pinned-icon {
+    display: inline-block;
+}
+
+.left-panel a.filter-pin-button .pinned-icon,
+.left-panel.pin a.filter-pin-button .unpinned-icon {
+    display: none;
+}
+
+.left-panel.over.pin a.filter-pin-button {
+    padding: 2px 2px 2px 6px;
+}
+
+.left-panel.pin .filtersContainer,
+.left-panel.over .filtersContainer {
+    transition-delay: 0.15s;
+    transition-duration: 0.15s;
+    opacity: 1;
+}
+
+a.filter-pin-button .stick-left {
+    position: relative;
+    left: -.5em;
+}
+
+.resizer{
+    width: 5px;
+    position: absolute;
+    height: 100%;
+    right: -2px;
+    cursor: e-resize;
+}
+
+#form\:manageEffortsSheet {
+    height: 100%;
+    position: relative;
+}
+
+#form\:manageEffortsSheet_tbl {
+    max-height: 100%;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content .container {
+    flex: 1;
+    position: relative;
+}
+
+.scrollHidden {
+    overflow: hidden;
+}
+
+input, textarea, select {
+    font-family: Arial, Geneva, sans-serif;
+}
+
+ol, ul {
+    list-style-type: none;
+}
+
+a, a:focus, img {
+    border: none;
+    outline: none;
+}
+
+a, a:hover {
+  color: #103768;
+  font-size: 13px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+textarea {
+    outline: none;
+    resize: none;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'Art-time';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h2 {
+  color: #2f3030;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.toolbarForm {
+  padding: 0px 20px;
+}
+
+#container {
+  overflow: auto;
+  padding: 0px 20px;
+}
+
+#container h2 {
+  padding: 15px 0px 15px 0px;
+}
+
+button, input[type="reset"], input[type="submit"], input[type="button"], button:hover, input[type="reset"]:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background-image: none;
+    background-color: transparent;
+    font-family: Arial, Geneva, sans-serif;
+}
+
+
+.handsontable .emptyCell, .handsontable .noProject {
+  background: url("../img/empty_cell.png") repeat top left;
+
+}
+
+.handsontable .emptyCell.area {
+  background: #cff0ff url("../img/empty_cell.png") repeat top left;
+}
+
+.calendarNonWorkingDay {
+    background-color: gray;
+    font-style: italic;
+    color: #FF7800;
+}
+
+.calendarHolidays {
+    background-color: gray;
+    font-style: italic;
+    color: #FF7800;
+}
+
+.handsontable .approvedHours {
+    background-color: #cef9db;
+}
+
+
+.handsontable .approvedHours.area {
+  background-color: #a7eadb;
+}
+
+.ui-message {
+  color: #ff7676;
+  font-size: 12px;
+}
+
+button:hover, .actionPanel td button:hover {
+  background-color: #e9e9e9;
+}
+
+ui-button-text-only .ui-button-text {
+    padding: 0;
+}
+
+.ui-button {
+  background-color: #fff;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  color: #4e4e4e;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 2px 10px 2px 10px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.ui-button .ui-button-text {
+    display: inline;
+    line-height: 13px;
+    padding: 0px;
+}
+
+.ui-tooltip {
+  background-color: #fff;
+  border: 1px solid #ff7676;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #ff7676;
+  padding: 3px 10px;
+}
+
+.navigationPanel {
+  border-collapse: collapse;
+  padding: 0px;
+  width: 100%;
+}
+
+.navigationPanel td, .navigationPanel .rf-tb {
+  background-color: #131414;
+  background-image: none;
+}
+
+.navigationPanel td, .navigationPanel .rf-ddm-itm, .navigationPanel .rf-ddm-itm-lbl, .navigationPanel .rf-ddm-lbl {
+  color: #cecece;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.navigationPanel .rf-tb-itm a.rf-ddm-itm-href,
+.navigationPanel .rf-tb-itm a.rf-ddm-itm-href:visited {
+    text-decoration: none;
+    display: block;
+}
+
+.navigationPanel .rf-tb-itm:hover a.rf-ddm-itm-href {
+    color: white;
+}
+
+.navigationPanel .rf-ddm-lbl-dec {
+    font-weight: normal;
+    padding: 8px 12px 12px 12px;
+}
+
+.navigationPanel .rf-tb {
+  border: none 0px;
+}
+
+.navigationPanel .rf-tb td:first-child {
+  width: 1px;
+}
+
+.navigationPanel .rf-tb td:first-child .rf-ddm-itm {
+    border-left: 1px solid #626262;
+    cursor: default;
+    padding: 4px 12px 6px 0;
+    margin-bottom: 4px;
+}
+
+.navigationPanel > tbody > tr > td {
+  padding: 0px 0px;
+}
+
+.navigationPanel > tbody > tr > td:first-child {
+  text-align: center;
+  vertical-align: middle;
+  width: 135px;
+}
+
+.navigationPanel .rf-ddm-itm-unsel, .navigationPanel .rf-ddm-lbl {
+    border: none 0px;
+    padding: 0px;
+}
+
+.navigationPanel .rf-tb td:last-child {
+  text-align: right;
+}
+
+.navigationPanel .rf-tb td:last-child .rf-ddm-itm {
+  border-left: 1px solid #626262;
+  padding: 4px 35px;
+}
+
+.navigationPanel .rf-tb .rf-tb-emp {
+  width: 100%;
+}
+
+.navigationPanel .rf-ddm-itm-sel, .navigationPanel .rf-ddm-sel {
+  background: none;
+  border: none 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.navigationPanel .rf-ddm-itm-lbl {
+  vertical-align: inherit;
+}
+
+.navigationPanel .rf-ddm-itm {
+    padding: 8px 12px 12px 12px;
+}
+
+.navigationPanel .rf-tb-itm {
+    border-top: 5px solid #131414;
+    max-height: 40px;
+    padding: 0px 0px 0px 0;
+}
+
+.navigationPanel .rf-tb-itm:hover {
+  background-color: #76d3ff;
+}
+
+.navigationPanel .unselectMenu:hover, .navigationPanel .rf-tb td:first-child:hover {
+  background-color: transparent;
+}
+
+.navigationPanel .rf-tb-itm:hover .rf-ddm-itm-lbl, .navigationPanel .rf-tb-itm:hover .rf-ddm-lbl-dec {
+  color: #fff;
+}
+
+.navigationPanel .unselectMenu:hover .rf-ddm-itm-lbl {
+  color: #cecece;
+}
+
+.navigationPanel .activeMenuItem > .rf-ddm-itm-lbl  {
+  color: #fff;
+}
+
+.navigationPanel .rf-ddm-lst {
+    background-color: #000;
+    border: none 0px;
+    min-width: 100% !important;
+    top: 10px !important;
+    width: auto;
+}
+
+.navigationPanel .rf-ddm-lst-bg {
+    background-image: none;
+    border: none 0px;
+}
+
+.navigationPanel .rf-ddm-lst .rf-ddm-itm {
+  font-size: 14px;
+}
+
+.navigationPanel .rf-ddm-lst .rf-ddm-itm-sel  {
+  background-color: #76d3ff;
+  color: #fff;
+}
+
+.navigationPanel .rf-ddm-lst .rf-ddm-itm-sel .rf-ddm-itm-lbl {
+  color: #fff;
+}
+
+.navigationPanel .rf-ddm-lst .rf-ddm-itm {
+    padding: 5px 12px;
+}
+
+
+
+.navigationPanel .rf-tb-itm.selectedItem {
+    border-top: 5px solid #76d3ff;
+}
+
+.navigationPanel > tbody > tr > td img {
+  margin: 5px 20px 0px;
+}
+
+.navigationPanel .rf-ddm-itm-ic {
+  display: none;
+}
+
+span[id$='titleBody'] {
+  position: relative;
+}
+
+span[id$='titleBody'] .titleBody {
+  background-color: #fff;
+  color: #CECECE;
+  font-size: 22px;
+  padding: 10px 0px 9px 23px;
+}
+
+.titleBody span, span[id$='titleBody'] .titleBody span input, .titleBody span button {
+  color: #444;
+  margin-right: 5px;
+}
+
+.titleBody span input {
+  vertical-align: top;
+}
+
+.titleBody span button {
+  height: 26px;
+}
+
+.titleBody span button span {
+   margin: 0px;
+   vertical-align: middle;
+ }
+
+.titleBody span .saveAsButton .ui-button-text {
+  vertical-align: middle;
+}
+
+.predefineStates {
+  float: right;
+  padding: 10px 30px 0px 30px;
+}
+
+.predefineStates .rightPositionButton {
+  margin-left: -1px;
+}
+
+.predefineStates button.ui-button {
+  border: 1px solid #cecece;
+}
+
+#container, span[id$='titleBody'] {
+  display: block;
+}
+
+.handsontable {
+  z-index: 2;
+}
+
+.predefineStates button.selected {
+  background-color: #42a9d9;
+  border: 1px solid #2687b4;
+  box-shadow: 1px 1px 3px 0 rgba(49, 125, 160, 1.0) inset;
+  cursor: default;
+  color: #fff;
+}
+
+.periodSelectorButtons button:hover {
+    background-color: #e9e9e9;
+}
+
+.periodSelectorButtons button, .actionPanel td button {
+  background-color: #fff;
+  border: 1px solid #cecece !important;
+  color: #4e4e4e;
+  cursor: pointer;
+  font-size: 13px;
+  height: 26px;
+  margin: 0px !important;
+  max-width: 95px;
+  min-width: 76px;
+  padding: 0px 0px;
+}
+
+.actionPanel td button {
+  padding: 2px 10px 4px;
+  max-width: 100%;
+  min-width: 0px;
+}
+
+.ui-tabs-selected a {
+    font-weight: bold;
+}
+
+.periodSelectorButtons button.selected, .actionPanel td.selected button {
+  background-color: #42a9d9;
+  border: 1px solid #2687b4;
+  box-shadow: 1px 1px 3px 0 rgba(49, 125, 160, 1) inset;
+  color: #fff;
+  cursor: default;
+}
+
+.periodSelectorButtons button:nth-child(2), .actionPanel td:nth-child(2) button {
+  border-left: none 0px;
+  border-right: none 0px;
+  margin-left: -1px !important;
+}
+
+.actionPanel td:nth-child(3) button {
+  margin-left: -2px !important;
+}
+
+.periodSelectorButtons button:first-child, .actionPanel td:first-child button {
+  border-radius: 4px 0 0 4px;
+}
+
+.periodSelectorButtons button:last-child, .actionPanel td:last-child button {
+  border-radius: 0px 4px 4px 0px;
+  margin-left: -1px !important;
+}
+
+.actionPanel td:last-child button {
+  margin-left: -3px !important;
+}
+
+.rf-tb {
+    background-color: #e9e9e9;
+    background-image: none;
+    border: none 0px;
+    color: #4e4e4e;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.hoursIndicator {
+    font-size: 13px;
+    line-height: 17px;
+    padding: 0 20px;
+    width: 150px;
+}
+
+.hoursIndicator .label {
+    display: block;
+}
+
+.hoursIndicator .field {
+    color: #76d3ff;
+}
+
+.hoursIndicator .field img {
+    margin: 0 0 0 8px;
+}
+
+.hoursIndicator .ui-progressbar {
+    background-color: #e9e9e9;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 2px;
+}
+
+.hoursIndicator .ui-progressbar-value {
+    background-color: #42a9d9;
+    margin: 0;
+}
+
+.menuSeparatorRight {
+    border-right: 1px solid #626262 !important;
+    cursor: default;
+}
+
+.toolBar .ui-separator {
+    height: 25px;
+    width: 1px;
+    border: none;
+    border-left: 1px solid #cecece;
+    margin: 0 5px;
+}
+
+.filterButton {
+  color: #4e4e4e !important;
+  display: inline-block;
+  font-size: 13px;
+  height: 18px;
+  margin-top: 5px;
+  width: 35px;
+}
+
+.filterButton, .filterButton:hover {
+    text-decoration: none;
+}
+
+
+.toolBar .filterSelector {
+    padding: 0px 10px 0px 0px;
+    border-right: 1px solid #cecece;
+}
+
+.filterButton:hover {
+  color: #4e4e4e;
+}
+
+.periodSelector input {
+  color: #464646 !important;
+  font-size: 13px;
+}
+
+.ui-calendar.calendar {
+    position: relative;
+}
+
+.calendar input {
+  border: 1px solid #cecece !important;
+  border-radius: 4px !important;
+  cursor: pointer;
+  padding: 0px 25px 0px 5px !important;
+  width: 100px !important;
+}
+
+.calendar.fa.fa-calendar::before {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    right: 10px;
+    top: 6px;
+    font-size: 13px;
+}
+
+.weekSelector {
+    margin: 0 24px 0 0;
+    position: relative;
+}
+
+.weekSelector button.prevWeek, .weekSelector button.nextWeek {
+    padding: 2px 4px;
+    margin: 0;
+}
+
+.weekSelector button.prevWeek {
+  border-radius: 4px 0px 0px 4px;
+  border-right: none 0px;
+}
+
+.weekSelector .fa.fa-calendar {
+    position: absolute;
+    pointer-events: none;
+    display: block;
+    width: 14px;
+    padding: 0;
+    margin: 0;
+    right: 38px;
+    top: 5px;
+}
+
+.weekSelector .ui-icon.prevWeek, .weekSelector .ui-icon.nextWeek {
+  width: 16px;
+}
+
+.weekSelector .ui-icon.prevWeek {
+  background-position: 1px 1px;
+}
+
+.weekSelector .ui-state-hover .ui-icon.prevWeek {
+  background-position: 0px 1px;
+}
+
+.weekSelector .ui-icon.nextWeek {
+  background-position: -121px 1px;
+}
+
+.weekSelector .ui-state-hover .ui-icon.nextWeek {
+  background-position: -120px 1px;
+}
+
+.weekSelector button.nextWeek {
+  border-radius: 0px 4px 4px 0px;
+  border-left: none 0px;
+}
+
+.weekSelector > input[type="text"] {
+    border-left: none 0px;
+    border-right: none 0px;
+    border-radius: 0px;
+    color: #464646;
+    cursor: pointer;
+    margin: 0px 0px;
+    padding: 0px 25px 0px 5px;
+    width: 145px;
+}
+
+.weekSelector.fa:before {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    right: 30px;
+    top: 6px;
+    font-size: 13px;
+}
+
+.weekSelector button:hover {
+  background-color: #fff;
+}
+
+.periodSelector .previous, .periodSelector .next {
+  background-color: transparent;
+  border: 0 none;
+  color: #cecece;
+  cursor: pointer;
+  font-size: 17px;
+  height: 24px;
+  padding: 0;
+  width: 25px;
+}
+
+.toolBar > tbody > tr > td {
+  padding: 8px 0px 7px 10px;
+}
+
+.toolBar td:last-child {
+  padding-right: 10px;
+}
+
+.rf-cal {
+    display: inline-block;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+
+.rf-cal-extr {
+    border: none 0px;
+}
+
+.toolBar .rf-cal-hdr {
+    background-color: #ffff;
+    border-bottom: none 0px;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 13px;
+    padding: 0px;
+}
+
+.toolBar .rf-cal-tl {
+  display: none;
+}
+
+.monthSelector {
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    color: #4e4e4e;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    height: auto;
+    padding: 4px 10px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 180px;
+}
+
+.rf-cal-hdr {
+    background-color: transparent;
+    border: none 0px;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 13px;
+}
+
+.rf-cal-hdr-month {
+    background-color: transparent;
+    color: #464646;
+    font-family: Arial,Verdana,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    height: auto;
+    padding: 0px !important;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.rf-cal-tl {
+   background-color: transparent;
+   color: #464646;
+   font-size: 13px;
+   font-weight: normal;
+   height: auto;
+}
+
+.rf-cal-tl-btn-dis {
+  padding: 0px;
+}
+
+.rf-cal-tl-btn {
+  padding: 0px;
+}
+
+.rf-cal-tl-btn-hov {
+  background-color: transparent;
+  border: none 0px;
+}
+
+.ui-datepicker {
+    background-color: #fff;
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    width: 14em;
+}
+
+.calendar .ui-datepicker {
+    border: none 0px;
+    width: 100%;
+}
+
+.ui-datepicker td span, .ui-datepicker td a {
+    border: 1px solid #fff;
+    color: #2f3030;
+    display: inline-block;
+    font-size: 12px;
+    height: 22px;
+    line-height: 22px;
+    padding: 0px;
+    text-align: center;
+    width: 26px;
+    vertical-align: middle;
+}
+
+.calendar .ui-datepicker td span, .calendar .ui-datepicker td a {
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    width: 40px;
+}
+
+.ui-datepicker td {
+   padding: 0px;
+}
+
+.calendar .ui-datepicker .ui-datepicker-header, .calendar .ui-datepicker {
+    padding: 0;
+}
+
+.calendar .ui-datepicker .ui-datepicker-header {
+  margin-top: -3px;
+}
+
+.ui-datepicker td span:hover, .ui-datepicker td a:hover {
+  border: 1px solid #76d3ff;
+  border-radius: 3px;
+}
+
+.calendar .ui-datepicker td span:hover, .calendar .ui-datepicker td a:hover {
+  border: 1px solid #fff;
+  border-radius: 0px;
+}
+
+.ui-datepicker th {
+  color: #4e4e4e;
+  font-weight: normal;
+  padding-bottom: 2px;
+}
+
+.ui-datepicker th.ui-datepicker-week-end {
+  border-bottom: 2px solid #ff8989;
+}
+
+.calendar .ui-datepicker th.ui-datepicker-week-end {
+  border-bottom: none 0px;
+}
+
+
+.ui-datepicker .ui-datepicker-title {
+  color: #464646;
+  cursor: default;
+  font-family: Arial, Geneva, sans-serif;
+}
+
+.ui-datepicker-prev, .ui-datepicker-next {
+    cursor: pointer;
+}
+
+#ui-datepicker-div .ui-datepicker-prev::before, #ui-datepicker-div .ui-datepicker-next::before,
+#form\:calendar .ui-datepicker-prev::before, #form\:calendar .ui-datepicker-next::before{
+    font-family: FontAwesome;
+    font-size: 24px;
+    color: #c4c0b9;
+    position: absolute;
+    left: 6px;
+}
+
+#ui-datepicker-div .ui-datepicker-prev::before,
+#form\:calendar .ui-datepicker-prev::before {
+    content: "\f104";
+}
+
+#ui-datepicker-div .ui-datepicker-next::before,
+#form\:calendar .ui-datepicker-next::before {
+    content: "\f105";
+}
+
+#form\:calendar .ui-datepicker-header {
+    margin-bottom: 10px;
+}
+
+.ui-panel .ui-panel-content {
+  padding: 0px 0px 0px 0px;
+}
+
+.ui-layout-unit, .ui-layout-unit .ui-layout-unit-content, .ui-layout-west {
+    padding: 0;
+}
+
+.ui-layout-unit.ui-layout-center {
+  background-color: #fff;
+}
+
+.ui-layout-unit.ui-layout-center .ui-layout-unit-content {
+  padding: 0px 20px;
+}
+
+
+.ui-layout-unit, .ui-layout-west, .ui-layout-west .ui-layout-unit-content {
+  background-color: #e9e9e9;
+}
+
+.ui-layout-west > table, .ui-layout-unit .ui-layout-unit-content > form > table {
+  width: 100%;
+}
+
+.handsontable .wtHider {
+    background: none repeat scroll 0 0 #fff;
+}
+
+.ui-panel-content .periodSelector .calendar input {
+  width: 87px;
+}
+
+.ui-panel-content .periodSelectorButtons {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ui-panel .ui-panel-titlebar {
+  border-top: 1px solid #cecece;
+  margin: 10px 0 0;
+  padding: 0 0 0 10px;
+}
+
+.ui-panel .ui-panel-title {
+  background-color: #e9e9e9;
+  color: #4e4e4e;
+  display: inline-block;
+  margin: 0;
+  padding: 0 5px;
+  position: relative;
+  top: -10px;
+}
+
+.actionPanel {
+  border-collapse: collapse;
+  display: block;
+  margin-bottom: 10px;
+  white-space: nowrap;
+}
+
+.ui-panel-content .searchInput {
+  background: #fff url(../img/zoom.png) no-repeat 97% 9px;
+  border: 1px solid #cecece;
+  border-radius: 4px 4px 0px 0px;
+  color: #4e4e4e;
+  font-size: 13px;
+  padding: 3px 25px 3px 5px;
+  width: 197px;
+}
+
+.manySelectorPanel {
+  background-color: #fff;
+  border: 1px solid #cecece;
+  border-radius: 4px 4px 4px 4px;
+  border-top: none 0px;
+  height: 156px;
+  padding: 0px;
+  width: 227px;
+}
+
+.ui-chkbox {
+  padding: 0px 5px 0px 5px;
+}
+
+.ui-chkbox .ui-chkbox-box {
+  border-radius: 0px;
+  height: 11px;
+  width: 13px;
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-default {
+    position: relative;
+    vertical-align: middle;
+    display: inline-block;
+    height: auto;
+    cursor: pointer;
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-default::before {
+    content: "\f096";
+    font-size: 14px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    display: block;
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-active, .ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-active, .ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-default {
+    position: relative;
+}
+
+.ui-chkbox .ui-chkbox-box.ui-state-active::before, .ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-active::before, .ui-state-highlight .ui-chkbox .ui-chkbox-box.ui-state-default::before {
+    content: "\f046";
+    font-size: 14px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    display: block;
+}
+
+.ui-chkbox .ui-chkbox-box .ui-icon {
+  display: none;
+}
+
+.ui-icon.ui-icon-minusthick {
+  background: #e9e9e9 url(../img/collapse_arrow.png) no-repeat 4px 0px;
+  height: 7px;
+  width: 20px;
+}
+
+.ui-icon.ui-icon-plusthick {
+  background: #e9e9e9 url(../img/collapse_arrow.png) no-repeat 4px 100%;
+  height: 7px;
+  width: 20px;
+}
+
+.ui-panel .ui-panel-titlebar-icon, .ui-panel .ui-panel-titlebar-icon:hover, .ui-panel .ui-panel-titlebar-icon:focus {
+  margin: -11px 8px 0px 0px;
+}
+
+input.saveButton, input.saveButton:hover {
+  background: #fff url(../img/save_ico.png) no-repeat 10px 4px;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  color: #4e4e4e;
+  cursor: pointer;
+  font-size: 13px;
+  height: 26px;
+  margin-right: 7px;
+  padding: 0px 15px 0px 30px;
+}
+
+.htCore th, .htCore td {
+  color: #2f3030 !important;
+  font-size: 14px;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+.handsontable thead th {
+  background-color: transparent;
+  border: none 0px !important;
+  font-size: 14px;
+  height: 71px;
+  padding: 0px 0px 0px 0px;
+  vertical-align: middle;
+}
+
+.handsontable thead th .relative {
+    padding: 0px 2px;
+}
+
+.colHeader span {
+  display: block;
+}
+
+.colHeader .weekDay {
+  font-size: 16px;
+}
+
+.colHeader .dayNumber {
+  color: #464646;
+  font-size: 28px;
+}
+
+.colHeader .month {
+  font-size: 12px;
+}
+
+.handsontable .handsontable .wtHider {
+    padding: 0px;
+}
+
+.handsontable .handsontable table {
+    border-bottom: 1px solid #cecece;
+    box-shadow: none;
+}
+
+.workdayHeader, .weekendHeader {
+  border-bottom-width: 4px;
+  border-bottom-style: solid;
+  display: inline-block;
+  border-bottom-color: #fff;
+}
+
+.currentCol .weekendHeader {
+  border-bottom-color: #ffcfcf;
+}
+
+.currentCol .workdayHeader {
+  border-bottom-color: #76d3ff;
+}
+
+.handsontable .weekendCell {
+  background-color: #fbe7e7;
+}
+
+.handsontable .weekendCell.area {
+  background-color: #dfdee7;
+}
+
+.rf-dt {
+  border: none 0px;
+  border-collapse: collapse;
+  color: #2f3030;
+  margin: 10px auto;
+  width: 100%;
+}
+
+.rf-dt th {
+  border-bottom: 1px solid #cecece;
+  padding: 10px 0px 10px 20px;
+  text-align: left;
+}
+
+.rf-dt td {
+  border-bottom: 1px solid #cecece;
+  padding: 4px 0px 3px 20px;
+  width: 33%;
+}
+
+.rf-dt td:first-child {
+  border-left: 5px solid transparent;
+}
+
+.rf-dt th, .rf-dt th a {
+  background: none;
+  background-color: transparent;
+  border-right: none 0px;
+  color: #555;
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.rf-dt td, .rf-dt td a {
+  border-right: none 0px;
+  color: #2f3030;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.actualTime {
+  background: url(../img/check_ico.png) no-repeat 0px 0px;
+  display: inline-block;
+  height: 8px;
+  width: 11px;
+}
+
+input.actualButton, input.actualButton:hover {
+  background: url(../img/check_ico.png) no-repeat 50% 50%;
+  border: 1px solid transparent;
+  border-radius: 4px 0px 0px 4px;
+  border-right: none 0px;
+  cursor: pointer;
+  display: inline-block;
+  height: 24px;
+  vertical-align: middle;
+  width: 40px;
+}
+
+
+input.editButton, input.editButton:hover {
+  background: url(../img/edit_ico.png) no-repeat 50% 50%;
+  border: 1px solid transparent;
+  border-radius: 0px 4px 4px 0px;
+  cursor: pointer;
+  display: inline-block;
+  height: 24px;
+  vertical-align: middle;
+  width: 40px;
+}
+
+.leftSideButton {
+  border-radius: 4px 0px 0px 4px;
+  border-right: none 0px !Important;
+  margin: 0px;
+}
+
+.rightSideButton{
+  border-radius: 0px 4px 4px 0px;
+  margin-right: 13px;
+}
+
+
+input.deleteButton, input.deleteButton:hover {
+  background: url(../img/del_ico.png) no-repeat 8px 50%;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #2f3030;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  height: 24px;
+  margin-left: 13px;
+  vertical-align: middle;
+  padding: 0px 8px 0px 22px;
+}
+
+.invisibleBorder, .invisibleBorder input {
+  border: 1px solid transparent !important;
+  color: #2f3030 !important;
+}
+
+.checkIcon {
+  background: url("../img/check_ico.png") no-repeat 50% 50%;
+}
+
+.deleteIcon {
+  background: url(../img/del_ico.png) no-repeat 4px 30%;
+
+}
+
+.editIcon {
+  background: url(../img/edit_ico.png) no-repeat 50% 50%;
+}
+
+.addIcon {
+  background: url(../img/add_ico.png) no-repeat 50% 50%;
+}
+
+.saveIcon {
+ background: url("../img/save_ico.png") no-repeat 0px 0%;
+}
+
+.newIcon {
+  background: url("../img/new_ico.png") no-repeat 0px 50%;
+}
+
+.rf-dt tr:hover td, .ui-datatable tr.ui-widget-content:hover td {
+  background-color: #f9f9f9;
+  color: #131414;
+}
+
+.ui-datatable-frozencolumn tr.ui-widget-content:hover td {
+  background-color: transparent;
+  color: #2f3030;
+}
+
+.rf-dt tr:hover td a, .ui-datatable tr.ui-widget-content:hover td a {
+  color: #131414;
+}
+
+.filtersContainer tr .activeFilterLink {
+    border-left: 5px solid transparent;
+    box-shadow: 0 0 8px transparent;
+    width: calc(100% - 9px);
+    display: inline-block;
+    padding: 6px 0 6px 4px;
+    text-decoration: none;
+}
+
+.filtersContainer tr:hover .activeFilterLink {
+    background: #f9f9f9;
+}
+
+.rf-dt tr:hover td:first-child, .ui-datatable tr.ui-widget-content:hover td:first-child,
+.filtersContainer tr:hover .activeFilterLink {
+  border-left: 5px solid #aaa;
+  box-shadow: 0 0 8px transparent;
+}
+
+.ui-datatable-frozencolumn tr.ui-widget-content:hover td:first-child {
+  border-left: none 0px;
+}
+
+.rf-dt tr:hover input.deleteButton, .rf-dt tr:hover input.actualButton, .rf-dt tr:hover input.editButton, .ui-datatable tr:hover input.deleteButton, .ui-datatable tr:hover input.actualButton, .ui-datatable tr:hover input.editButton {
+  background-color: #fff;
+  border-color: #cecece;
+  color: #4e4e4e;
+}
+
+.rf-dt tr:hover .invisibleBorder, .ui-datatable tr.ui-widget-content:hover .invisibleBorder {
+  background-color: #fff !important;
+  border-color: #cecece !important;
+  color: #4e4e4e !important;
+}
+
+.ui-datatable-frozencolumn tr.ui-widget-content:hover .invisibleBorder {
+  background-color: #e9e9e9 !important;
+}
+
+input.newTypeBtn, input.newTypeBtn:hover {
+  background: #ffffff url(../img/new_ico.png) no-repeat 10px 50%;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  color: #4e4e4e;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+  height: 24px;
+  margin-right: 15px;
+  padding: 0px 8px 0px 25px;
+}
+
+.ui-icon {
+  display: inline-block;
+  height: 16px;
+  vertical-align: middle;
+  width: 18px;
+}
+
+a.ui-icon {
+    height: 20px;
+}
+
+.ui-button-icon-only .ui-icon, .ui-button-text-icon-left .ui-icon, .ui-button-text-icon-right .ui-icon {
+  margin-top: 0px;
+  position: static;
+}
+
+textarea, input[type="text"], input[type="password"], select {
+  background-color: #ffffff;
+  background-image: none;
+  border-color: #cecece;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  color: #2f3030;
+  font-family: Arial, Geneva, sans-serif;
+  font-size: 13px;
+  height: 24px;
+  padding: 0px 4px;
+}
+
+.ui-outputlabel {
+  color: #2f3030;
+  padding: 0px 10px 0px 0px;
+}
+
+.ui-outputlabel-rfi {
+  color: #ff7676;
+}
+
+input.searchInput {
+  border-right: none 0px;
+  border-radius: 4px 0px 0px 4px;
+  vertical-align: middle;
+  width: 315px;
+}
+
+button.searchButton {
+  background: #ffffff url(../img/zoom.png) no-repeat 50% 50%;
+  border-left: none 0px;
+  border-radius: 0px 4px 4px 0px;
+  height: 26px;
+  margin-left: -10px;
+  vertical-align: middle;
+  width: 26px;
+}
+
+.ui-selectlistbox-filter.ui-inputfield {
+  background: #ffffff url("../img/zoom.png") no-repeat scroll 97% 50%;
+}
+
+button.searchButton.ui-state-hover {
+  background-color: #ffffff;
+}
+
+button.leftPositionButton {
+  border-radius: 4px 0px 0px 4px;
+  margin-right: 0px;
+}
+
+button.rightPositionButton {
+  border-left: none 0px;
+  border-radius: 0px 4px 4px 0px;
+  margin-right: 0px;
+}
+
+button.middlePositionButton {
+  border-left: 0px;
+  border-radius: 0px;
+  margin-right: 0px;
+}
+
+.ui-button.selected, .ui-button.selected:hover {
+  background-color: #42a9d9 !important;
+  border-color: #2687b4;
+  color: #fff;
+  cursor: default;
+}
+
+.rf-dt td:last-child, .ui-datatable td:last-child  {
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+.ui-selectonemenu, .ui-selectcheckboxmenu {
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  color: #555;
+  font-size: 13px;
+  height: 24px;
+  margin-top: 5px;
+  padding: 0;
+  width: calc(100% - 2px);
+}
+
+.ui-datatable .ui-selectonemenu {
+    margin-bottom: 5px;
+}
+
+.ui-selectcheckboxmenu {
+  margin-top: 3px;
+}
+
+.ui-selectcheckboxmenu {
+  width: 98%;
+}
+
+.ui-selectcheckboxmenu-list-item .ui-chkbox-box.ui-state-active::after {
+    top: 2px;
+}
+
+.ui-selectonemenu label, .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label {
+  line-height: 23px;
+  padding: 0 10px;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-label {
+    display: inline-block;
+    padding-right: 2em;
+}
+
+.ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+    width: 20px;
+}
+
+.ui-selectcheckboxmenu-panel {
+    background-color: #fff;
+    overflow: auto;
+    width: 219px !important;
+}
+
+.ui-selectonemenu-trigger .ui-icon, .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon {
+    position: relative;
+}
+
+.ui-selectonemenu-trigger .ui-icon::before, .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon::before {
+    content: "\f0d7";
+    font-size: 14px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    margin-top: 2px;
+    display: block;
+}
+
+.noarrow .ui-icon::before {
+    display: none;
+    width: 0;
+    visibility: hidden;
+}
+
+.noarrow .ui-selectcheckboxmenu-token.ui-state-active.ui-corner-all {
+    background: #42a9d9;
+    color: white;
+    border-radius: 3px;
+    padding: 5px 25px 5px 10px;
+}
+
+.multiselect, .multiselect .ui-autocomplete-multiple-container {
+  width: 323px;
+}
+
+.multiselect .ui-autocomplete-input-token input {
+  cursor: pointer;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+    color: #555;
+}
+
+.ui-outputpanel .ui-selectonemenu {
+  margin-top: 0px;
+  vertical-align: middle;
+}
+
+.panelGrid td {
+  padding-right: 10px;
+}
+
+.panelGrid .ui-selectonemenu, .rf-dt .ui-selectonemenu {
+    max-width: 270px !important;
+}
+
+.calendar.invisibleBorder input {
+  background: none !important;
+  height: 22px;
+}
+
+.calendar.invisibleBorder {
+  border-radius: 4px;
+  color: #555;
+  display: inline-block;
+
+}
+
+ui-datatable-data tr:hover .calendar.invisibleBorder, .ui-datatable-data tr:hover .ui-selectonemenu.invisibleBorder {
+  background-color: #fff !important;
+  border: 1px solid #cecece !important;
+  border-radius: 4px;
+  color: #555;
+}
+
+.ui-datatable-data tr:hover .calendar.invisibleBorder {
+  border-radius: 4px;
+  color: #555;
+  display: inline-block;
+  height: 24px;
+}
+
+.ui-datatable-data tr:hover .calendar.invisibleBorder input {
+  background: url("../img/calendar_ico.png") no-repeat 95% 5px transparent !important;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.ui-selectonemenu.invisibleBorder .ui-selectonemenu-trigger .ui-icon {
+ background: none;
+}
+
+.ui-datatable-data tr:hover .ui-selectonemenu.invisibleBorder .ui-selectonemenu-trigger .ui-icon {
+  background: url(../img/arrow.png) no-repeat 50% 8px;
+}
+
+.ui-selectonemenu-panel {
+  background-color: #fff;
+}
+
+.ui-shadow {
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+}
+
+.ui-state-error, input.ui-state-error, .ui-spinner.ui-state-error input, .ui-state-error .ui-autocomplete-input-token input {
+    border-color: #ff7676 !important;
+}
+
+.selectManyCheckbox {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    width: 319px;
+}
+
+.ui-selectmanycheckbox label, .ui-selectoneradio label {
+  color: #2f3030;
+    margin: 0 1px 0 3px;
+}
+
+.ui-messages-error, .ui-message-error {
+    background-color: #fff2f2;
+    border-color: #ff7676;
+    border-radius: 5px;
+    color: #ff7676;
+}
+
+.ui-messages-error-icon {
+  background: url(../img/error_ico.png) no-repeat 50% 90%;
+}
+
+.ui-messages-error-summary {
+  margin-left: 0px;
+}
+
+.panelGridDetails .ui-messages-error, .panelGridDetails .ui-message-error {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.panelGridDetails .ui-message-error-icon {
+  display: none;
+}
+
+.ui-spinner input {
+  padding-right: 25px;
+  width: 80px !important;
+}
+
+.ui-spinner-button {
+  background-color: transparent;
+  border: none 0px;
+  height: 12px !important;
+  padding: 0px;
+}
+
+.ui-spinner .ui-icon-triangle-1-n {
+  background: url(../img/arrow.png) no-repeat 3px 110%;
+}
+
+.ui-spinner .ui-icon-triangle-1-s {
+  background: url(../img/arrow.png) no-repeat 3px 4px !important;
+}
+
+.worktimeCalendarContainer {
+  margin: 20px 0px;
+}
+
+.worktimeCalendarContainer, .worktimeCalendarContainer table {
+  border-collapse: collapse;
+}
+
+.worktimeCalendarContainer td {
+  border: none 0px;;
+  color: #555;
+  font-size: 14px;
+}
+
+.worktimeCalendarContainer table td {
+  border-bottom: none 0px;
+  border-left: 1px solid transparent;
+}
+
+.worktimeCalendarContainer .rf-cal-holiday {
+  background-color: transparent;
+}
+
+.rf-cal-sel {
+    background-color: transparent;
+    color: #555;
+    font-weight: normal;
+}
+
+.rf-cal-c-cnt-overflow {
+  height: 30px;
+  width: 40px;
+}
+
+.worktimeCalendarContainer .rf-cal-day-lbl {
+  background-color: transparent;
+  border: none 0px;
+  height: 30px;
+}
+
+.worktimeCalendarContainer .rf-cal-today, .calendar .ui-datepicker-today {
+  background-color: transparent;
+  border: 1px solid #76d3ff;
+  color: #555;
+  font-weight: normal;
+}
+
+.worktimeCalendarContainer .rf-cal-hov, .worktimeCalendarContainer .calendar table td:hover {
+  background-color: transparent;
+  border: 1px solid #ff7676;
+  color: #555;
+}
+
+.worktimeCalendarContainer .calendar table td.ui-datepicker-other-month:hover {
+  background-color: transparent;
+  border: none 0px;
+  color: #555;
+}
+
+.ui-datepicker-calendar tr:last-child td {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+}
+.worktimeCalendarContainer .ui-datepicker-calendar .calendarNonWorkingDay,
+ .worktimeCalendarContainer .ui-datepicker-calendar .rf-cal-today.calendarNonWorkingDay,
+  .worktimeCalendarContainer .calendar table.ui-datepicker-calendar .calendarNonWorkingDay:hover {
+  background-color: #fff2f2;
+  border: 1px solid #ff7676;
+  font-style: normal;
+}
+
+.worktimeCalendarContainer .ui-datepicker-calendar .calendarHolidays,
+ .worktimeCalendarContainer .ui-datepicker-calendar .rf-cal-today.calendarHolidays,
+  .worktimeCalendarContainer .calendar table.ui-datepicker-calendar .calendarHolidays:hover {
+  background-color: #ffff80;
+  border: 1px solid #ff8040;
+  font-style: normal;
+}
+
+.ui-panel {
+  padding: 5px 10px;
+}
+
+.outputForm td {
+  color: #4e4e4e;
+  padding: 10px 10px 0px 0px;
+}
+
+.outputForm td:first-child {
+  width: 200px;
+}
+
+.ui-datatable.pfDataTable table {
+  border: none 0px;
+  color: #4e4e4e;
+  table-layout: fixed;
+}
+
+.ui-datatable.pfDataTable th {
+  border-left: none 0px;
+  border-right: none 0px;
+  border-top: none 0px;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.ui-datatable.pfDataTable td {
+  border-left: none 0px;
+  border-right: none 0px;
+  border-top: none 0px;
+  padding: 8px 0 7px 20px;
+  vertical-align: baseline;
+}
+
+.ui-datatable.pfDataTable td {
+  border-bottom-color: #cecece;
+  padding: 8px 0 7px 20px;
+}
+
+.ui-datatable.pfDataTable th:first-child {
+  width: 33px;
+}
+
+.ui-datatable.pfDataTable td:first-child {
+  border-left: 8px solid transparent;
+}
+
+.commentInput {
+  margin: 15px 0px;
+}
+
+.commentInput td:first-child {
+  vertical-align: top;
+  width: 200px;
+}
+
+.commentInput textarea {
+  height: 60px;
+  width: 98%;
+}
+
+.warning {
+  background: #fffceb;
+  border: 1px solid #cecece;
+  border-radius: 5px;
+  color: #4e4e4e;
+  display: block;
+  margin: 15px 0px 10px 0px;
+  padding: 7px 0px 7px 45px;
+}
+
+.warning.fa-warning {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.warning.fa-warning::before {
+    font: normal normal normal 14px/1 FontAwesome;
+    margin-left: -24px;
+    margin-right: 8px;
+}
+
+.pdfIcon {
+  background: url(../img/doc_ico.png) no-repeat 105% 0%;
+}
+
+.xlsIcon {
+  background: url(../img/doc_ico.png) no-repeat top left;
+}
+
+.ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary {
+    font-weight: normal;
+}
+
+.ui-autocomplete {
+  white-space: nowrap;
+}
+
+.ui-autocomplete input {
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+
+.panelGrid .ui-autocomplete input {
+  width: 160px;
+ }
+
+.ui-autocomplete .ui-button {
+    border: none;
+    margin-right: 1px;
+    position: absolute;
+    width: 2.4em;
+    right: 2px;
+    bottom: 14px;
+    height: 13px;
+    background-color: transparent;
+}
+
+.ui-autocomplete .ui-button.ui-state-hover {
+    background-color: transparent;
+}
+
+.ui-autocomplete .ui-button .ui-icon::before {
+    background: none;
+    content: "\f0d7";
+    font-size: 14px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    border: none;
+    padding: 0 10px 0;
+    display: block;
+    vertical-align: middle;
+}
+
+.ui-autocomplete .ui-autocomplete-dd-multiple-container {
+    padding-right: 0 !important;
+}
+
+.ui-autocomplete-panel {
+  background-color: #fff;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-list {
+    padding: 0 0.4em 0.4em;
+}
+
+.ui-datatable .ui-column-filter {
+  background: url("../img/zoom.png") no-repeat 94% 52%;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  color: #555;
+  display: block;
+  font-size: 13px;
+  height: 24px;
+  margin-left: 0px;
+  margin-top: 5px;
+  padding: 0 25px 0 0;
+  text-indent: 9px;
+  vertical-align: middle;
+}
+
+.rf-dt-shdr-c > a > span {
+  display: inline-block;
+  height: 10px;
+  line-height: 0;
+  margin-left: 5px;
+  width: 10px;
+}
+
+.rf-dt-srt-uns, .ui-sortable-column-icon {
+  background: url("../img/unsorted_ico.png") no-repeat 30% 50%;
+}
+
+.rf-dt-srt-asc, .ui-sortable-column-icon.ui-icon-triangle-1-n {
+  background: url("../img/arrow.png") no-repeat 30% 125%;
+}
+
+.rf-dt-srt-des, .ui-sortable-column-icon.ui-icon-triangle-1-s {
+  background: url("../img/arrow.png") no-repeat 30% 6px;
+}
+
+.ui-growl {
+    background-color: #fff;
+}
+
+.ht_master .htCore td {
+    text-align: right;
+}
+
+.ht_clone_left .htCore td:last-child {
+    text-align: right;
+}
+
+.ui-outputpanel {
+    padding: 5px 10px;
+}
+
+.ui-confirm-dialog-message {
+    color: #4e4e4e;
+}
+
+.ui-confirm-dialog {
+    background-color: #fff;
+    border: 1px solid #cecece;
+    width: 350px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.ui-dialog .ui-dialog-title {
+  color: #ff7676;
+  float: none;
+  font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-content {
+  text-align: center;
+}
+
+.ui-confirm-dialog-severity {
+  display: none !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+  text-align: center;
+}
+
+.handsontable td.area {
+    background-color: #cff0ff;
+}
+
+.hiddenBottomBorder {
+    border-bottom-style : none !important;
+}
+
+.htCore .approvedWeekendHours.area {
+  background-color: #84cbb3;
+}
+
+.htCore .approvedWeekendHours {
+  background-color: #a2d8b3;
+}
+
+.htContextMenu td {
+  text-align: left !important;
+}
+
+.htContextMenu td.htDisabled {
+color: #999 !important;
+}
+
+.tdLongTextContainer {
+  display: table-cell;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+}
+
+.htCommentTextArea {
+  background-color: #FFFACD;
+  font-family: Arial;
+  height: 55px;
+}
+
+.htCore .groupHeader {
+  border-right: none 0px !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  height: 25px !important;
+}
+
+.htCore .firstCol {
+  font-size: 14px;
+}
+
+.handsontable .groupHeader.totalColumn {
+  border-right: 1px solid #7fdd9e !important;
+}
+
+.ht_master .htCore td.groupHeader:last-child {
+    border-right: 1px solid #ccc !important;
+}
+
+.handsontable .weekendCell.groupHeader {
+    background-color: transparent !important;
+}
+
+.worktimeCalendarContainer > tbody > tr > td:first-child {
+    padding-right: 30px;
+    vertical-align: top;
+}
+
+.worktimeCalendarContainer .rf-cal {
+    margin-top: 3px;
+}
+
+.rf-cal-c-cnt-overflow.rf-cal-c.rf-cal-boundary-day.rf-cal-btn {
+    border: none 0px;
+    visibility: hidden;
+}
+
+td.totalColumn {
+  border-left: 1px solid #7fdd9e;
+  border-right: 1px solid #7fdd9e;
+}
+
+.handsontable  th.totalColumn {
+  border: 1px solid #7fdd9e !important;
+  border-bottom: none 0px !important;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.handsontable  tr:last-child td.totalColumn {
+  border: 1px solid #7fdd9e !important;
+  border-top: none 0px !important;
+  border-radius: 0px 0px 4px 4px;
+}
+
+.htDimmed.hiddenRightBorder {
+    border-right: none 0px;
+}
+
+.handsontable .htDimmed.totalsRow {
+    background-color: #e0e0e0 !important;
+}
+
+.handsontable .htDimmed.subtotalsRow {
+    background-color: #f5f5f5 !important;
+}
+
+.westLayoutPanel, .westLayoutPanel .ui-layout-unit-content {
+    overflow-x: hidden;
+}
+
+.worktimeCalendarContainer table table td:first-child, .worktimeCalendarContainer table table td:nth-last-of-type(2) {
+  display: none;
+}
+
+.handsontable .blockedHours {
+ background-color: #e9e9e9;
+}
+
+.handsontable .blockedHours.area {
+ background-color: #bddbe9;
+}
+
+.handsontable .totalsRow.area {
+ background-color: #bddbe9;
+}
+
+.logoStatus {
+  position: relative;
+}
+
+.ajaxStatus {
+  left: 50%;
+
+  position: absolute;
+  top: 11px;
+}
+
+.ajaxStatus div {
+  background-color: #fffceb;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  padding: 3px 12px 2px 7px;
+}
+
+.ajaxStatus img {
+  margin-right: 5px;
+  position: relative;
+  top: -2px;
+  vertical-align: middle;
+}
+
+.selectAllIcon {
+    background: url("../img/all.png") no-repeat 50% 30%;
+}
+
+.selectNoneIcon {
+    background: url("../img/notall.png") no-repeat 50% 30%;
+}
+
+.invertSelectionIcon {
+    background: url("../img/invert.png") no-repeat 50% 30%;
+}
+
+.ui-selectmanymenu select {
+    width: 210px;
+}
+
+.selectMyActiveProjectsIcon {
+    background: url("../img/projects.png") no-repeat 50% 30%;
+}
+
+.ui-panel-content table {
+  width: 100%;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper th, .loadedFilterTable .ui-datatable-tablewrapper td {
+  border: none 0;
+  padding: 0 0 0 4px;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper td a {
+    padding: 5px 0 5px 0;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper .ui-button {
+  background-color: transparent;
+  border: none 0px;
+  padding: 0px;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper td:last-child {
+  padding-right: 0px;
+  width: 19px;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper td:last-child .ui-icon {
+  width: 16px;
+}
+
+.loadedFilterTable .ui-datatable-tablewrapper thead {
+    display: none;
+}
+
+#errorHeading {
+  color: #555;
+  display: block;
+  font-size: 28px;
+  font-weight: bold;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+#errorPanel {
+  background-color: #e9e9e9;
+  margin: 10px auto;
+  max-width: 1280px;
+  padding: 15px 0px 0px 0px;
+}
+
+#errorPanel_header {
+  margin: 10px 20px 0px 20px;
+}
+
+#errorPanel_content {
+  background-color: #fff;
+  color: #555;
+  height: 500px;
+  overflow-y: auto;
+  padding: 15px 20px;
+}
+
+.signout .rf-ddm-itm-ic {
+    display:inline-block !important;
+}
+
+.signout .rf-ddm-itm-ic > img {
+	margin:0px 5px 0px 0px !important;
+}
+
+.signout .fa-sign-out {
+    font-size: 18px;
+}
+
+#copyright {
+    border-top: 1px solid #CECECE;
+  padding: 5px 20px;
+    display: block;
+}
+
+#copyright .copyrightText{
+    color: #2f3030;
+    display:block;
+    font-size: 12px;
+}
+
+.ui-tooltip .ui-message-error{
+    border: none !important;
+    background-color: #FFFFFF !important;
+}
+
+.ui-tooltip .ui-message-error .ui-message-error-detail{
+    font-size: 14px !important;
+}
+
+.rf-ddm-pos {
+    width: 100%;
+    top: 27px;
+}
+
+.ui-datatable tbody td {
+  border-bottom: 1px solid #cecece;
+  border-left: 0 none;
+  border-right: 0 none;
+  border-top: none 0px;
+  color: #2f3030;
+  font-size: 13px;
+  padding: 2px 20px 1px 6px;
+}
+
+.ui-datatable thead th {
+  border: none 0px;
+  padding: 4px 0 3px 20px;
+}
+
+.ui-datatable thead th {
+  background-color: #fff;
+  border: none 0px;
+  border-bottom: 1px solid #cecece;
+  color: #2f3030;
+  font-size: 16px;
+  font-weight: normal;
+  height: 45px;
+  padding: 15px 20px 5px 6px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ui-datatable thead th:first-child {
+    padding-left: 22px;
+}
+
+.ui-datatable-frozencolumn thead th {
+  height: 52px;
+}
+
+.ui-datatable td a {
+  color: #2f3030;
+  text-decoration: none;
+}
+
+.ui-datatable td.numeric,
+.ui-datatable th.numeric {
+    text-align: right;
+    padding-right: 30px;
+}
+
+.ui-datatable td:first-child {
+    border-left: 5px solid transparent;
+    padding-left: 22px;
+}
+
+.ui-datatable th:first-child {
+    border-left: 7px solid #fff;
+}
+
+.ui-datatable-frozencolumn  td:first-child {
+    border-left: none 0px;
+}
+
+#filterMonthSelector .ui-datepicker-calendar {
+    display: none;
+}
+
+
+
+#filterMonthSelector .ui-datepicker {
+    display: inline-block !important;
+    width: 180px !important;
+    padding: 0 !important;
+    text-align: center;
+    vertical-align: middle;
+    color: #4e4e4e !important;
+    font-family: Arial,Verdana,sans-serif !important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+}
+
+#filterMonthSelector .ui-datepicker .ui-datepicker-header {
+    padding: 0 !important;
+    height: 24px;
+}
+
+#filterMonthSelector .ui-datepicker .ui-datepicker-prev, #filterMonthSelector .ui-datepicker .ui-datepicker-next {
+    top: -1px !important;
+}
+
+.ui-datatable {
+    left: 20px !important;
+    max-width: 1280px;
+    width: auto !important;
+    z-index: auto !important;
+}
+
+.ui-datatable-scrollable-body,
+.ui-datatable-scrollable-header {
+    overflow: visible;
+}
+
+.toolBar {
+    margin: 0 20px;
+    width: auto !important;
+}
+
+.container {
+    padding: 0 20px;
+    overflow: auto;
+}
+
+td.myFaces_panelTabbedPane_inactiveHeaderCell, td.myFaces_panelTabbedPane_activeHeaderCell, tr.myFaces_pannelTabbedPane_subHeaderRow, td.myFaces_panelTabbedPane_emptyHeaderCell{
+ display: none;
+}
+
+td.myFaces_panelTabbedPane_pane {
+ border: 0;
+}
+
+#filterMonthSelector {
+    margin: 0 24px 0 0;
+    display: inline-block;
+}
+
+.periodSelector {
+    margin: 0 24px 0 0;
+}
+
+#filterMonthSelector .ui-datepicker-prev {
+    left: 0;
+}
+
+#filterMonthSelector .ui-datepicker-prev::before, #filterMonthSelector .ui-datepicker-next::before {
+    font-family: FontAwesome;
+    font-size: 14px;
+    display: block;
+    margin-left: 2px;
+    margin-top: 6px;
+}
+
+#filterMonthSelector .ui-datepicker-prev::before {
+    content: "\f104";
+}
+
+#filterMonthSelector .ui-datepicker-next::before {
+    content: "\f105";
+}
+
+
+.ui-layout-unit.fullPage_center .ui-layout-unit-content {
+  overflow: hidden;
+  padding-right: 0px;
+}
+
+.fullPage_center .rf-dt {
+  width: 100% !important;
+}
+
+.fullPage_center .ui-datatable-scrollable-header-box, .fullPage_center .ui-datatable-scrollable-body table {
+  width: 750px;
+}
+
+.fullPage_center .ui-datatable-scrollable-header-box {
+  margin-right: 0px !important;
+}
+
+.fullPage_center .ui-datatable-scrollable-header-box th:first-child {
+    border-left: 8px solid transparent;
+}
+
+.fullPage_center .ui-datatable-scrollable-header-box th {
+  padding: 8px 0 7px 20px;
+}
+
+.fullPage_center .ui-datatable-scrollable-header-box th .ui-chkbox-all {
+  display: inline-block;
+}
+
+
+.ui-datatable-scrollable-body::-webkit-scrollbar {
+	width:15px !important;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-button {
+	background-color: #F1F1F1 !important;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-button:hover {
+	background-color: #D2D2D2 !important;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-button:vertical:decrement {
+    background: url("../img/arrow.png") no-repeat 50% 125%;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-button:vertical:increment {
+    background: url(../img/arrow.png) no-repeat 50% 6px;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-track-piece {
+    background-color: #F1F1F1 !important;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-thumb {
+    background-color: #BCBCBC !important;
+    border: 1px solid #A8A8A8 !important;
+    border-radius: 0px !important;
+    width: 11px !important;
+    background-clip: content-box;
+}
+
+.ui-datatable-scrollable-body::-webkit-scrollbar-thumb:hover {
+    background-color: #A9A9AA!important;
+}
+
+.colorLegendList{
+    padding: 0 20px 0 0 !important;
+    font-size: 13px !important;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.colorLegendList .ui-icon-triangle-1-s {
+    font-family: FontAwesome;
+    font-size: 14px;
+    width: auto;
+    height: auto;
+    float: none !important;
+    text-indent: 0;
+}
+
+.colorLegendList .ui-icon-triangle-1-s::after {
+    content: "\f0d7";
+    display: block;
+    height: 18px;
+    width: 16px;
+    padding-left: 6px;
+}
+
+.colorLegendList .ui-menuitem-text {
+    color: #4e4e4e;
+}
+
+.colorLegendList .ui-menuitem-link {
+    padding: 0 !important;
+}
+
+.colorLegendList .ui-menuitem {
+    padding: 2px 0 2px 0;
+}
+.colorLegendList .ui-menu-list .ui-menu-parent {
+    line-height: 18px;
+    padding: 0 !important;
+}
+
+.colorLegendList .ui-menu-list .ui-menu-child {
+    background-color: #fff;
+    left: -10px !important;
+    right: auto !important;
+    width: auto !important;
+}
+
+.colorLegendBox {
+    height: 16px;
+    width: 24px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+.dayOff {
+    background-color: #fbe7e7;
+}
+
+.holiday {
+    background-color: #ffff80;
+}
+
+.workingDay {
+    background-color: #fff;
+}
+
+.approved {
+    background-color: #cef9db;
+}
+
+.dayOffApproved {
+    background-color: #a2d8b3;
+}
+
+.blocked {
+    background-color: #e9e9e9;
+}
+
+.noProject {
+    background: url("../img/empty_cell.png") repeat left top;
+}
+
+td.myFaces_panelTabbedPane_pane {
+    padding: 0px;
+}
+
+.ui-wizard-content {
+    margin: 0px;
+}
+
+.ui-datatable-scrollable-body {
+    margin-right: 0 !important;
+    flex: 1;
+}
+
+.ui-datatable .ui-datatable-header {
+  margin-left: -35px;
+  text-align: left;
+}
+
+.ui-outputpanel.ui-widget h2 {
+  display: inline-block;
+  padding-right: 30px;
+}
+
+.projectNorthPane {
+  background-color: #fff;
+  padding: 15px 0;
+}
+
+.myFaces_panelTabbedPane_pane .ui-layout-container {
+  width: 1280px;
+}
+
+.loadedFilterTable td a {
+    color: #103768;
+    text-decoration: none;
+    width: 100%;
+    display: block;
+}
+
+.loadedFilterTable td a:hover {
+  text-decoration: none;
+}
+
+.loadedFilterTable tr:hover td {
+  background-color: transparent;
+  color: #103768;
+}
+
+.loadedFilterTable tr:hover td a {
+  color: #103768;
+}
+
+.ui-radiobutton-box.ui-state-default {
+    background: url(../img/radiobutton.png) no-repeat 1px 2px;
+}
+
+.ui-radiobutton-box.ui-state-active {
+    background: url(../img/radiobutton.png) no-repeat 1px 101%;
+}
+
+.ui-selectoneradio label {
+    margin-right: 15px;
+}
+
+.handsontable .manualColumnResizer {
+    height: 70px;
+}
+
+.handsontable .firstCol {
+  padding-left: 9px;
+  padding-right: 20px;
+}
+
+.handsontable .firstCol.currentRow {
+  border-left: 5px solid #76d3ff !important;
+  padding-left: 5px;
+}
+
+.handsontable .firstCol.secondLevel.currentRow {
+  padding-left: 27px;
+}
+
+.handsontable .firstCol.secondLevel {
+  padding-left: 31px;
+}
+
+.groupHeader.firstLevel {
+  padding-top: 15px;
+}
+
+.groupHeader.secondLevel{
+  padding: 4px 0;
+}
+
+.spaceRow {
+    border-right: 0 none !important;
+    border-left: 0 none !important;
+    border-bottom: 0 none !important;
+}
+
+.tabbedButtonsPanel {
+    border-collapse: collapse;
+}
+
+.tabbedButtonsPanel td {
+    padding-left: 0px;
+}
+
+.scrollableTable .ui-datatable-scrollable-header table, .scrollableTable .ui-datatable-scrollable-body table {
+  width: 98%;
+}
+
+.ui-autocomplete-token-label {
+    background-color: #42a9d9;
+    color: white;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 5px 25px 5px 10px;
+}
+
+.ui-autocomplete-token-icon.ui-icon-close::before {
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    font-size: 11px;
+    color: white;
+    content: "\f00d";
+    display: block;
+    top: 4px;
+    position: absolute;
+}
+
+.requestReportAction {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    height: 14px;
+    margin-top: 3px;
+    position: relative;
+    right: -15px;
+    width: 10px;
+}
+
+a.requestReportAction, a.requestReportAction:hover {
+    font-size: 14px;
+    color: black;
+}
+
+.dictionaryTable {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dictionaryTable table {
+    width: 1340px;
+}
+
+.pfDataTable  .ui-datatable-scrollable-body .ui-datatable-scrollable-theadclone {
+    display: none;
+}
+
+.ui-autocomplete-input-token, .ui-autocomplete-input-token input {
+  margin: 0px;
+}
+
+.titleBody .ui-outputlabel {
+    color: #555;
+}
+
+.projectDetails .ui-chkbox {
+    padding: 0 5px 0 4px;
+}
+
+.projectDetails .ui-selectmanycheckbox .ui-chkbox {
+    padding: 0 5px 0 2px;
+}
+
+.newTeamMemberPanel {
+  padding-top: 25px;
+}
+
+.ui-selectonemenu.limitSizeSelector {
+    width: 225px !important;
+}
+
+.ui-column-customfilter .ui-chkbox {
+  padding: 8px 0 0;
+}
+
+.ui-column-customfilter .ui-chkbox-label {
+    font-size: 12px;
+    vertical-align: middle;
+    margin-left: 0;
+    padding-left: 8px;
+}
+
+.ui-datatable-frozencolumn td {
+    height: 26px;
+}
+
+.ui-datatable-frozenlayout-left .ui-datatable-scrollable-header table {
+  width: 100%;
+}
+
+.titleBody > a {
+    font-size: 22px;
+}
+
+.ui-datepicker .ui-datepicker-prev-hover {
+    left: -1px !important;
+}
+
+.projectLink > a, .projectLink > a:hover,
+.projectLink > a:visited, .projectLink > a:active {
+    color: #2f3030 !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+}
+
+.groupHeader.projectLink > a, .groupHeader.projectLink > a:hover,
+.groupHeader.projectLink > a:visited, .groupHeader.projectLink > a:active {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+
+.strikeout {
+  text-decoration: line-through;
+}
+
+.currentEmployee {
+  background: url(../img/check_ico.png) no-repeat 0px 0px;
+  display: inline-block;
+  height: 8px;
+  width: 11px;
+}
+
+.ui-datatable .ui-datatable-frozen-container {
+  margin-right: 0px !important;
+}
+
+.ui-datatable-frozenlayout-left .ui-datatable-scrollable-header-box th:first-child,
+.ui-datatable-frozenlayout-left .ui-datatable-scrollable-body th:first-child,
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-header-box th:first-child,
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-body th:first-child {
+    border-left-width: 0px !important;
+}
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-header-box th:first-child,
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-body th:first-child,
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-body td:first-child
+ {
+    padding-left: 50px !important;
+}
+.ui-datatable-frozenlayout-left .ui-datatable-scrollable-body table {
+    width: 100% !important;
+}
+
+.ui-datatable-frozenlayout-left .ui-datatable-frozen-container .ui-datatable-scrollable-body table {
+    margin-bottom: 17px !important;
+}
+
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-body .ui-selectcheckboxmenu {
+    margin-top: 0px !important;
+    margin-left: 4px !important;
+}
+.ui-datatable-frozenlayout-right .ui-datatable-scrollable-body td > span > label {
+    margin-right: 4px !important;
+}
+
+.wrap {
+    white-space: normal !important;
+}
+
+.ui-datatable-daysshift td{
+    text-align: right;
+}
+
+.ui-datatable-daysshift td:nth-last-child(2){
+    text-align: left;
+}
+
+.ui-datatable-daysshift td:last-child{
+    text-align: center;
+}
+
+
+.ui-datatable-daysshift thead th{
+    height: auto;
+    text-align: right;
+}
+
+.ui-datatable-daysshift thead th:nth-last-child(2){
+    text-align: left;
+}
+
+.ui-datatable-daysshift thead th:last-child{
+    text-align: center;
+}
+
+.ui-datatable-daysshift thead th:first-child{
+    border-left: none;
+}
+
+.ui-datatable-daysshift tfoot td{
+    border: none;
+    padding: 4px 0px 3px 20px;
+    text-align: center;
+    position: relative;
+}
+
+.ui-datatable-daysshift tfoot td>span{
+    position: relative;
+}
+
+
+.ui-datatable-daysshift tfoot td button:hover{
+    background-color: #fff;
+    border-color: #cecece !important;
+    color: #4e4e4e;
+}
+
+.page-layout-dayshifts{
+
+}
+
+.worktimeCalendar-legend{
+    width: 300px;
+}
+
+.worktimeCalendar-legend td{
+    padding-bottom: 5px;
+}
+
+.worktimeCalendar-legend .dayOff {
+    background-color: #fff2f2;
+    border: 1px solid #ff7676;
+    border-radius: 2px;
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.worktimeCalendar-legend .holiday {
+    background-color: #ffff80;
+    border: 1px solid #ff8040;
+    border-radius: 2px;
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.worktimeCalendar-legend .workingDay
+ {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    display: inline-block;
+    height: 20px;
+    vertical-align: middle;
+    width: 30px;
+}
+
+.calendar-with-icon{
+    display: block;
+    position: relative;
+}
+
+.calendar-control{
+    display: block;
+    position: relative;
+}
+
+.calendar-control input{
+    width: 100% !important;
+    height: 26px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+
+.calendar-with-icon input{
+    width: 100% !important;
+    height: 26px;
+    box-sizing: border-box;
+    text-align: right;
+    padding-right: 30px;
+}
+
+.calendar-with-icon::after{
+    content: '';
+    background: #fff url("../img/calendar_ico.png") no-repeat 95% 5px !important;
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute !important;
+    top: 2px;
+    right: 8px;
+}
+
+a.ui-state-disabled {
+    pointer-events: none;
+    display: none;
+}
+
+.table-without-border .ui-panelgrid-cell{
+    border:none;
+}
+
+.calendar-with-custom-actions{}
+
+#form\:filterTable .ui-icon {
+    width: 20px;
+}
+
+#form\:filterContainer .multiselect, #form\:filterContainer .multiselect .ui-autocomplete-multiple-container {
+    width: 230px;
+}
+
+#form\:filterContainer .ui-autocomplete-input-token {
+    width: 95%;
+}
+
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li input::placeholder {
+    color: #fff;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li input::-webkit-input-placeholder {
+    color: #fff;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li input::-moz-placeholder {
+    color: #fff;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li input:-moz-placeholder {
+    color: #fff;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li input:-ms-input-placeholder {
+    color: #fff;
+}
+
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li:first-child input::-webkit-input-placeholder {
+    color: #000;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li:first-child input::-moz-placeholder {
+    color: #000;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li:first-child input:-ms-input-placeholder {
+    color: #000;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li:first-child input:-moz-placeholder {
+    color: #000;
+}
+#form\:filterContainer .ui-panel.ui-widget .ui-autocomplete-multiple.multiselect .ui-autocomplete-multiple-container.ui-inputfield li:first-child input::placeholder {
+    color: #000;
+}
+
+#form\:filterContainer input {
+    width: 100%;
+    background-color: #ffffff;
+}
+
+.ui-breadcrumb {
+    padding: 0;
+}
+
+.ui-breadcrumb ul li span {
+    overflow: visible;
+    font-size: 22px;
+}
+
+.ui-breadcrumb ul li a.ui-icon-home {
+    background: none;
+    overflow: visible;
+    display: block;
+    width: auto;
+    text-indent: 0;
+    line-height: 28px;
+    font-size: 22px;
+    height: auto;
+}
+
+.ui-breadcrumb ul li.ui-breadcrumb-chevron {
+    visibility: hidden;
+    height: auto;
+}
+
+.ui-breadcrumb ul li.ui-breadcrumb-chevron:after {
+    visibility: visible;
+    display: block;
+    padding: 0 4px;
+    content: "/";
+    color: #444;
+    line-height: 28px;
+    font-size: 22px;
+    text-indent: 0;
+}
+
+.ui-breadcrumb ul li a, .ui-breadcrumb ul li a span {
+    color: #444;
+}
+
+#form\:filterContainer .ui-selectcheckboxmenu {
+    height: auto;
+}
+
+#form\:filterContainer .ui-selectcheckboxmenu li.ui-selectcheckboxmenu-token {
+    background-color: #42a9d9;
+    color: white;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 5px 25px 5px 10px;
+}
+
+#form\:filterContainer .ui-selectcheckboxmenu li.ui-selectcheckboxmenu-token .ui-selectcheckboxmenu-token-label {
+    padding: 0;
+    white-space: normal;
+}
+
+#form\:filterContainer .ui-selectcheckboxmenu li.ui-selectcheckboxmenu-token .ui-icon-close {
+    background: url(../img/close_autocomplete_token.png) no-repeat 0 0;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon {
+    margin: 0;
+    padding: 0;
+    right: 4px;
+    top: 5px;
+    text-indent: 0;
+    height: 19px;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container .ui-icon::before {
+    font-family: FontAwesome;
+    font-size: 16px;
+    color: #4e4e4e;
+    position: absolute;
+    content: "\f002";
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+    white-space: normal;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item {
+    padding: 0 0 0 4px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item:hover {
+    background: #e9e9e9;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item label {
+    padding: 3px 0 3px 2em;
+    cursor: pointer;
+}
+
+.ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+    display: none;
+    visibility: hidden;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-inputfield {
+    width: 155px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+}
+
+.ui-selectcheckboxmenu-panel.noneSelected .ui-selectcheckboxmenu-items-wrapper .ui-chkbox-box::after {
+    content: "\f00c";
+    font-size: 10px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: bold;
+    text-indent: 0;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    display: block;
+    text-shadow: 1px 0 0 #c7c7c7ab, 0 0 1px #ffffff;
+    color: #9e9e9e;
+}
+
+
+.ui-selectcheckboxmenu-wrapper {
+    display: inline-block;
+}
+
+.ui-selectcheckboxmenu-wrapper>.ui-panel-content{
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    overflow: hidden;
+    max-height: 150px;
+    position: relative;
+    padding: 0;
+    box-sizing: border-box;
+    display: inline-block;
+}
+
+.ui-selectcheckboxmenu-wrapper .ui-selectcheckboxmenu {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    border: none;
+    border-radius: unset;
+}
+
+.ui-selectcheckboxmenu-wrapper .ui-selectcheckboxmenu * {
+    box-sizing: border-box;
+}
+.ui-selectcheckboxmenu-wrapper .ui-selectcheckboxmenu-multiple {
+    max-height: 150px;
+    margin-top: 0;
+    margin-bottom: 0;
+    overflow: auto;
+}
+
+.ui-selectcheckboxmenu-wrapper .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger{
+    display: none;
+}
+
+.ui-selectcheckboxmenu-wrapper .ui-selectcheckboxmenu-multiple-container.ui-inputfield {
+    padding: 2px 2px 4px 2px;
+}
+
+#form\:filterContainer {
+    background: #e9e9e9;
+    padding: 0 0 5px 0;
+}
+
+.filter .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label {
+    width: 100%;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 8px 0 12px;
+}
+
+.filter .ui-selectcheckboxmenu {
+    margin-top: 0;
+}
+
+.filter .ui-selectcheckboxmenu-label-container {
+    display: inline-block;
+    vertical-align: middle;
+    height: 24px;
+    width: 100%;
+    padding: 1px 18px 0 0;
+}
+
+#form\:filterContainer .ui-panel {
+    width: auto;
+    display: inline-block;
+}
+
+#form\:filterContainer .ui-panel .ui-panel-content {
+    max-width: 180px;
+}
+
+.filtersContainer {
+    width: 250px;
+    transition-delay: 0s;
+    transition-property: opacity;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0s;
+}
+
+.savedFiltersForm {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.savedFiltersPanel {
+    height: calc(100% - 86px);
+}
+
+.savedFiltersPanel .hover-handle {
+    font-size: 18px;
+    padding: 5px 7px 0 7px;
+}
+
+#form\:filters {
+    padding: 5px 0;
+}
+
+.ui-slideouttab-panel {
+    position: fixed;
+    left: -9999px;
+    top: -9999px
+}
+
+.filter-body > span {
+    display: inline-block;
+}
+
+.ui-icon.ui-c.fa {
+    margin-top: 0;
+    font-size: 14px;
+}
+
+.exclamation {
+    color: red;
+    display: inline-block;
+    font-size: 9px;
+    vertical-align: top;
+    padding: 0;
+    margin: 0 0 0px 2px;
+}
+
+.exclamation .fa-exclamation {
+    font-size: 1.45em;
+    margin-top: 0.19em;
+}
+
+.contentLayout {
+    height: calc(100vh - 42px - 25px) !important;
+}
+
+.filter .advancedPeriodSelector {
+    min-height: 29px;
+    display: inline-block;
+}
+
+.filter .advancedPeriodSelector .weekSelector, .filter .advancedPeriodSelector .periodSelectorButtons, .filter .advancedPeriodSelector .periodSelector {
+    float: left;
+    height: 26px;
+    white-space: nowrap;
+}
+
+.filter .advancedPeriodSelector .periodSelectorButtons {
+    margin-right: 12px;
+}
+
+.toolBar {
+    display: flex;
+    flex-wrap: nowrap;
+    background: #e9e9e9;
+    padding: 10px 10px 5px 10px;
+    border-radius: 5px;
+}
+
+.toolBar .filter {
+    flex:1;
+    display: flex;
+    align-items:  start;
+    padding: 0 10px;
+}
+
+.toolBar .filter .filter-body {
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+}
+
+.filter-body .ui-panel {
+    padding: 0 12px 0 0;
+}
+
+.toolBar.commandButtons {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.toolBar .commandButtons .ui-panel-content {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.toolBar .commandButtons {
+    padding: 0 10px;
+}
+
+.toolBar .commandButtons .ui-panel-content .ui-separator {
+    margin: 0 10px;
+    border: none;
+}
+
+.toolBar .commandButtons .ui-panel-content .ui-separator:first-child {
+    display: none;
+}
+
+.rightside {
+    text-align: right;
+    padding: 0;
+    display: inline-block;
+    width: 100%;
+}
+
+.rightside > div > * {
+    padding: 5px 0 0px 0;
+    text-align: left;
+    display: inline-block;
+}
+
+.pe-layout-pane-content.ui-layout-pane-center {
+    bottom: auto !important;
+    height: auto !important;
+}
+
+.panelGridDetails td {
+    color: #2f3030;
+}
+
+.panelGridDetails >tbody > tr > td {
+    padding: 10px 0px;
+    vertical-align: top;
+}
+
+.panelGridDetails textarea {
+    height: 80px;
+    width: 310px;
+}
+
+.panelGridDetails input[type="text"] {
+    width: 310px;
+}
+
+table.panelGridDetails  {
+    width: 100px;
+}
+
+.panelGridDetails .ui-selectonemenu {
+    margin: 0px;
+    width: 318px !important;
+}
+
+.projectDetails {
+    position: relative;
+}
+
+#form\:problemEmployees {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#form\:problemEmployees .ui-datatable-scrollable-body {
+    height: auto !important;
+}
+
+
+/* ---------------- Fixes for side panel with filters ----------------- */
+
+.filtersContainer>tbody>tr{
+/* border-bottom: 5px solid red; */
+}
+
+.filtersContainer tr .activeFilterLink {
+    width: auto;
+    display: block;
+    border-left-color: transparent;
+    padding: 5px 5px;
+}
+
+.filtersContainer tr .activeFilterLink.active {
+    color: black;
+    font-weight: 600;
+}
+
+.filtersContainer tr:hover .activeFilterLink.active {
+    width: auto;
+    display: block;
+    border-left-color: transparent;
+    padding: 5px 5px;
+    color: black;
+    background-color: transparent;
+}
+
+.filtersContainer tr:hover .activeFilterLink {
+    border-left-color: transparent;
+    padding: 5px 5px;
+}
+.filtersContainer .loadedFilterTable{
+    padding-top: 1px;
+}
+.filtersContainer .ui-datatable-tablewrapper tr td{
+    vertical-align:top;
+}
+
+.filtersContainer .ui-datatable-tablewrapper tr td:first-child{
+    border-left: none;
+    padding: 0 10px;
+}
+.filtersContainer .ui-datatable-tablewrapper tr td:last-child span{
+    color:#777777;
+}
+.filtersContainer .ui-datatable-tablewrapper tr.ui-widget-content td:last-child button:hover span{
+    color:#000000;
+}
+.filtersContainer .ui-datatable-tablewrapper tr.ui-widget-content:hover td:first-child{
+    border-left: none;
+}
+.filtersContainer .loadedFilterTable .ui-datatable-tablewrapper td:last-child {
+    padding-right: 5px;
+    padding-top: 3px;
+}
+.filtersContainer .ui-datatable-tablewrapper tr{
+    border-bottom: 5px solid transparent;
+}
+
+.lowerToolBar {
+    padding: 0;
+}
+
+.lowerToolBar > * {
+    padding: 0px 0 8px 0;
+}
+
+/* ---------------- End Fixes for side panel with filters ----------------- */
+
+.middleAligned .ui-button-text, .middleAligned .ui-icon.ui-c.fa {
+    vertical-align: middle;
+}
+
+button.ui-fa .ui-icon.fa {
+    margin-top: 0;
+    font-size: 14px;
+    display: inline-block;
+    padding: 0 6px 0 0;
+    width: auto;
+}
+
+button.ui-fa .ui-icon.ui-c.fa, button.ui-fa .ui-button-text {
+    vertical-align: middle;
+}
+
+button.ui-fa .ui-icon.fa:before {
+    display: inline-block;
+}
+
+.ui-datepicker .ui-datepicker-prev span {
+    height: 100%;
+    left: auto;
+    top: auto;
+}
+
+.ui-selectcheckboxmenu-items-wrapper {
+    height: auto !important;
+    max-height: 400px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox.ui-widget {
+    padding: 2px;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: 16px;
+    float: none;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox.ui-widget .ui-state-default::before {
+    content: '\f057';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+    font-size: 14px;
+    color: #323232;
+    line-height: 14px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox {
+    top: 0;
+    margin-top: 2px;
+}
+
+.ui-selectcheckboxmenu-filter-container.has-clear-icon .ui-icon::before {
+    content: "\f12d";
+    font-family: FontAwesome;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox .ui-chkbox-box {
+    padding: 0 1px 0 0;
+    vertical-align: middle;
+    width: 16px;
+}
+
+.ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-header .ui-chkbox .ui-chkbox-box.ui-state-active::after {
+    color: #000;
+}
+
+button.approveAll:hover, button.disapproveAll:hover {
+    font-family: FontAwesome;
+}
+
+.approveAll, .disapproveAll {
+    position: relative;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-indent: 0;
+    font-size: 14px;
+}
+
+.approveAll::before, .approveAll::after, .disapproveAll::before, .disapproveAll::after {
+    display: block;
+    height: 16px;
+    position: absolute;
+    top: 2px;
+}
+
+.approveAll::before {
+    content: "\f00c";
+    left: 14px;
+    color: #777;
+}
+
+.approveAll::after {
+    content: "\f00c";
+    left: 9px;
+    text-shadow: 1px 0 0 white, 0 0 1px white;
+}
+
+.disapproveAll::before {
+    content: "\f00d";
+    left: 16px;
+    color: #777;
+}
+
+.disapproveAll::after {
+    content: "\f00d";
+    left: 11px;
+    text-shadow: 1px 0 0 white, 0 0 1px white;
+}
+
+button.approveAll, button.disapproveAll {
+    padding: 0 19px;
+}
+
+.container .ui-datatable .ui-selection-column .ui-chkbox-all {
+    margin: 0;
+}
+
+.ui-autocomplete-panel table.ui-autocomplete-items tbody td {
+    border: none;
+    padding: 0;
+}
+
+.ui-autocomplete-panel table.ui-autocomplete-items tbody td span {
+    display: inline-block;
+    padding: 4px 10px;
+    width: calc(100% - 20px);
+}
+
+.ui-autocomplete-panel table.ui-autocomplete-items tbody td:hover span {
+    background: #e9e9e9;
+}
+
+.left-pad-14 {
+    padding-left: 14px;
+}
+
+.actual-time-problems {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ui-datatable .ui-column-customfilter .ui-selectcheckboxmenu-label-container {
+    display: inline-block;
+    width: 100%;
+}
+
+.ui-datatable .ui-column-customfilter .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: calc(100% - 2em - 10px);
+    height: 24px;
+}
+
+.left-panel .ui-panel .ui-panel-titlebar {
+}
+
+.left-panel .ui-panel .ui-panel-title {
+    top: 0;
+}
+
+.left-panel .ui-panel .ui-panel-titlebar {
+    border-top: none;
+    margin: 0 0 10px 0;
+    padding: 5px 0 15px 7px;
+    position: relative;
+    border-bottom: 1px solid transparent;
+    border-color: transparent;
+}
+
+.left-panel.over .ui-panel .ui-panel-titlebar,
+.left-panel.pin .ui-panel .ui-panel-titlebar {
+    border-color: #cecece;
+}
+
+.left-panel.pin .ui-panel .ui-panel-titlebar {
+    border-color: #cecece;
+}
+
+.left-panel .filtersContainer {
+    opacity: 0;
+}
+
+.dictionaryTable .ui-datatable-scrollable-header-box {
+    position: relative;
+}
+
+
+.left-panel.over a.filter-pin-button {
+    padding: 2px 0 2px 8px;
+}
+
+.left-panel.over a.filter-pin-button,
+.left-panel.pin a.filter-pin-button{
+    background-color: white;
+    border: 1px solid #ccc;
+    right: 0;
+}
+
+.left-panel.over a.filter-pin-button:hover,
+.left-panel.pin a.filter-pin-button:hover{
+    background-color: #e9e9e9;
+}
+
+.filter-pin-button .fa-stack{
+    width: auto;
+    height: 1.2rem;
+    line-height: 1.2rem;
+}
+
+.settings-block {
+    padding: 4px 8px 4px 0;
+    margin-top: 16px;
+}
+
+.settings-block .settings-group {
+    border-left: 1px solid #dedede;
+}
+
+.settings-group {
+    padding-left: 8px;
+    margin-top: 8px;
+}
+
+.settings-group table.panelGridDetails {
+    width: auto;
+    max-width: 1160px;
+}
+
+.settings-group table.panelGridDetails input[type="text"],
+.settings-group table.panelGridDetails input[type="password"] {
+    width: 300px;
+}
+
+.settings-group table.panelGridDetails textarea {
+    width: 300px;
+}
+
+.settings-group .panelGridDetails > tbody > tr > td {
+    padding: 10px 4px;
+}
+
+.settings-group .panelGridDetails > tbody > tr > td:first-child {
+    width: 160px;
+}
+
+.settings-group .shared-info {
+    padding: 8px 0;
+}
+
+.settings-group .shared-info i {
+    color: blue;
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.ui-button-text-icon-left .ui-button-text {
+    vertical-align: middle;
+}
+
+.data-provider-selection {
+    padding: 8px 0;
+    margin-top: 8px;
+}
+
+.data-provider-selection > .ui-selectonemenu,
+.data-provider-selection > label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.data-provider-selection > label {
+    line-height: 24px;
+}
+
+.data-provider-selection > .ui-selectonemenu {
+    width: auto;
+    min-width: 130px;
+    margin-top: 0;
+    padding-right: 10px;
+}
+
+.ui-selectcheckboxmenu-panel.notoggle .ui-selectcheckboxmenu-header .ui-chkbox.ui-widget {
+    display: none;
+}
+
+.ui-selectcheckboxmenu-panel.notoggle .ui-selectcheckboxmenu-header .ui-inputfield {
+    width: 175px;
+}
+
+.departments-access ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
+.team-filter-departments ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
+.project-team ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close {
+    background: url(../img/close_autocomplete_token.png) no-repeat 0 0;
+}
+
+.departments-access .ui-selectcheckboxmenu,
+.team-filter-departments.ui-selectcheckboxmenu,
+.project-team .ui-selectcheckboxmenu {
+    width: auto;
+    height: auto;
+}
+
+.departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
+.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
+.project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active {
+    background-color: #42a9d9;
+    padding: 3px 0 2px 2px;
+    color: #fff;
+}
+
+.departments-access .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
+.team-filter-departments.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
+.project-team .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon {
+    margin-top: -18px;
+    text-align: center;
+}
+
+.departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
+.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
+.project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon {
+    margin-top: -8px;
+}
+
+.session-expired-dlg {
+    background: #fff;
+    border: 1px solid #a5a5a5;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.session-expired-dlg.ui-dialog .ui-dialog-title {
+    font-size: 22px;
+    color: #555;
+    margin: 0;
+}
+
+.ui-dialog.session-expired-dlg .ui-dialog-titlebar {
+    padding-top: 6px;
+}
+
+.session-expired-dlg a {
+    font-size: 14px;
+}
+
+.session-expired-dlg .ui-dialog-actions {
+    margin-top: 20px;
+}
+
+.session-expired-dlg.ui-dialog .ui-dialog-content {
+    color: #555;
+}
+
+.ui-dialog-mask {
+    background: rgba(0,0,0, .3);
+}
+
+.main-menu-toolbar-item a{
+    text-decoration: none;
+    font-size: 15px;
+    color: #cecece;
+}
+
+.main-menu-toolbar-item:hover a {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.main-menu-toolbar-item a:hover {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+#growl_container .ui-growl-item-container {
+    margin: 0 0 0 0;
+}
+
+#growl_container .ui-growl-icon-close.ui-icon.ui-icon-closethick {
+    background-image: url('../img/close_info_mesasge.png');
+    margin-right: 7px;
+}
+
+.departments-access .ui-autocomplete-input-token input {
+    margin: 2px;
+}
+
+.departments-access .ui-autocomplete-multiple-container {
+    width: auto;
+}
+
+.departments-access .ui-datatable .ui-column-filter {
+    width: 100%;
+}
+
+.departments-access .ui-autocomplete-multiple-container {
+    border: 1px solid #c7c7c7;
+}
+
+.departments-access .ui-autocomplete-input-token input[type="text"] {
+    border: none;
+    background: none;
+    min-width: 16em;
+}
+
+.departments-access.ui-datatable tbody td {
+    vertical-align: top;
+}
+
+.departments-access.ui-datatable tbody td:first-child {
+    line-height: 30px;
+}
+
+.ui-autocomplete-panel .ui-autocomplete-list-item.ui-state-highlight {
+    background: #e9e9e9;
+}
+
+.trackingSystemTabs .ui-tabs-nav {
+    display: none;
+}

@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:outputFormat value="#{messages['hourType.warning.priority']}" styleClass="warning fa fa-warning" escape="false"/>
+
+    <h:panelGrid columns="3" styleClass="panelGridDetails">
+        <p:outputLabel for="type" value="#{messages['hourType.label.type']}:"/>
+        <p:inputText id="type" value="#{hourType.type}" maxlength="255" required="true"/>
+        <p:message for="type" display="tooltip"/>
+
+        <p:outputLabel for="priority" value="#{messages['hourType.label.priority']}:"/>
+        <p:spinner id="priority" value="#{hourType.priority}" required="true"/>
+        <h:panelGroup>
+            <p:tooltip for="priority" rendered="#{not empty facesContext.getMessageList(p:component('priority'))}">
+                <p:message for="priority" display="text"/>
+            </p:tooltip>
+        </h:panelGroup>
+
+    </h:panelGrid>
+
+</ui:composition>	

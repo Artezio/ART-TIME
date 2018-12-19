@@ -1,0 +1,57 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:o="http://omnifaces.org/ui" xmlns:p="http://primefaces.org/ui">
+	<html>
+		<h:head>
+			<title><ui:insert name="titleHead"/> - ART-TIME</title>
+			<f:facet name="first">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+			</f:facet>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<link href="#{facesContext.externalContext.requestContextPath}/stylesheet/styles.css?v=#{buildInfo['application.version']}" rel="stylesheet" type="text/css" />
+			<link href="#{facesContext.externalContext.requestContextPath}/stylesheet/fa-regular.css?v=#{buildInfo['application.version']}" rel="stylesheet" type="text/css" />
+			<meta http-equiv="cache-control" content="no-cache" />
+			<meta http-equiv="expires" content="0" />
+			<meta http-equiv="pragma" content="no-cache" />
+			<link rel="shortcut icon" href="#{request.contextPath}/img/favicon.ico" />
+		</h:head>
+
+		<h:body>
+			<h:outputScript name="showTitlesInsideSheet.js?v=#{buildInfo['application.version']}" library="js"/>
+			<h:outputScript name="selectOneMenu.js?v=#{buildInfo['application.version']}" library="js"/>
+
+			<f:metadata>
+				<o:enableRestorableView/>
+			</f:metadata>
+			<h:outputScript name="calendarLocales.js?v=#{buildInfo['application.version']}" library="js"/>
+			<h:outputScript name="datepicker-ru.js?v=#{buildInfo['application.version']}" library="js"/>
+
+			<h:panelGroup layout="block" styleClass="body-flex-wrapper">
+				<h:panelGrid columns="4" styleClass="navigationPanel">
+					<h:panelGroup layout="block" styleClass="logoStatus">
+						<h:graphicImage value="/img/staticLogo.gif"/>
+					</h:panelGroup>
+
+					<ui:include src="mainMenu.xhtml" />
+
+					<h:panelGroup id="progressBar">
+						<ui:insert name="progressBar"/>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<p:tooltip globalSelector="input" />
+				<p:growl id="growl" globalOnly="true">
+					<p:autoUpdate/>
+				</p:growl>
+
+				<ui:include src="session-expiration-notification.xhtml"/>
+
+				<ui:insert name="pageContent"/>
+
+				<h:panelGroup id="copyright" layout="block">
+					<h:outputText value="Artezio, LLC, v. #{buildInfo['application.version']}" styleClass="copyrightText"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:body>
+	</html>
+</f:view>

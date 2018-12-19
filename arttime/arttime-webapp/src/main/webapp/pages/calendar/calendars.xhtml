@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">
+        #{messages['mainMenu.dictionaries']} / #{messages['calendars.title']}
+    </ui:define>
+
+    <ui:define name="titleBody">
+        #{messages['mainMenu.dictionaries']} / <p:outputLabel> #{messages['calendars.title']} </p:outputLabel>
+    </ui:define>
+
+    <ui:define name="rightToolbarGroup">
+        <p:commandButton value="#{messages['calendars.button.addNew']}"
+                         action="addNew"
+                         styleClass="avoidChangeTracking ui-fa"
+                         ajax="false"
+                         icon="fa fa-plus-circle"/>
+        <p:commandButton value="#{messages['calendars.button.setDepartments']}"
+                         action="setDepartmentCalendars"
+                         styleClass="avoidChangeTracking ui-fa"
+                         ajax="false"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <p:dataTable id="calendarsTable" value="#{workdaysCalendarsBean.calendars}"
+                     var="workdaysCalendar" sortBy="#{workdaysCalendar.name.toLowerCase()}"
+                     stickyHeader="false" styleClass="dictionaryTable"
+                     emptyMessage="#{messages['warning.datatable.empty']}">
+            <p:column sortBy="#{workdaysCalendar.name.toLowerCase()}" style="width:80%;">
+                <f:facet name="header">#{messages['calendars.column.name']}</f:facet>
+                <h:outputText value="#{workdaysCalendar.name}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{messages['calendars.column.action']}</f:facet>
+                <p:button value=""
+                          outcome="edit"
+                          includeViewParams="true"
+                          icon="fa fa-pencil"
+                          styleClass="avoidChangeTracking invisibleBorder">
+                    <f:param name="calendar" value="#{workdaysCalendar.id}"/>
+                </p:button>
+                <p:commandButton value="#{messages['button.delete']}"
+                                 actionListener="#{workdaysCalendarsBean.remove(workdaysCalendar)}"
+                                 onclick="return confirm('#{messages['label.confirm.delete']}');"
+                                 styleClass="avoidChangeTracking invisibleBorder ui-fa"
+                                 ajax="false"
+                                 icon="fa fa-trash"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

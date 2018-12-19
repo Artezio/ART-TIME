@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/settings/dataProviderTemplate.xhtml">
+
+    <ui:define name="tabTitle">#{messages['keycloak.departmentTrackingSystem.title']}</ui:define>
+    <ui:define name="settings">
+        <h:panelGroup styleClass="settings-group" layout="block">
+            <h:panelGrid columns="4" styleClass="panelGridDetails">
+                <p:outputLabel for="keycloakDepartmentAttribute"
+                               value="#{messages['keycloak.departmentAttribute.label']}"/>
+                <h:inputText id="keycloakDepartmentAttribute"
+                             value="#{settingsBean.settings.keycloakUserDepartmentAttribute}"/>
+                <h:message for="keycloakDepartmentAttribute"/>
+                <h:outputText value="#{messages['keycloak.departmentAttribute.description']}"/>
+            </h:panelGrid>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>	

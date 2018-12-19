@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml"
+                xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titleHead">
+        <h:outputFormat value="#{messages['editHourType.title']}">
+            <f:param value="#{hourTypesBean.hourType.type}"/>
+        </h:outputFormat>
+    </ui:define>
+
+    <ui:define name="titleBody">
+        <h:outputFormat value="#{messages['editHourType.title']}" escape="false">
+            <o:param>
+                <p:outputLabel>#{hourTypesBean.hourType.type.toString()}</p:outputLabel>
+            </o:param>
+        </h:outputFormat>
+    </ui:define>
+
+    <ui:define name="rightToolbarGroup">
+        <c:set var="hourType" value="#{hourTypesBean.hourType}"/>
+        <p:commandButton value="#{messages['button.save']}" ajax="false"
+                         action="update" actionListener="#{hourTypesBean.update(hourType)}"
+                         styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+                         icon="fa fa-save"/>
+        <p:commandButton value="#{messages['button.cancel']}"
+                         action="cancel" immediate="true"
+                         styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+                         ajax="false"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <ui:include src="/pages/hourType/hourType.xhtml">
+            <ui:param name="hourType" value="#{hourTypesBean.hourType}"/>
+        </ui:include>
+
+    </ui:define>
+</ui:composition>

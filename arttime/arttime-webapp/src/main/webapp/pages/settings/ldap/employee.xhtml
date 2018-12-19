@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/settings/dataProviderTemplate.xhtml">
+
+    <ui:define name="tabTitle">#{messages['ldap.employeeTrackingSystem.title']}</ui:define>
+    <ui:define name="settings">
+        <h:panelGroup styleClass="settings-group" layout="block">
+            <h:panelGrid columns="4" styleClass="panelGridDetails">
+
+                <p:outputLabel for="ldapUserNameAttribute" value="#{messages['ldap.userNameAttribute.label']}"/>
+                <h:inputText id="ldapUserNameAttribute" value="#{settingsBean.settings.ldapUserNameAttribute}"/>
+                <h:message for="ldapUserNameAttribute"/>
+                <h:outputText value="#{messages['ldap.userNameAttribute.description']}"/>
+
+                <p:outputLabel for="ldapMailAttribute" value="#{messages['ldap.mailAttribute.label']}"/>
+                <h:inputText id="ldapMailAttribute" value="#{settingsBean.settings.ldapMailAttribute}"/>
+                <h:message for="ldapMailAttribute"/>
+                <h:outputText value="#{messages['ldap.mailAttribute.description']}"/>
+
+                <p:outputLabel for="ldapFirstNameAttribute" value="#{messages['ldap.firstNameAttribute.label']}"/>
+                <h:inputText id="ldapFirstNameAttribute" value="#{settingsBean.settings.ldapFirstNameAttribute}"/>
+                <h:message for="ldapFirstNameAttribute"/>
+                <h:outputText value="#{messages['ldap.firstNameAttribute.description']}"/>
+
+                <p:outputLabel for="ldapLastNameAttribute" value="#{messages['ldap.lastNameAttribute.label']}"/>
+                <h:inputText id="ldapLastNameAttribute" value="#{settingsBean.settings.ldapLastNameAttribute}"/>
+                <h:message for="ldapLastNameAttribute"/>
+                <h:outputText value="#{messages['ldap.lastNameAttribute.description']}"/>
+
+                <p:outputLabel for="ldapDepartmentAttribute" value="#{messages['ldap.departmentAttribute.label']}"/>
+                <h:inputText id="ldapDepartmentAttribute" value="#{settingsBean.settings.ldapDepartmentAttribute}"/>
+                <h:message for="ldapDepartmentAttribute"/>
+                <h:outputText value="#{messages['ldap.departmentAttribute.description']}"/>
+
+                <p:outputLabel for="ldapEmployeeFilter" value="#{messages['ldap.employeeFilter.label']}"/>
+                <h:inputTextarea id="ldapEmployeeFilter" value="#{settingsBean.settings.ldapEmployeeFilter}"/>
+                <h:message for="ldapEmployeeFilter"/>
+                <h:outputText value="#{messages['ldap.employeeFilter.description']}"/>
+
+                <p:outputLabel for="ldapUserFilter" value="#{messages['ldap.userFilter.label']}"/>
+                <h:inputTextarea id="ldapUserFilter" value="#{settingsBean.settings.ldapUserFilter}"/>
+                <h:message for="ldapUserFilter"/>
+                <h:outputText value="#{messages['ldap.userFilter.description']}"/>
+            </h:panelGrid>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>	

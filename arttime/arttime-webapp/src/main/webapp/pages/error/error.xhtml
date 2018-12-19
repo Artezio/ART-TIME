@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+                template="/layout/template.xhtml">
+                
+    <ui:define name="titleHead">
+        #{messages['error.title']}
+    </ui:define>
+    
+    <ui:define name="pageContent">
+        <h:panelGroup id="titleBody">
+            <div class="titleBody"></div>
+        </h:panelGroup>
+
+    	<h:outputText value="#{messages['error.heading']}" id="errorHeading"/>
+        
+        <p:panel toggleable="true" collapsed="true" id="errorPanel" header="#{errorPageBean.message}">
+        	<pre>#{errorPageBean.exception}</pre>
+        </p:panel>
+        
+    </ui:define>
+</ui:composition>

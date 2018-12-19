@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:of="http://omnifaces.org/functions">
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>    	
+        <p:menubar styleClass="colorLegendList" autoDisplay="false">
+			<p:submenu label="#{messages['colorLegend.title']}" styleClass="avoidChangeTracking">
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox dayOff"/>
+					<h:outputText value=" - #{messages['colorLegend.label.dayOff']}" />
+				</p:menuitem>										
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox workingDay"/>
+					<h:outputText value=" - #{messages['colorLegend.label.workDay']}" />
+				</p:menuitem>				
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox approved"/>
+					<h:outputText value=" - #{messages['colorLegend.label.approved']}" />
+				</p:menuitem>
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox dayOffApproved" />
+					<h:outputText value=" - #{messages['colorLegend.label.dayOffApproved']}" />
+				</p:menuitem>
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox blocked"/>
+					<h:outputText value=" - #{messages['colorLegend.label.blocked']}" />
+				</p:menuitem>
+				<p:menuitem>
+					<h:panelGroup styleClass="colorLegendBox noProject"/>
+					<h:outputText value=" - #{messages['colorLegend.label.outOfProject']}" />
+				</p:menuitem>
+			</p:submenu>						
+		</p:menubar>        
+    </composite:implementation>
+</html>

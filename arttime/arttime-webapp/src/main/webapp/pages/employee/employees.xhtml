@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">#{messages['mainMenu.dictionaries']} / #{messages['employees.title']}</ui:define>
+
+    <ui:define name="titleBody">
+        #{messages['mainMenu.dictionaries']} / <p:outputLabel>#{messages['employees.title']}</p:outputLabel>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup"/>
+
+    <ui:define name="content">
+
+        <p:dataTable value="#{employeesBean.employees}" var="employee"
+                     styleClass="dictionaryTable avoidChangeTracking cancelTrackedChanges"
+                     sortBy="#{employee.fullName.toLowerCase()}" sortOrder="ascending"
+                     emptyMessage="#{messages['warning.datatable.empty']}"
+                     widgetVar="employeesTable"
+                     filteredValue="#{employeesBean.filteredEmployees}"
+                     scrollable="true"
+                     filterDelay="500">
+
+            <p:column sortBy="#{employee.fullName.toLowerCase()}"
+                      filterBy="#{employee.fullName.toLowerCase()}" filterMatchMode="contains"
+                      styleClass="#{employee.former ? 'strikeout' : ''}">
+                <f:facet name="header">#{messages['employees.column.employee']}</f:facet>
+                <h:outputText value="#{employee.fullName}" title="#{employee.email}"/>
+            </p:column>
+
+            <p:column filterMatchMode="in" filterBy="#{employee.department}">
+                <f:facet name="header">#{messages['employees.column.department']}</f:facet>
+                <f:facet name="filter">
+                    <p:selectCheckboxMenu onchange="PF('employeesTable').filter()"
+                                          label=""
+                                          updateLabel="true"
+                                          showHeader="false">
+                        <f:selectItems var="item"
+                                       value="#{departmentService.all}"
+                                       itemLabel='#{not empty item ? item : messages["department.label.noDepartment"]}'/>
+                    </p:selectCheckboxMenu>
+                </f:facet>
+                #{not empty employee.department ? employee.department : messages['department.label.noDepartment']}
+            </p:column>
+
+            <p:column filterFunction="#{employeesBean.filterByCalendar}" filterBy="#{employee.calendar}">
+                <f:facet name="header">#{messages['employees.column.сalendar']}</f:facet>
+                <f:facet name="filter">
+                    <p:selectCheckboxMenu onchange="PF('employeesTable').filter()"
+                                          label=""
+                                          showHeader="false"
+                                          updateLabel="true"
+                                          converter="omnifaces.SelectItemsConverter"
+                                          value="#{employeesBean.filteredCalendars}">
+                        <f:selectItem itemLabel="#{messages['calendar.label.noCalendar']}" itemValue="#{null}"/>
+                        <f:selectItems value="#{workdaysCalendarService.calendarsForManaging}" var="calendar"
+                                       itemLabel="#{calendar.name}" itemValue="#{calendar}"/>
+                        <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                    </p:selectCheckboxMenu>
+                </f:facet>
+                #{employee.calendar != null ? employee.calendar.name : messages['calendar.label.noCalendar']}
+            </p:column>
+
+            <p:column styleClass="numeric" style="width: 7em;">
+                <f:facet name="header">#{messages['employees.column.workload']}</f:facet>
+                #{employee.workLoad}
+            </p:column>
+
+            <p:column filterBy="#{employee.former}" filterFunction="#{employeesBean.filterByFormer}">
+                <f:facet name="header">#{messages['employees.column.current']}</f:facet>
+                <f:facet name="filter">
+                    <p:selectBooleanCheckbox onchange="PF('employeesTable').filter()"
+                                             value="false"
+                                             itemLabel="#{messages['filter.label.onlyCurrent']}"/>
+                </f:facet>
+                <h:outputText value="" styleClass="#{employee.former ? '' : 'fa fa-check'}"/>
+            </p:column>
+
+            <p:column>
+                <f:facet name="header">#{messages['employees.column.action']}</f:facet>
+                <h:link outcome="edit" value=""
+                        styleClass="ui-button ui-icon fa fa-pencil avoidChangeTracking cancelTrackedChanges invisibleBorder">
+                    <f:param name="employee" value="#{employee.userName}"/>
+                </h:link>
+            </p:column>
+        </p:dataTable>
+
+    </ui:define>
+</ui:composition>

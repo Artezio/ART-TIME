@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  xmlns:ui="http://java.sun.com/jsf/facelets"	  
+	xmlns:p="http://primefaces.org/ui"		
+	template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">		
+		#{messages['createCalendar.title']}
+	</ui:define>
+	
+	<ui:define name="titleBody">
+		<p:outputLabel>#{messages['createCalendar.title']}</p:outputLabel>
+	</ui:define>
+	
+	<ui:define name="rightToolbarGroup">
+		<p:commandButton value="#{messages['button.save']}" ajax="false"
+	    		action="create" actionListener="#{workdaysCalendarBean.create()}"
+	    		styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+	    		icon="fa fa-save"/>
+	    <p:commandButton value="#{messages['button.cancel']}" 
+	    		action="cancel" immediate="true"
+	    		styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+	    		ajax="false"/>
+	</ui:define>
+	
+	<ui:define name="content">
+		<ui:include src="/pages/calendar/calendar.xhtml">
+			<ui:param name="calendar" value="#{workdaysCalendarBean.workdaysCalendar}"/>
+			<ui:param name="showCalendar" value="false"/>
+		</ui:include>			
+	</ui:define>			
+</ui:composition>

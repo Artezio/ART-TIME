@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.birt.runtime</groupId>
+  <artifactId>org.eclipse.emf.common</artifactId>
+  <versioning>
+    <release>2.14.0.v20180527-1134</release>
+    <versions>
+      <version>2.14.0.v20180527-1134</version>
+    </versions>
+    <lastUpdated>20180723132939</lastUpdated>
+  </versioning>
+</metadata>

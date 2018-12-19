@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:*" PATH="*" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:*:0" NAME="item" PATH="*" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="logout::#pages#timesheet#timesheet.xhtml"
+    NAME="output5" PATH="/pages/timesheet/timesheet.xhtml"
+    TARGET="rules:#pages#timesheet#timesheet.xhtml" TITLE="logout" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="settings::#pages#settings#security.xhtml"
+    NAME="output2" PATH="/pages/settings/security.xhtml"
+    TARGET="rules:#pages#settings#security.xhtml" TITLE="settings" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="manageEfforts::#pages#manageEfforts#manageEfforts.xhtml"
+    NAME="output3" PATH="/pages/manageEfforts/manageEfforts.xhtml"
+    TARGET="rules:#pages#manageEfforts#manageEfforts.xhtml"
+    TITLE="manageEfforts" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="accessToDepartments::#pages#access#accessToDepartments.xhtml"
+    NAME="output" PATH="/pages/access/accessToDepartments.xhtml"
+    TARGET="rules:#pages#access#accessToDepartments.xhtml"
+    TITLE="accessToDepartments" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="timesheet::#pages#timesheet#timesheet.xhtml"
+    NAME="output4" PATH="/pages/timesheet/timesheet.xhtml"
+    TARGET="rules:#pages#timesheet#timesheet.xhtml" TITLE="timesheet" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="hourTypes::#pages#hourType#hourTypes.xhtml"
+    NAME="output6" PATH="/pages/hourType/hourTypes.xhtml"
+    TARGET="rules:#pages#hourType#hourTypes.xhtml" TITLE="hourTypes" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="projects::#pages#project#projects.xhtml"
+    NAME="output7" PATH="/pages/project/projects.xhtml"
+    TARGET="rules:#pages#project#projects.xhtml" TITLE="projects" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="employees::#pages#employee#employees.xhtml"
+    NAME="output8" PATH="/pages/employee/employees.xhtml"
+    TARGET="rules:#pages#employee#employees.xhtml" TITLE="employees" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="calendars::#pages#calendar#calendars.xhtml"
+    NAME="output9" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="calendars" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="actualTimeProblemsNotification::#pages#notifications#actualTimeProblemsNotification.xhtml"
+    NAME="output10"
+    PATH="/pages/notifications/actualTimeProblemsNotification.xhtml"
+    TARGET="rules:#pages#notifications#actualTimeProblemsNotification.xhtml"
+    TITLE="actualTimeProblemsNotification" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="reports::#pages#reports#reports.xhtml"
+    NAME="output11" PATH="/pages/reports/reports.xhtml"
+    TARGET="rules:#pages#reports#reports.xhtml" TITLE="reports" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="security::#pages#settings#security.xhtml"
+    NAME="output12" PATH="/pages/settings/security.xhtml"
+    TARGET="rules:#pages#settings#security.xhtml" TITLE="security" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="externalDataProviders::#pages#settings#externalDataProviders.xhtml"
+    NAME="output13" PATH="/pages/settings/externalDataProviders.xhtml"
+    TARGET="rules:#pages#settings#externalDataProviders.xhtml"
+    TITLE="externalDataProviders" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="smtp::#pages#settings#smtp.xhtml"
+    NAME="output14" PATH="/pages/settings/smtp.xhtml"
+    TARGET="rules:#pages#settings#smtp.xhtml" TITLE="smtp" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="synchronization::#pages#settings#synchronization.xhtml"
+    NAME="output15" PATH="/pages/settings/synchronization.xhtml"
+    TARGET="rules:#pages#settings#synchronization.xhtml"
+    TITLE="synchronization" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="notification::#pages#settings#notification.xhtml"
+    NAME="output17" PATH="/pages/settings/notification.xhtml"
+    TARGET="rules:#pages#settings#notification.xhtml"
+    TITLE="notification" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="links::#pages#settings#links.xhtml"
+    NAME="output1" PATH="/pages/settings/links.xhtml"
+    TARGET="rules:#pages#settings#links.xhtml" TITLE="links" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#project#projects.xhtml"
+  PATH="/pages/project/projects.xhtml" SHAPE="576,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#project#projects.xhtml:0" NAME="item"
+   PATH="/pages/project/projects.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="edit::#pages#project#editProject.xhtml"
+    NAME="output" PATH="/pages/project/editProject.xhtml"
+    TARGET="rules:#pages#project#editProject.xhtml" TITLE="edit" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="addNew::#pages#project#createProject.xhtml"
+    NAME="output1" PATH="/pages/project/createProject.xhtml"
+    TARGET="rules:#pages#project#createProject.xhtml" TITLE="addNew" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="search::#pages#project#projects.xhtml"
+    NAME="output2" PATH="/pages/project/projects.xhtml"
+    TARGET="rules:#pages#project#projects.xhtml" TITLE="search" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#project#editProject.xhtml"
+  PATH="/pages/project/editProject.xhtml" SHAPE="304,2305,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#project#editProject.xhtml:0"
+   NAME="item" PATH="/pages/project/editProject.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#project#projects.xhtml"
+    NAME="output" PATH="/pages/project/projects.xhtml"
+    TARGET="rules:#pages#project#projects.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="update::#pages#project#editProject.xhtml"
+    NAME="output1" PATH="/pages/project/editProject.xhtml"
+    TARGET="rules:#pages#project#editProject.xhtml" TITLE="update" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="addNew::#pages#project#createSubproject.xhtml" NAME="output2"
+    PATH="/pages/project/createSubproject.xhtml"
+    TARGET="rules:#pages#project#createSubproject.xhtml" TITLE="addNew" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="edit::#pages#project#editProject.xhtml"
+    NAME="output3" PATH="/pages/project/editProject.xhtml"
+    TARGET="rules:#pages#project#editProject.xhtml" TITLE="edit" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#project#createProject.xhtml"
+  PATH="/pages/project/createProject.xhtml" SHAPE="304,2545,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#project#createProject.xhtml:0"
+   NAME="item" PATH="/pages/project/createProject.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#project#projects.xhtml"
+    NAME="output" PATH="/pages/project/projects.xhtml"
+    TARGET="rules:#pages#project#projects.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="create::#pages#project#projects.xhtml"
+    NAME="output1" PATH="/pages/project/projects.xhtml"
+    TARGET="rules:#pages#project#projects.xhtml" TITLE="create" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#hourType#hourTypes.xhtml"
+  PATH="/pages/hourType/hourTypes.xhtml" SHAPE="304,1025,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#hourType#hourTypes.xhtml:0" NAME="item"
+   PATH="/pages/hourType/hourTypes.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="edit::#pages#hourType#editHourType.xhtml"
+    NAME="output" PATH="/pages/hourType/editHourType.xhtml"
+    TARGET="rules:#pages#hourType#editHourType.xhtml" TITLE="edit" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="addNew::#pages#hourType#createHourType.xhtml" NAME="output1"
+    PATH="/pages/hourType/createHourType.xhtml"
+    TARGET="rules:#pages#hourType#createHourType.xhtml" TITLE="addNew" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#hourType#editHourType.xhtml"
+  PATH="/pages/hourType/editHourType.xhtml" SHAPE="32,1009,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#hourType#editHourType.xhtml:0"
+   NAME="item" PATH="/pages/hourType/editHourType.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#hourType#hourTypes.xhtml"
+    NAME="output" PATH="/pages/hourType/hourTypes.xhtml"
+    TARGET="rules:#pages#hourType#hourTypes.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="update::#pages#hourType#hourTypes.xhtml"
+    NAME="output1" PATH="/pages/hourType/hourTypes.xhtml"
+    TARGET="rules:#pages#hourType#hourTypes.xhtml" TITLE="update" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#hourType#createHourType.xhtml"
+  PATH="/pages/hourType/createHourType.xhtml" SHAPE="32,1153,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#hourType#createHourType.xhtml:0"
+   NAME="item" PATH="/pages/hourType/createHourType.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#hourType#hourTypes.xhtml"
+    NAME="output" PATH="/pages/hourType/hourTypes.xhtml"
+    TARGET="rules:#pages#hourType#hourTypes.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="create::#pages#hourType#hourTypes.xhtml"
+    NAME="output1" PATH="/pages/hourType/hourTypes.xhtml"
+    TARGET="rules:#pages#hourType#hourTypes.xhtml" TITLE="create" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#employee#employees.xhtml"
+  PATH="/pages/employee/employees.xhtml" SHAPE="304,657,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#employee#employees.xhtml:0" NAME="item"
+   PATH="/pages/employee/employees.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="edit::#pages#employee#editEmployee.xhtml"
+    NAME="output" PATH="/pages/employee/editEmployee.xhtml"
+    TARGET="rules:#pages#employee#editEmployee.xhtml" TITLE="edit" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="search::#pages#employee#employees.xhtml"
+    NAME="output1" PATH="/pages/employee/employees.xhtml"
+    TARGET="rules:#pages#employee#employees.xhtml" TITLE="search" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#employee#editEmployee.xhtml"
+  PATH="/pages/employee/editEmployee.xhtml" SHAPE="32,641,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#employee#editEmployee.xhtml:0"
+   NAME="item" PATH="/pages/employee/editEmployee.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="update::#pages#employee#employees.xhtml"
+    NAME="output" PATH="/pages/employee/employees.xhtml"
+    TARGET="rules:#pages#employee#employees.xhtml" TITLE="update" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#employee#employees.xhtml"
+    NAME="output1" PATH="/pages/employee/employees.xhtml"
+    TARGET="rules:#pages#employee#employees.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#calendar#calendars.xhtml"
+  PATH="/pages/calendar/calendars.xhtml" SHAPE="304,1313,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#calendar#calendars.xhtml:0" NAME="item"
+   PATH="/pages/calendar/calendars.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="edit::#pages#calendar#editCalendar.xhtml"
+    NAME="output" PATH="/pages/calendar/editCalendar.xhtml"
+    TARGET="rules:#pages#calendar#editCalendar.xhtml" TITLE="edit" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="addNew::#pages#calendar#createCalendar.xhtml" NAME="output1"
+    PATH="/pages/calendar/createCalendar.xhtml"
+    TARGET="rules:#pages#calendar#createCalendar.xhtml" TITLE="addNew" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="setDepartmentCalendars::#pages#calendar#calendarsByDepartments.xhtml"
+    NAME="output2" PATH="/pages/calendar/calendarsByDepartments.xhtml"
+    TARGET="rules:#pages#calendar#calendarsByDepartments.xhtml"
+    TITLE="setDepartmentCalendars" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#calendar#createCalendar.xhtml"
+  PATH="/pages/calendar/createCalendar.xhtml" SHAPE="32,1441,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#calendar#createCalendar.xhtml:0"
+   NAME="item" PATH="/pages/calendar/createCalendar.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="create::#pages#calendar#calendarsByDepartments.xhtml"
+    NAME="output" PATH="/pages/calendar/calendarsByDepartments.xhtml"
+    TARGET="rules:#pages#calendar#calendarsByDepartments.xhtml"
+    TITLE="create" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#calendar#calendars.xhtml"
+    NAME="output1" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#calendar#calendarsByDepartments.xhtml"
+  PATH="/pages/calendar/calendarsByDepartments.xhtml"
+  SHAPE="32,1793,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM
+   ID="rules:#pages#calendar#calendarsByDepartments.xhtml:0" NAME="item"
+   PATH="/pages/calendar/calendarsByDepartments.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#calendar#calendars.xhtml"
+    NAME="output" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="submit::#pages#calendar#calendars.xhtml"
+    NAME="output1" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="submit" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#calendar#editCalendar.xhtml"
+  PATH="/pages/calendar/editCalendar.xhtml" SHAPE="32,1585,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#calendar#editCalendar.xhtml:0"
+   NAME="item" PATH="/pages/calendar/editCalendar.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="update::#pages#calendar#calendars.xhtml"
+    NAME="output" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="update" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#calendar#calendars.xhtml"
+    NAME="output1" PATH="/pages/calendar/calendars.xhtml"
+    TARGET="rules:#pages#calendar#calendars.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#project#createSubproject.xhtml"
+  PATH="/pages/project/createSubproject.xhtml" SHAPE="32,2961,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#project#createSubproject.xhtml:0"
+   NAME="item" PATH="/pages/project/createSubproject.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="create::#pages#project#editProject.xhtml"
+    NAME="output" PATH="/pages/project/editProject.xhtml"
+    TARGET="rules:#pages#project#editProject.xhtml" TITLE="create" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="cancel::#pages#project#editProject.xhtml"
+    NAME="output1" PATH="/pages/project/editProject.xhtml"
+    TARGET="rules:#pages#project#editProject.xhtml" TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM
+  NAME="rules:#pages#notifications#actualTimeProblemsNotification.xhtml"
+  PATH="/pages/notifications/actualTimeProblemsNotification.xhtml"
+  SHAPE="32,4097,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#reports#reports.xhtml"
+  PATH="/pages/reports/reports.xhtml" SHAPE="304,1601,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#synchronization.xhtml"
+  PATH="/pages/settings/synchronization.xhtml" SHAPE="304,1969,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#smtp.xhtml"
+  PATH="/pages/settings/smtp.xhtml" SHAPE="304,1857,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#manageEfforts#manageEfforts.xhtml"
+  PATH="/pages/manageEfforts/manageEfforts.xhtml" SHAPE="304,801,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#notification.xhtml"
+  PATH="/pages/settings/notification.xhtml" SHAPE="304,2193,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#timesheet#timesheet.xhtml"
+  PATH="/pages/timesheet/timesheet.xhtml" SHAPE="304,913,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#externalDataProviders.xhtml"
+  PATH="/pages/settings/externalDataProviders.xhtml" SHAPE="304,769,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#security.xhtml"
+  PATH="/pages/settings/security.xhtml" SHAPE="304,657,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#access#accessToDepartments.xhtml"
+  PATH="/pages/access/accessToDepartments.xhtml" SHAPE="320,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#settings#links.xhtml"
+  PATH="/pages/settings/links.xhtml" SHAPE="320,657,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

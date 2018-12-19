@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface componentType="weekSelector">
+        <composite:attribute name="period"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <style type="text/css">
+            #ui-datepicker-div {
+                z-index: 5 !important;
+            }
+            #ui-datepicker-div .ui-datepicker-calendar .selectedWeek a,
+            #ui-datepicker-div .ui-datepicker-calendar .aWeek a {
+                border: 1px solid #76d3ff !important;
+                border-radius: 3px !important;
+            }
+        </style>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                window.weekSelector = window.weekSelector || new WeekSelector();
+                window.weekSelector.init();
+            });
+        </script>
+
+        <f:event type="postAddToView" listener="#{cc.init}" />
+
+        <h:panelGroup styleClass="weekSelector fa fa-calendar" layout="block">
+            <p:button onclick="window.weekSelector.prevWeek(); return false;" icon="fa fa-angle-left" styleClass="prevWeek" value="" title="#{messages['advancedPeriodSelector.button.prev']}"/>
+                <h:inputText id="filterWeekSelector" autocomplete="off"/>
+            <p:button onclick="window.weekSelector.nextWeek(); return false" icon="fa fa-angle-right" styleClass="nextWeek" value="" title="#{messages['advancedPeriodSelector.button.next']}"/>
+        </h:panelGroup>
+
+        <h:inputHidden id="startDate" value="#{cc.attrs.period.start}">
+            <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:inputHidden>
+        <h:inputHidden id="endDate" value="#{cc.attrs.period.finish}">
+            <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:inputHidden>
+
+    </composite:implementation>
+</html>

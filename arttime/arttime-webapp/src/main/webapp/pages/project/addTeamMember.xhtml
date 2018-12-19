@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:p="http://primefaces.org/ui">
+
+    <t:subform id="newTeamMemberSubform">
+
+        <h:outputText value="#{messages['project.label.addTeamMember.warning']}"
+                      styleClass="warning fa fa-warning"
+                      rendered="#{!projectBean.project.teamFilterDisabled}">
+        </h:outputText>
+
+        <h:panelGrid id="newTeamMember" columns="3" styleClass="panelGrid newTeamMemberPanel">
+            <p:outputLabel for="employee" value="#{messages['projectTeam.label.newMember']}"/>
+
+            <h:panelGroup>
+                <p:autoComplete id="employee"
+                                value="#{projectBean.employee}"
+                                completeMethod="#{employeeTrackingSystem.findEmployeesByFullName}"
+                                var="employee" itemValue="#{employee}" itemLabel="#{employee.fullName}"
+                                dropdown="true" forceSelection="true"
+                                cache="true" scrollHeight="350" required="true"
+                                effect="fade" queryDelay="500"
+                                converter="employeeConverter">
+                    <p:column>
+                        <h:outputText value="#{employee.fullName}" title="#{employee.email}"/>
+                    </p:column>
+                </p:autoComplete>
+                <p:tooltip for="employee" rendered="#{not empty facesContext.getMessageList(p:component('employee'))}">
+                    <p:message for="employee" display="text"/>
+                </p:tooltip>
+            </h:panelGroup>
+
+            <p:commandButton value="#{messages['projectTeam.button.addMember']}"
+                             action="#{projectBean.addNewTeamMember()}"
+                             process="newTeamMemberSubform @widgetVar(projectTeamTable)"
+                             update="@namingcontainer:newTeamMember @widgetVar(projectTeamTable)"
+                             oncomplete="PF('projectTeamTable').filter();$(window).trigger('resize');">
+            </p:commandButton>
+        </h:panelGrid>
+    </t:subform>
+
+</ui:composition>

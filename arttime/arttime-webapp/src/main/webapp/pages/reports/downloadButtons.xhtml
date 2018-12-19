@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+                
+    <p:importEnum type="com.artezio.arttime.report.OutputFormat" var="OutputFormat"/>
+
+    <h:panelGroup>
+        <p:commandButton value="#{messages['reports.button.label.download']}"
+                         ajax="false"
+                         styleClass="invisibleBorder avoidChangeTracking"
+                         icon="fa fa-file-excel-o">
+            <f:setPropertyActionListener target="#{reportsBean.outputFormat}" value="#{OutputFormat.EXCEL}"/>
+            <f:setPropertyActionListener target="#{reportsBean.templateName}" value="#{templateName}"/>
+            <p:fileDownload value="#{reportsBean.reportFile}"/>
+        </p:commandButton>
+    </h:panelGroup>
+
+</ui:composition>

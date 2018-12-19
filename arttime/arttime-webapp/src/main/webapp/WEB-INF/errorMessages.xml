@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="javax.validation.ConstraintViolationException"></entry>
+	<entry key="com.artezio.arttime.exceptions.SaveApprovedHoursException">exception.message.saveApprovedHoursException</entry>
+	<entry key="com.artezio.arttime.exceptions.ActualTimeRemovalException">exception.message.actualTimeRemovalException</entry>
+	<entry key="org.hibernate.exception.ConstraintViolationException">exception.message.ConstraintViolationException</entry>
+	<entry key="org.hibernate.exception.ConstraintViolationException.uniqueprojectcodes">message.constraint.constraint_unique_project_code</entry>
+	<entry key="org.apache.shiro.authc.AuthenticationException">exception.message.AuthenticationException</entry>
+    <entry key="org.eclipse.birt.report.engine.api.impl.ParameterValidationException">exception.message.BirtParameterValidationException</entry>
+
+</properties>

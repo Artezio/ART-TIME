@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <c:set var="teamTrackingSystemName" value="#{teamTrackingSystem.name}"/>
+
+    <h:outputFormat value="#{messages['project.warning.teamImport.currentSettings']}"
+                    styleClass="warning fa fa-warning">
+        <f:param value="#{settingsBean.settings.timerHoursInterval}"/>
+        <f:param value="#{settingsBean.settings.timerMinutesInterval}"/>
+        <f:param value="#{scheduler.timeRemaining.toHours()}"/>
+        <f:param value="#{scheduler.timeRemaining.toMinutes() - (scheduler.timeRemaining.toHours() * 60)}"/>
+    </h:outputFormat>
+
+    <h2>
+        <h:outputFormat value="#{messages['project.importSettings.label.projectTeam']}">
+            <f:param value="#{teamTrackingSystemName}"/>
+        </h:outputFormat>
+    </h2>
+
+    <h:panelGrid columns="3" styleClass="panelGrid">
+        <p:selectOneMenu id="teamFilterType"
+                         value="#{project.teamFilter.filterType}"
+                         required="true" onchange="setWindowUnloadMessage()">
+            <f:selectItem itemValue="DISABLED" itemLabel="#{messages['project.label.teamImport.disabled']}"/>
+            <f:selectItem itemValue="PROJECT_CODES" itemLabel="#{messages['project.label.teamImport.groupCode']}"/>
+            <f:selectItem itemValue="DEPARTMENTS" itemLabel="#{messages['project.label.teamImport.department']}"/>
+            <c:if test="#{project.isSubproject()}">
+                <f:selectItem itemValue="BASED_ON_MASTER"
+                              itemLabel="#{messages['project.label.teamImport.basedOnMaster']}"/>
+            </c:if>
+            <f:ajax event="change" render="teamFilterValueGroup teamFilterMessage" execute="@this"
+                    listener="#{projectBean.filterTypeChanged}"/>
+        </p:selectOneMenu>
+        <h:panelGroup id="teamFilterValueGroup">
+            <h:panelGrid columns="2" rendered="#{project.teamFilter.filterType ne 'DISABLED'
+                                     and project.teamFilter.filterType ne 'DEPARTMENTS'
+                                     and project.teamFilter.filterType ne 'BASED_ON_MASTER'}">
+                <p:inputText id="teamFilterValue" value="#{project.teamFilter.value}" maxlength="255">
+                </p:inputText>
+                <h:outputText value="#{messages['project.importSettings.label.groups.description']}"/>
+            </h:panelGrid>
+
+            <p:selectCheckboxMenu id="teamFilterDepartments"
+                                  styleClass="team-filter-departments"
+                                  required="false"
+                                  rendered="#{project.teamFilter.filterType eq 'DEPARTMENTS'}"
+                                  value="#{projectBean.departments}"
+                                  showHeader="false"
+                                  label="..."
+                                  updateLabel="true"
+                                  multiple="true">
+                <f:selectItems value="#{departmentService.all}"
+                               var="department"
+                               itemLabel="#{department ne null and department != '' ? department : messages['department.label.noDepartment']}"
+                               itemValue="#{department}"/>
+                <f:attribute name="collectionType" value="java.util.ArrayList"/>
+            </p:selectCheckboxMenu>
+        </h:panelGroup>
+        <p:message id="teamFilterMessage" for="teamFilterValue" display="tooltip"/>
+    </h:panelGrid>
+
+</ui:composition>	

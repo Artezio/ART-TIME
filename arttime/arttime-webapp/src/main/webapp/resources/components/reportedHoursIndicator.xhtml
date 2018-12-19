@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:of="http://omnifaces.org/functions">
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>    	
+        <h:panelGroup rendered="#{cc.rendered}" layout="block" styleClass="hoursIndicator">
+        	<div title="#{reportedHoursIndicator.timeReportedIncorrectly ? reportedHoursIndicator.warningMessage : ''}">
+<!--                 <h:outputText styleClass="label" value="#{messages['hoursIndicator.label.period']}:"/> -->
+                <h:panelGroup layout="block" styleClass="field">
+                    <h:outputText value="#{of:formatNumber(reportedHoursIndicator.reportedTime, '#.##')}
+                            / #{of:formatNumber(reportedHoursIndicator.requiredTime, '#.##')} #{messages['hoursIndicator.value.measure']}"/>
+                    <p:panel id="exclamation" value="" styleClass="exclamation"
+                            rendered="#{reportedHoursIndicator.timeReportedIncorrectly}">
+                        <span class="fa-stack fa-lg exclamation">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-exclamation fa-stack-2x fa-inverse"></i>
+                        </span>
+                    </p:panel>
+
+                </h:panelGroup>
+
+                <p:progressBar value="#{reportedHoursIndicator.reportedTimePercents}" displayOnly="true"/>
+            </div>            
+        </h:panelGroup>
+
+        <h:outputScript>
+            $(".hoursIndicator .ui-progressbar-value").css("background-image",
+                    "linear-gradient(to left, pink #{reportedHoursIndicator.overTimePercents}%, transparent 0%)");
+        </h:outputScript>
+    </composite:implementation>
+</html>

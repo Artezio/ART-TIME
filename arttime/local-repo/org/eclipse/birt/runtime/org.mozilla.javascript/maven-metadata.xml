@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.eclipse.birt.runtime</groupId>
+  <artifactId>org.mozilla.javascript</artifactId>
+  <versioning>
+    <release>1.7.5.v201504281450</release>
+    <versions>
+      <version>1.7.5.v201504281450</version>
+    </versions>
+    <lastUpdated>20180723133018</lastUpdated>
+  </versioning>
+</metadata>

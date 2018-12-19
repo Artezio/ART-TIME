@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">
+		#{messages['mainMenu.settings']} / #{messages['synchronization.title']}
+	</ui:define>
+	
+	<ui:define name="titleBody">
+		#{messages['mainMenu.settings']} / <p:outputLabel>#{messages['synchronization.title']}</p:outputLabel>
+	</ui:define>
+
+	<ui:define name="rightToolbarGroup">
+            <p:commandButton value="#{messages['button.save']}" 	    		
+                             styleClass="avoidChangeTracking cancelTrackedChanges" ajax="false"
+                             action="synchronization"
+                             actionListener="#{settingsService.update(settingsBean.settings)}"
+                             icon="fa fa-save">
+		    <f:actionListener binding="#{scheduler.setInterval(settingsBean.settings.timerInterval)}"/>
+            </p:commandButton>
+	    <p:commandButton value="#{messages['synchronization.start.button']}" 
+                             action="#{synchronizer.synchronize()}"
+                             styleClass="avoidChangeTracking cancelTrackedChanges"
+                             ajax="false"/>	
+	</ui:define>
+
+	<ui:define name="content">
+		<h:outputText value="#{messages['synchronization.start.addition']}&lt;br/&gt;#{messages['synchronization.start.description']}"
+				styleClass="warning fa fa-warning" escape="false"/>
+
+		<h:panelGroup styleClass="settings-group" layout="block">
+			<h:panelGrid columns="4" styleClass="panelGridDetails">
+
+				<p:outputLabel for="teamSynchronizationCheckbox"
+					value="#{messages['synchronization.teamEnabled.label']}" />
+				<h:selectBooleanCheckbox id="teamSynchronizationCheckbox"
+					value="#{settingsBean.settings.teamSynchronizationEnabled}" />
+				<h:message for="teamSynchronizationCheckbox" />
+				<h:outputFormat value="#{messages['synchronization.teamEnabled.description']}">
+					<f:param value="#{settingsBean.settings.teamTrackingSystemName != null
+									  ? settingsBean.settings.teamTrackingSystemName
+									  : messages['synchronization.genericExternalSystem.label']}"/>
+				</h:outputFormat>
+
+				<p:outputLabel for="employeesSynchronizationCheckbox"
+					value="#{messages['synchronization.employeesEnabled.label']}" />
+				<h:selectBooleanCheckbox id="employeesSynchronizationCheckbox"
+					value="#{settingsBean.settings.employeesSynchronizationEnabled}" />
+				<h:message for="employeesSynchronizationCheckbox" />
+				<h:outputFormat value="#{messages['synchronization.employeesEnabled.description']}">
+					<f:param value="#{settingsBean.settings.employeeTrackingSystemName != null
+									  ? settingsBean.settings.employeeTrackingSystemName
+									  : messages['synchronization.genericExternalSystem.label']}"/>
+				</h:outputFormat>
+
+				<p:outputLabel for="intervalSynchronization"
+						value="#{messages['synchronization.timerHoursInterval.label']}" />
+				<p:spinner id="intervalSynchronization"
+						value="#{settingsBean.settings.timerHoursInterval}"
+						min="0"
+						title="#{messages['synchronization.timerHoursInterval.description']}"/>
+				<h:message for="intervalSynchronization"/>
+				<h:outputText/>
+
+			</h:panelGrid>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

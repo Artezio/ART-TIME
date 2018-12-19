@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:arttime="http://java.sun.com/jsf/composite/components"
+				template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">
+        #{messages['notifications.title']}
+    </ui:define>
+    
+    <ui:define name="titleBody">
+        <ui:include src="/pages/filterSaveAsToolbar.xhtml">
+			<ui:param name="title" value="#{messages['notifications.title']}"/>
+		</ui:include>
+    </ui:define>
+	
+	<ui:define name="leftToolbarGroup">
+		<h:panelGroup layout="block" styleClass="filter">
+			<h:panelGroup layout="block" styleClass="filter-body">
+				<arttime:advancedPeriodSelector id="advancedPeriodSelector" selector="#{timeProblemsNotificationBean.filterBean.currentFilter.rangePeriodSelector}" />
+				<ui:include src="/pages/filter.xhtml">
+					<ui:param name="showProjectsSelector" value="false" />
+					<ui:param name="showHourTypesSelector" value="false"/>
+					<ui:param name="itemBean" value="#{timeProblemsNotificationBean}"/>
+					<ui:param name="itemAction" value="setCurrentFilter"/>
+				</ui:include>
+			</h:panelGroup>
+			<p:commandButton value="#{messages['filter.button.apply']}"
+							 action="#{timeProblemsNotificationBean.resetData()}"
+							 styleClass="avoidChangeTracking ui-fa"
+							 icon="fa fa-filter"
+							 ajax="false" />
+
+		</h:panelGroup>
+		<p:separator/>
+	</ui:define>
+	
+	<ui:define name="rightToolbarGroup">
+		<p:panel styleClass="commandButtons">
+			<p:separator/>
+			<p:commandButton value="#{messages['notifications.button.sendNotification']}"
+							 action="#{timeProblemsNotificationBean.sendNotifications()}"
+							 styleClass="avoidChangeTracking cancelTrackedChanges"
+							 ajax="false"/>
+		</p:panel>
+	</ui:define>
+
+	<ui:param name="displayLeftSidebar" value="#{true}"/>
+	<ui:define name="leftSidebar">
+		<ui:include src="/pages/savedFilters.xhtml">
+			<ui:param name="itemBean" value="#{timeProblemsNotificationBean}"/>
+			<ui:param name="itemAction" value="setCurrentFilter"/>
+		</ui:include>
+	</ui:define>
+
+    <ui:define name="content">
+		<h:panelGroup layout="block" styleClass="actual-time-problems">
+			<p:panel id="notificationPanel">
+				<h:outputText value="#{messages['actualTimeProblemsNotifikation.note.label']}" styleClass="warning fa fa-warning" escape="false"/>
+				<h:panelGrid columns="2" styleClass="panelGridDetails">
+					<p:outputLabel value="#{messages['notifications.label.actualHourType']}:"/>
+					<h:outputText value="#{hourTypeService.findActualTime().type}" />
+
+					<p:outputLabel for="comment" value="#{messages['notifications.label.comment']}:"/>
+					<p:inputTextarea id="comment" value="#{timeProblemsNotificationBean.comment}"/>
+				</h:panelGrid>
+			</p:panel>
+			<style type="text/css">
+				.ui-datatable .ui-datatable-scrollable thead th {
+					height: 0px;
+				}
+			</style>
+			<p:dataTable id="problemEmployees"
+						 var="workTime" rowKey="#{workTime}"
+						 selection="#{timeProblemsNotificationBean.selectedRows}"
+						 value="#{timeProblemsNotificationBean.problematicEmployees}"
+						 emptyMessage="#{messages['warning.datatable.empty']}"
+						 scrollable="true" scrollHeight="200" style="width: 800px; overflow: auto;" rowSelectMode="add">
+
+			   <p:column selectionMode="multiple" style="width:30px;"/>
+			   <p:column headerText="#{messages['notifications.label.employee']}" style="width:150px;">
+				   <h:outputText value="#{workTime.employee.fullName}" title="#{workTime.employee.email}"/>
+			   </p:column>
+			   <p:column headerText="#{messages['notifications.label.timeProblem']}" style="width: 90px;" styleClass="numeric">
+				   <h:outputText value="#{workTime.timeDeviation}">
+						<f:convertNumber pattern="#0.00"/>
+				   </h:outputText>
+			   </p:column>
+			   <p:column headerText="#{messages['notifications.label.notApprovedHours']}" style="width: 115px;" styleClass="numeric">
+				   <h:outputText value="#{workTime.unapprovedTime}">
+						<f:convertNumber pattern="#0.00"/>
+				   </h:outputText>
+			   </p:column>
+			   <p:column headerText="#{messages['notifications.label.waitingApprovalBy']}" style="width: 200px" styleClass="wrap">
+				   <ui:repeat value="#{workTime.waitingApprovalBy}" var="manager" varStatus="item">
+						<h:outputText value="#{manager.fullName}#{item.last ? '' : ', '}"/>
+				   </ui:repeat>
+			   </p:column>
+			   <p:column headerText="#{messages['notifications.label.allManagers']}" style="width: 250px" styleClass="wrap">
+				   <ui:repeat value="#{workTime.allManagers}" var="manager" varStatus="item">
+					   <h:outputText value="#{manager.fullName}#{item.last ? '' : ', '}"/>
+				   </ui:repeat>
+			   </p:column>
+		   </p:dataTable>
+		</h:panelGroup>
+    </ui:define>
+
+</ui:composition>

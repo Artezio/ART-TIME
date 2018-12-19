@@ -1,0 +1,31 @@
+dn: cn=testuser1,ou=users,dc=example,dc=com
+objectClass: top
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extendedLdapSchema
+givenName: vasily
+sn: ivanov
+memberOf: ou=projectGroup1,ou=users,dc=example,dc=com
+physicalDeliveryOfficeName: department1
+sAMAccountName: testuser1
+
+dn: cn=testuser2,ou=users,dc=example,dc=com
+objectClass: top
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extendedLdapSchema
+givenName: eugene
+memberOf: ou=projectGroup2,ou=users,dc=example,dc=com
+sn: petrov
+physicalDeliveryOfficeName: department2
+sAMAccountName: testuser2
+
+dn: cn=testuser3,ou=users,dc=example,dc=com
+objectClass: top
+objectClass: organizationalPerson
+objectClass: person
+objectClass: extendedLdapSchema
+givenName: steven
+sn: mattke
+physicalDeliveryOfficeName: department1
+sAMAccountName: testuser3

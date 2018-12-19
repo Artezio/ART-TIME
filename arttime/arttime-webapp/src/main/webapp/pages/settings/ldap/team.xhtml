@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/settings/dataProviderTemplate.xhtml">
+
+    <ui:define name="tabTitle">#{messages['ldap.teamTrackingSystem.title']}</ui:define>
+    <ui:define name="settings">
+        <h:panelGroup styleClass="settings-group" layout="block">
+            <h:panelGrid columns="4" styleClass="panelGridDetails">
+                <p:outputLabel for="ldapGroupMemberFilter" value="#{messages['ldap.groupMemberFilter.label']}"/>
+                <h:inputTextarea id="ldapGroupMemberFilter" value="#{settingsBean.settings.ldapGroupMemberFilter}"/>
+                <h:message for="ldapGroupMemberFilter"/>
+                <h:outputText value="#{messages['ldap.groupMemberFilter.description']}"/>
+            </h:panelGrid>
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>	

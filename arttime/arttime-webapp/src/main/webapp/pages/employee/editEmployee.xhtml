@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				template="/layout/one-form-content.template.xhtml"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titleHead">
+		<h:outputFormat value="#{messages['editEmployee.title']}">
+			<f:param value="#{employeesBean.employee.fullName}" />
+		</h:outputFormat>
+	</ui:define>
+
+	<ui:define name="titleBody">
+		<h:outputFormat value="#{messages['editEmployee.title']}" escape="false">
+			<o:param>
+				<p:outputLabel>#{employeesBean.employee.fullName}</p:outputLabel>
+			</o:param>
+		</h:outputFormat>
+	</ui:define>
+
+	<ui:define name="rightToolbarGroup">
+		<p:commandButton value="#{messages['button.save']}" ajax="false"
+				 action="update" actionListener="#{employeesBean.save()}"
+				 styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+				 icon="fa fa-save" />
+		<p:commandButton value="#{messages['button.cancel']}" action="cancel"
+				 immediate="true"
+				 styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+				 ajax="false" />
+	</ui:define>
+
+	<ui:define name="content">
+		<h:panelGrid columns="3" styleClass="panelGridDetails">
+			<h:outputText value="#{messages['editEmployee.label.userName']}:" />
+			<h:outputText value="#{employeesBean.employee.userName}" />
+			<p:spacer />
+
+			<h:outputText value="#{messages['editEmployee.label.email']}:" />
+			<h:outputText value="#{employeesBean.employee.email}" />
+			<p:spacer />
+
+			<h:outputText value="#{messages['editEmployee.label.department']}:" />
+			<h:outputText value="#{employeesBean.employee.department}" />
+			<p:spacer />
+
+			<h:outputLabel for="calendar" value="#{messages['editEmployee.label.calendar']}:" />
+			<p:selectOneMenu id="calendar"
+					 value="#{employeesBean.employee.calendar}"
+					 converter="omnifaces.SelectItemsConverter"
+					 onchange="setWindowUnloadMessage()">
+				<f:selectItem itemLabel="#{messages['calendar.label.noCalendar']}" itemValue="#{null}" />
+				<f:selectItems
+					value="#{workdaysCalendarService.calendarsForManaging}"
+					var="workdayCalendar" itemLabel="#{workdayCalendar.name}" />
+			</p:selectOneMenu>
+			<h:panelGroup >
+				<p:tooltip for="calendar"
+					   rendered="#{not empty facesContext.getMessageList(p:component('calendar'))}">
+					<p:message for="calendar" display="text" />
+				</p:tooltip>
+			</h:panelGroup>
+
+			<p:outputLabel for="workload"
+				       value="#{messages['editEmployee.label.workload']}:" />
+			<p:spinner id="workload" value="#{employeesBean.employee.workLoad}"
+				   min="0" required="true" />
+			<h:panelGroup>
+				<p:tooltip for="workload"
+					   rendered="#{not empty facesContext.getMessageList(p:component('workload'))}">
+					<p:message for="workload" display="text" />
+				</p:tooltip>
+			</h:panelGroup>
+
+		</h:panelGrid>
+
+	</ui:define>
+</ui:composition>

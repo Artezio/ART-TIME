@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+			 xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="arttime-secured-pu" transaction-type="JTA">
+		<provider>com.artezio.javax.jpa.abac.hibernate.AbacPersistenceProvider</provider>
+		<jta-data-source>java:jboss/datasources/com.artezio.arttime</jta-data-source>
+		<class>com.artezio.arttime.datamodel.Day</class>
+		<class>com.artezio.arttime.datamodel.Employee</class>
+		<class>com.artezio.arttime.datamodel.Hours</class>
+		<class>com.artezio.arttime.datamodel.HourType</class>
+		<class>com.artezio.arttime.datamodel.Period</class>
+		<class>com.artezio.arttime.datamodel.Project</class>
+		<class>com.artezio.arttime.datamodel.TeamFilter</class>
+		<class>com.artezio.arttime.datamodel.WorkdaysCalendar</class>
+		<class>com.artezio.arttime.config.Setting</class>
+		<class>com.artezio.arttime.filter.Filter</class>
+		<shared-cache-mode>NONE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="false"/>
+			<property name="hibernate.format_sql" value="false" />
+			<property name="hibernate.connection.isolation" value="2" />
+			<property name="hibernate.order_inserts" value="true"/>
+			<property name="hibernate.order_updates" value="true"/>
+			<property name="hibernate.connection.useUnicode" value="true" />
+			<property name="hibernate.connection.characterEncoding" value="UTF-8" />
+			<property name="hibernate.connection.charSet" value="UTF-8"/>
+			<property name="javax.persistence.lock.timeout" value="60000"/>
+			<property name="hibernate.cache.use_second_level_cache" value="false" />
+			<property name="hibernate.cache.use_query_cache" value="false" />
+			<property name="hibernate.cache.infinispan.statistics" value="false"/>
+		</properties>
+	</persistence-unit>
+</persistence>

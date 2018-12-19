@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputLabel for="ldapServerHost" value="#{messages['ldap.serverHost.label']}"/>
+    <h:inputText id="ldapServerHost" value="#{settingsBean.settings.ldapServerHost}"/>
+    <h:message for="ldapServerHost"/>
+    <h:outputText value="#{messages['ldap.serverHost.description']}"/>
+
+    <p:outputLabel for="ldapServerPort" value="#{messages['ldap.serverPort.label']}"/>
+    <h:inputText id="ldapServerPort" value="#{settingsBean.settings.ldapServerPort}"/>
+    <h:message for="ldapServerPort"/>
+    <h:outputText value="#{messages['ldap.serverPort.description']}"/>
+
+    <p:outputLabel for="ldapPrincipalUsername" value="#{messages['ldap.principalUsername.label']}"/>
+    <h:inputText id="ldapPrincipalUsername" value="#{settingsBean.settings.ldapPrincipalUsername}"/>
+    <h:message for="ldapPrincipalUsername"/>
+    <h:outputText value="#{messages['ldap.principalUsername.description']}"/>
+
+    <p:outputLabel for="ldapBindCredentials" value="#{messages['ldap.bindCredentials.label']}"/>
+    <p:password id="ldapBindCredentials" value="#{settingsBean.settings.ldapBindCredentials}"
+                match="ldapBindCredentialsConfirm" redisplay="true"/>
+    <h:message for="ldapBindCredentials"/>
+    <h:outputText value="#{messages['ldap.bindCredentials.description']}"/>
+
+    <p:outputLabel for="ldapBindCredentialsConfirm" value="#{messages['ldap.bindCredentialsConfirm.label']}"/>
+    <p:password id="ldapBindCredentialsConfirm" value="#{settingsBean.settings.ldapBindCredentials}"
+                redisplay="true"/>
+    <h:message for="ldapBindCredentialsConfirm"/>
+    <h:outputText value="#{messages['ldap.bindCredentialsConfirm.description']}"/>
+
+    <p:outputLabel for="ldapUserContextDN" value="#{messages['ldap.userContextDN.label']}"/>
+    <h:inputText id="ldapUserContextDN" value="#{settingsBean.settings.ldapUserContextDN}"/>
+    <h:message for="ldapUserContextDN"/>
+    <h:outputText value="#{messages['ldap.userContextDN.description']}"/>
+
+    <p:outputLabel for="ldapPrincipalSuffix" value="#{messages['ldap.principalSuffix.label']}"/>
+    <h:inputText id="ldapPrincipalSuffix" value="#{settingsBean.settings.ldapPrincipalSuffix}"/>
+    <h:message for="ldapPrincipalSuffix"/>
+    <h:outputText value="#{messages['ldap.principalSuffix.description']}"/>
+</ui:composition>

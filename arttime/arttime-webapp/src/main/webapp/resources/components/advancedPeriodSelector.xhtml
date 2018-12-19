@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:arttime="http://java.sun.com/jsf/composite/components">
+
+    <composite:interface>
+        <composite:attribute name="selector" type="com.artezio.arttime.web.criteria.RangePeriodSelector" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGroup id="periodSelector" styleClass="avoidChangeTracking advancedPeriodSelector" layout="block">
+             <h:panelGroup styleClass="periodSelectorButtons" layout="block">
+                 <p:commandButton value="#{messages['advancedPeriodSelector.period.week']}"
+                                  actionListener="#{cc.attrs.selector.setWeekPeriod()}"
+                                  styleClass="avoidChangeTracking leftPositionButton #{cc.attrs.selector.range=='WEEK'?'selected':''}"
+                                  process="@this" update="periodSelector" immediate="true">
+                 </p:commandButton>
+                 <p:commandButton value="#{messages['advancedPeriodSelector.period.month']}"
+                                  actionListener="#{cc.attrs.selector.setMonthPeriod()}"
+                                  styleClass="avoidChangeTracking middlePositionButton #{cc.attrs.selector.range=='MONTH'?'selected':''}"
+                                  process="@this" update="periodSelector" immediate="true">
+                </p:commandButton>
+                <p:commandButton value="#{messages['advancedPeriodSelector.period.custom']}"
+                                 actionListener="#{cc.attrs.selector.setCustomPeriod()}"
+                                 styleClass="avoidChangeTracking rightPositionButton #{cc.attrs.selector.range=='CUSTOM'?'selected':''}"
+                                 process="@this" update="periodSelector" immediate="true">
+                </p:commandButton>
+            </h:panelGroup>
+            <arttime:weekSelector period="#{cc.attrs.selector.period}"
+                                  rendered="#{cc.attrs.selector.range == 'WEEK'}" id="weekSelector"/>
+            <arttime:monthSelector period="#{cc.attrs.selector.period}"
+                                   rendered="#{cc.attrs.selector.range == 'MONTH'}" id="monthSelector"/>
+            <arttime:customPeriodSelector period="#{cc.attrs.selector.period}"
+                                          rendered="#{cc.attrs.selector.range == 'CUSTOM'}" id="customPeriodSelector"/>
+        </h:panelGroup>
+        <h:outputScript name="periodSelectors.js?v=#{buildInfo['application.version']}" library="js"/>
+    </composite:implementation>
+</html>

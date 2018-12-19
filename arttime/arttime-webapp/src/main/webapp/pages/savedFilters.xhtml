@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:outputScript name="selectManyMenu.js?v=#{buildInfo['application.version']}" library="js"/>
+
+    <p:panel id="savedFiltersContainer" styleClass="avoidChangeTracking" widgetVar="savedFiltersContainer" >
+        <c:if test="#{empty showHourTypesSelector}">
+            <c:set var="showHourTypesSelector" value="true"/>
+        </c:if>
+        <c:if test="#{empty showProjectsSelector}">
+            <c:set var="showProjectsSelector" value="true"/>
+        </c:if>
+
+        <p:panel id="filters"
+                 header="#{messages['filter.label.filters']}"
+                 widgetVar="filtersPanel"
+                 styleClass="avoidChangeTracking cancelTrackedChanges">
+
+            <f:facet name="actions">
+                <h:panelGroup>
+                    <h:outputLink value="javascript:;" styleClass="avoidChangeTracking js-toggle-left-panel js-toggle-left-panel_inside filter-pin-button">
+                        <h:panelGroup styleClass="fa-stack unpinned-icon">
+                            <i class="fa fa-chevron-right"/>
+                            <i class="fa fa-chevron-right stick-left"/>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="fa-stack pinned-icon">
+                            <i class="fa fa-chevron-left"/>
+                            <i class="fa fa-chevron-left stick-left"/>
+                        </h:panelGroup>
+                    </h:outputLink>
+                </h:panelGroup>
+            </f:facet>
+
+            <c:set var="activeProjectsFilter"
+                   value="#{filterService.activeProjectsFilter}"/>
+
+            <h:panelGrid columns="1" styleClass="filtersContainer">
+                <h:commandLink value="#{activeProjectsFilter.name}"
+                               action="#{itemBean[itemAction](activeProjectsFilter)}"
+                               styleClass="avoidChangeTracking cancelTrackedChanges activeFilterLink"/>
+
+                <p:dataTable id="filterTable"
+                             var="filter"
+                             styleClass="loadedFilterTable avoidChangeTracking cancelTrackedChanges"
+                             value="#{filterBean.filters}"
+                             sortBy="#{filter.name.toLowerCase()}"
+                             rendered="#{!filterBean.filters.isEmpty()}">
+
+                    <p:column>
+                        <h:commandLink value="#{filter.name}"
+                                       actionListener="#{itemBean[itemAction](filter)}"
+                                       styleClass="avoidChangeTracking cancelTrackedChanges"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton title="#{messages['button.delete']}" value=""
+                                         action="#{filterBean.remove(filter)}"
+                                         icon="fa fa-trash" update="@form:filters"
+                                         styleClass="avoidChangeTracking cancelTrackedChanges"
+                                         onclick="if(!confirm('#{messages['label.confirm.deleteFilter']}')){return false};">
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+        </p:panel>
+    </p:panel>
+    <h:outputScript name="saveFilterLayoutState.js?v=#{buildInfo['application.version']}" library="js"/>
+    <h:outputScript name="leftPanelToggle.js?v=#{buildInfo['application.version']}" library="js"/>
+
+</ui:composition>

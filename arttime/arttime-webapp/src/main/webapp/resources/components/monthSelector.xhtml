@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+    
+    <composite:interface componentType="monthSelector">
+        <composite:attribute name="period"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <style type="text/css">
+            .special tr[id]{
+                display: none;
+            }
+        </style>
+        <f:event type="postAddToView" listener="#{cc.init}"/>
+
+        <span id="filterMonthSelector" />
+        <h:inputHidden id="firstDayOfMonth" value="#{cc.attrs.period.start}">
+            <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:inputHidden>
+        <h:inputHidden id="lastDayOfMonth" value="#{cc.attrs.period.finish}">
+            <f:convertDateTime pattern="dd.MM.yyyy"/>
+        </h:inputHidden>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                window.monthSelector = window.monthSelector || new MonthSelector();
+                window.monthSelector.init();
+            })
+        </script>
+
+    </composite:implementation>
+</html>

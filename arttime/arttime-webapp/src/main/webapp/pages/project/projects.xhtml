@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">#{messages['mainMenu.dictionaries']} / #{messages['projects.title']}</ui:define>
+
+	<ui:define name="titleBody">#{messages['mainMenu.dictionaries']}
+		<p:outputLabel> / #{messages['projects.title']}</p:outputLabel></ui:define>
+
+	<ui:define name="leftToolbarGroup">
+		<p:commandButton value="#{messages['projects.button.addNew']}"
+						 action="addNew"
+						 styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
+						 ajax="false" icon="fa fa-plus-circle"/>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:dataTable value="#{projectsBean.projects}" var="project"
+					 id="projectTable" sortMode="single" sortBy="#{project.displayCode.toLowerCase()}"
+					 styleClass="dictionaryTable avoidChangeTracking cancelTrackedChanges"
+					 emptyMessage="#{messages['warning.datatable.empty']}"
+					 widgetVar="projectsTable"
+					 filteredValue="#{projectsBean.filteredProjects}"
+					 scrollable="true">
+
+			<f:event type="preRenderComponent" listener="#{projectsBean.setInitialFilteredValue}"/>
+
+			<p:column sortBy="#{project.displayCode.toLowerCase()}"
+					  filterBy="#{project.displayCode}" filterMatchMode="contains">
+				<f:facet name="header">#{messages['projects.column.code']}</f:facet>
+				<h:outputText value="#{project.displayCode}"/>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{messages['projects.column.description']}</f:facet>
+				#{project.description}
+			</p:column>
+
+			<p:column filterBy="#{project.isSubproject()}" filterFunction="#{projectsBean.filterBySubprojects}">
+				<f:facet name="header">#{messages['projects.column.masterProject']}</f:facet>
+				<f:facet name="filter">
+					<p:selectBooleanCheckbox id="displaySubprojectsCheckbox"
+											 onchange="PF('projectsTable').filter()" value="true"
+											 itemLabel="#{messages['filter.label.displaySubprojects']}"/>
+				</f:facet>
+				#{project.isSubproject() ? project.master.code : ''}
+			</p:column>
+
+			<p:column filterBy="#{project.managers}" filterFunction="#{projectsBean.filterByManager}">
+				<f:facet name="header">#{messages['projects.column.manager']}</f:facet>
+				<ui:repeat var="manager" value="#{projectBean.getManagersOrdered(project)}" varStatus="status">
+					#{manager.fullName}#{status.last ? '' : ', '}
+				</ui:repeat>
+			</p:column>
+
+			<p:column filterBy="#{project.status}" filterMatchMode="exact">
+				<f:facet name="header">#{messages['projects.column.status']}</f:facet>
+				<f:facet name="filter">
+					<p:selectOneMenu onchange="PF('projectsTable').filter()"
+									 converter="omnifaces.SelectItemsConverter"
+									 value="#{projectsBean.defaultStatus}">
+						<f:selectItem itemLabel="#{messages['projects.column.allStatuses']}" itemValue="#{null}"
+									  noSelectionOption="true"/>
+						<f:selectItems value="#{projectBean.statuses}" var="status"
+									   itemLabel="#{messages[status.key]}"/>
+					</p:selectOneMenu>
+				</f:facet>
+				#{messages[project.status.key]}
+			</p:column>
+
+			<p:column id="actionsColumn">
+				<f:facet name="header">#{messages['projects.column.action']}</f:facet>
+				<p:button value=""
+						  outcome="edit"
+						  includeViewParams="true"
+						  icon="fa fa-pencil"
+						  styleClass="invisibleBorder">
+					<f:param name="project" value="#{project.id}"/>
+				</p:button>
+				<p:commandButton value="#{messages['button.delete']}"
+								 action="projects"
+								 actionListener="#{projectsBean.remove(project)}"
+								 onclick="return confirm('#{messages['label.confirm.delete']}');"
+								 icon="fa fa-trash"
+								 ajax="false"
+								 styleClass="invisibleBorder ui-fa"/>
+			</p:column>
+		</p:dataTable>
+	</ui:define>
+</ui:composition>

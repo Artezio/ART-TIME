@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui" xmlns:lcg="http://www.lassitercg.com/jsf"
+    xmlns:arttime="http://java.sun.com/jsf/composite/components"
+    xmlns:of="http://omnifaces.org/functions"
+    template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">
+        #{messages['timesheet.title']}
+    </ui:define>
+
+    <ui:define name="titleBody">
+        <p:outputLabel>#{messages['timesheet.title']}</p:outputLabel>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup">
+        <h:panelGroup layout="block" styleClass="filter">
+            <h:panelGroup layout="block" styleClass="filter-body">
+                <arttime:advancedPeriodSelector id="advancedPeriodSelector" selector="#{filterBean.currentFilter.rangePeriodSelector}"/>
+                <p:commandButton value="#{messages['button.show']}"
+                                 actionListener="#{timesheetBean.resetData()}"
+                                 styleClass="avoidChangeTracking"
+                                 ajax="false"/>
+            </h:panelGroup>
+        </h:panelGroup>
+    </ui:define>
+
+    <ui:define name="rightToolbarGroup">
+        <p:panel styleClass="commandButtons">
+            <p:separator/>
+            <p:commandButton value="#{messages['button.saveData']}"
+                             action="#{timesheetBean.saveHours()}"
+                             ajax="false"
+                             icon="fa fa-save"
+                             styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"/>
+        </p:panel>
+    </ui:define>
+
+    <ui:define name="lowerToolBarGroup">
+        <div class="rightside">
+            <arttime:colorLegend/>
+        </div>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:outputScript name="effortsTableValidation.js?v=#{buildInfo['application.version']}" library="js"/>
+        <script type="text/javascript">
+        //<![CDATA[
+            document.ready = function() {
+                showTitlesInsideSheet();
+                setTimeout(function () {
+                    PF('effortsSheet').ht.render();
+                }, 100);
+            };
+
+            window.onresize = function() {
+                resizeTableContainers();
+            };
+
+            window.onload = function() {
+                $(window).trigger('resize');
+            };
+
+            function resizeTableContainers() {
+                var height = $(window).height();
+                var tbl = $("div[id$='timesheet_tbl']");
+                height = height - tbl.offset().top - document.getElementById('copyright').offsetHeight;
+                tbl.css("height", height - 5);
+                $("div[id$=':container']").css("height", height - 2);
+            }
+        //]]>
+        </script>
+
+        <f:metadata>
+            <f:viewParam name="start" value="#{timesheetBean.period.start}">
+                <f:convertDateTime pattern="dd.MM.yy" />
+            </f:viewParam>
+            <f:viewParam name="finish" value="#{timesheetBean.period.finish}">
+                <f:convertDateTime pattern="dd.MM.yy" />
+            </f:viewParam>
+            <f:viewAction action="#{timesheetBean.initByGetRequest}"/>
+        </f:metadata>
+
+        <c:set var="spreadSheet" value="#{timesheetBean.spreadSheet}"/>
+        <c:set var="days" value="#{timesheetBean.spreadSheet.filter.period.days}" scope="view"/>
+        <c:set var="rows" value="#{timesheetBean.spreadSheet.getRows()}" scope="view"/>
+        <lcg:sheet id="timesheet"
+                   value="#{rows}"
+                   widgetVar="effortsSheet"
+                   var="row"
+                   height="2000" stretchH="true"
+                   fixedCols="3"
+                   showRowHeaders="false"
+                   binding="#{timesheetBean.spreadSheet.sheet}"
+                   rowKey="#{row.getKey()}"
+                   emptyMessage="#{messages['warning.datatable.empty']}">
+
+            <p:ajax listener="#{timesheetBean.spreadSheet.cellEditEvent()}" async="true"/>
+            <c:set var="firstColValue" value="#{row.getFirstColValue('BY_EMPLOYEES')}"/>
+            <c:set var="rowIndex" value="#{timesheetBean.spreadSheet.sheet.rowIndex}"/>
+            <c:set var="previousFirstColValue" value="#{(rowIndex == 0) ? '' : rows.get(rowIndex-1).getFirstColValue('BY_EMPLOYEES')}"/>
+            <c:set var="nextFirstColValue" value="#{(rowIndex == rows.size()-1) ? '' : rows.get(rowIndex+1).getFirstColValue('BY_EMPLOYEES')}"/>
+            <c:set var="firstheader" value="#{messages['timesheet.table.project']}"/>
+            <c:set var="headRow" value="#{row.getClass().simpleName == 'HeadSpreadSheetRow'}"/>
+            <c:set var="totalRow" value="#{row.getClass().simpleName == 'TotalsSpreadSheetRow'}"/>
+            <c:set var="hoursRow" value="#{row.getClass().simpleName == 'HoursSpreadSheetRow'}"/>
+
+            <lcg:column headerText="#{firstheader}"
+                        value="#{firstColValue == previousFirstColValue ? '' : totalRow ? messages['manageEfforts.table.total'] : firstColValue}"
+                        readonly="true" colWidth="250"
+                        styleClass="tdLongTextContainer #{firstColValue == nextFirstColValue ? 'hiddenBottomBorder' : ''} #{totalRow ? 'totalsRow' : ''} firstCol"/>
+
+            <lcg:column headerText="#{messages['manageEfforts.table.hourType']}"
+                        value="#{row.getHourType().type}"
+                        styleClass="tdLongTextContainer hiddenRightBorder #{totalRow ? 'totalsRow' : ''}"
+                        readonly="true" colWidth="120"/>
+
+            <lcg:column headerText="#{messages['manageEfforts.table.total']}"
+                        value="#{row.rowTotal}"
+                        headerStyleClass="totalColumn"
+                        readonly="true" colWidth="80"
+                        styleClass="totalColumn #{totalRow ? 'totalsRow' : ''}">
+                <f:convertNumber pattern="#0.##" locale="en"/>
+            </lcg:column>
+
+            <c:forEach var="day" items="#{days}">
+                <c:set var="dayClass" value="#{timesheetBean.getHeaderStyleClass(day)}"/>
+                <c:set var="header"
+                       value="&lt;span class='#{dayClass}'&gt;&lt;span class='weekDay'&gt;#{of:formatDate(day, 'EE')}&lt;/span&gt;
+                       &lt;span class='dayNumber'&gt;#{of:formatDate(day, 'd')}&lt;/span&gt;
+                       &lt;span class='month'&gt;#{of:formatDate(day, 'MMM')}&lt;/span&gt;
+                       &lt;/span&gt;"/>
+                <lcg:column headerText="#{header}"
+                            colWidth="50"
+                            value="#{(hoursRow and spreadSheet.getValue(row, day) != null)
+                                        ? spreadSheet.getValue(row, day).quantity
+                                        : spreadSheet.getValue(row, day)}"
+                            comment="#{(hoursRow and spreadSheet.getValue(row, day) != null)
+                                        ? spreadSheet.getValue(row, day).comment
+                                        : null}"
+                            readonlyCell="#{hoursRow ? spreadSheet.isReadOnlyCell(row, day) : true}"
+                            styleClass="#{totalRow ? 'totalsRow' : ''}
+                                        #{hoursRow ? timesheetBean.getStyleClass(spreadSheet.getValue(row, day)) : ''}">
+                    <f:convertNumber pattern="#0.##" locale="en"/>
+                </lcg:column>
+            </c:forEach>
+        </lcg:sheet>
+    </ui:define>
+</ui:composition>

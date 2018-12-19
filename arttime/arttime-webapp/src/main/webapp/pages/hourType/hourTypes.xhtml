@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/one-form-content.template.xhtml">
+
+    <ui:define name="titleHead">
+        #{messages['mainMenu.dictionaries']} / #{messages['hourTypes.title']}</ui:define>
+
+    <ui:define name="titleBody">
+        #{messages['mainMenu.dictionaries']} / <p:outputLabel>#{messages['hourTypes.title']}</p:outputLabel></ui:define>
+
+    <ui:define name="rightToolbarGroup">
+        <p:commandButton value="#{messages['hourTypes.button.addNew']}"
+                         action="addNew"
+                         icon="fa fa-plus-circle" ajax="false"
+                         styleClass="avoidChangeTracking ui-fa"
+                         actionListener="#{hourTypesBean.addNew()}"/>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <p:dataTable id="hourTypesTable" value="#{hourTypesBean.hourTypes}"
+                     var="hourType" sortBy="#{hourType}" sortFunction="#{hourTypesBean.compare}"
+                     stickyHeader="false" styleClass="dictionaryTable"
+                     emptyMessage="#{messages['warning.datatable.empty']}">
+
+            <p:column id="actualTime" style="width:15%" sortBy="#{hourType.actualTime}">
+                <f:facet name="header">#{messages['hourTypes.column.actualType']}</f:facet>
+                <h:outputText value=""
+                              styleClass="#{hourType.actualTime ? 'fa fa-check' : ''}"/>
+            </p:column>
+            <p:column id="priority" sortBy="#{hourType.priority}" styleClass="numeric">
+                <f:facet name="header">#{messages['hourType.label.priority']}</f:facet>
+                <h:outputText value="#{hourType.priority}"/>
+            </p:column>
+            <p:column id="type" sortBy="#{hourType.type.toLowerCase()}">
+                <f:facet name="header">#{messages['hourTypes.column.type']}</f:facet>
+                <h:outputText value="#{hourType.type}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">#{messages['hourTypes.column.action']}</f:facet>
+                <p:commandButton value=""
+                                 icon="fa fa-check"
+                                 actionListener="#{hourTypesBean.setActualTime(hourType)}"
+                                 onclick="return confirm('#{messages['label.confirm.markAsActual']}');"
+                                 styleClass="avoidChangeTracking invisibleBorder leftSideButton"
+                                 ajax="false"/>
+                <p:button value="" outcome="edit" includeViewParams="true"
+                          icon="fa fa-pencil"
+                          styleClass="avoidChangeTracking invisibleBorder rightSideButton">
+                    <f:param name="hourType" value="#{hourType.id}"/>
+                </p:button>
+                <p:commandButton value="#{messages['button.delete']}"
+                                 icon="fa fa-trash"
+                                 actionListener="#{hourTypesBean.remove(hourType)}"
+                                 onclick="return confirm('#{messages['label.confirm.delete']}');"
+                                 styleClass="avoidChangeTracking invisibleBorder ui-fa"
+                                 ajax="false"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

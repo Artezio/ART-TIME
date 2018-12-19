@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:outputLabel for="keycloakServerUrl" value="#{messages['keycloak.serverUrl.label']}"/>
+    <h:inputText id="keycloakServerUrl" value="#{settingsBean.settings.keycloakServerUrl}"/>
+    <h:message for="keycloakServerUrl"/>
+    <h:outputText value="#{messages['keycloak.serverUrl.description']}"/>
+
+    <p:outputLabel for="keycloakRealm" value="#{messages['keycloak.realm.label']}"/>
+    <h:inputText id="keycloakRealm" value="#{settingsBean.settings.keycloakRealm}"/>
+    <h:message for="keycloakRealm"/>
+    <h:outputText value="#{messages['keycloak.realm.description']}"/>
+
+    <p:outputLabel for="keycloakClientId" value="#{messages['keycloak.client-id.label']}"/>
+    <h:inputText id="keycloakClientId" value="#{settingsBean.settings.keycloakClientId}"/>
+    <h:message for="keycloakClientId"/>
+    <h:outputText value="#{messages['keycloak.client-id.description']}"/>
+
+    <p:outputLabel for="keycloakUsername" value="#{messages['keycloak.username.label']}"/>
+    <h:inputText id="keycloakUsername" value="#{settingsBean.settings.keycloakUserName}"/>
+    <h:message for="keycloakUsername"/>
+    <h:outputText value="#{messages['keycloak.username.description']}"/>
+
+    <p:outputLabel for="keycloakPassword" value="#{messages['keycloak.password.label']}"/>
+    <p:password id="keycloakPassword" value="#{settingsBean.settings.keycloakPassword}"
+                match="keycloakPasswordConfirm" redisplay="true"/>
+    <h:message for="keycloakPassword"/>
+    <h:outputText value="#{messages['keycloak.password.description']}"/>
+
+    <p:outputLabel for="keycloakPasswordConfirm" value="#{messages['keycloak.password.confirm.label']}"/>
+    <p:password id="keycloakPasswordConfirm" value="#{settingsBean.settings.keycloakPassword}"
+                redisplay="true"/>
+    <h:message for="keycloakPasswordConfirm"/>
+    <h:outputText value="#{messages['keycloak.password.confirm.description']}"/>
+
+    <p:outputLabel for="keycloakSyncInterval" value="#{messages['keycloak.cacheRefreshInterval.label']}"/>
+    <h:inputText id="keycloakSyncInterval" value="#{settingsBean.settings.keycloakCacheRefreshIntervalMinutes}"/>
+    <h:message for="keycloakSyncInterval" errorClass="ui-message-error"/>
+    <h:outputText value="#{messages['keycloak.cacheRefreshInterval.description']}"/>
+
+</ui:composition>

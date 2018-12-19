@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:arttime="http://java.sun.com/jsf/composite/components"
+				template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">
+		#{messages['reports.title']}			
+	</ui:define>
+
+	<ui:define name="titleBody">
+		<ui:include src="/pages/filterSaveAsToolbar.xhtml">
+				<ui:param name="title" value="#{messages['reports.title']}"/>
+		</ui:include>			
+	</ui:define>
+
+	<ui:define name="leftToolbarGroup">
+		<h:panelGroup layout="block" styleClass="filter">
+			<h:panelGroup layout="block" styleClass="filter-body">
+				<arttime:advancedPeriodSelector id="advancedPeriodSelector" selector="#{filterBean.currentFilter.rangePeriodSelector}"/>
+				<ui:include src="/pages/filter.xhtml">
+					<ui:param name="itemBean" value="#{filterBean}"/>
+					<ui:param name="itemAction" value="setCurrentFilter"/>
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+	</ui:define>
+
+	<ui:define name="lowerToolbarGroup">
+		<ui:include src="/pages/filter.xhtml">
+			<ui:param name="showHourTypesSelector" value="true"/>
+			<ui:param name="itemBean" value="#{filterBean}"/>
+			<ui:param name="itemAction" value="setCurrentFilter"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:param name="displayLeftSidebar" value="#{true}"/>
+	<ui:define name="leftSidebar">
+		<ui:include src="/pages/savedFilters.xhtml">
+			<ui:param name="itemBean" value="#{filterBean}"/>
+			<ui:param name="itemAction" value="setCurrentFilter"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:outputText value="#{messages['reports.label.warning']}" styleClass="warning fa fa-warning" />
+
+		<p:dataTable value="#{reportTemplateRepository.names}" var="templateName"
+			emptyMessage="#{messages['warning.datatable.empty']}"
+			styleClass="dictionaryTable" scrollable="true">
+
+			<p:column>
+				<f:facet name="header">#{messages['reports.label.reportType']}</f:facet>
+				<h:outputText
+					value="#{messages[templateName].startsWith('???')? templateName : messages[templateName]}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">#{messages['reports.label.action']}</f:facet>
+				<ui:include src="downloadButtons.xhtml">
+					<ui:param name="templateName" value="#{templateName}" />
+				</ui:include>
+			</p:column>
+		</p:dataTable>
+
+	</ui:define>
+</ui:composition>

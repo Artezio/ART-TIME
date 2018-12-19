@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/layout/one-form-content.template.xhtml">
+
+	<ui:define name="titleHead">
+		<h:panelGroup>#{messages['mainMenu.settings']}</h:panelGroup> / #{messages['links.title']}
+	</ui:define>
+	
+	<ui:define name="titleBody">
+		#{messages['mainMenu.settings']} / <p:outputLabel>#{messages['links.title']}</p:outputLabel>
+	</ui:define>
+
+	<ui:define name="rightToolbarGroup">
+		<p:commandButton value="#{messages['button.save']}" 	    		
+	    		styleClass="avoidChangeTracking cancelTrackedChanges" ajax="false"
+	    		action="links" actionListener="#{settingsService.update(settingsBean.settings)}"
+	    		icon="fa fa-save"/>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:panelGroup styleClass="settings-group" layout="block">
+			<h:panelGrid columns="4" styleClass="panelGridDetails">
+				<p:outputLabel for="helpPageUrl" value="#{messages['links.helpPageUrl.label']}" />
+				<h:inputText id="helpPageUrl" value="#{settingsBean.settings.helpPageUrl}" />
+				<h:message for="helpPageUrl"/>
+				<h:outputText value="#{messages['links.helpPageUrl.description']}"/>
+			</h:panelGrid>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>

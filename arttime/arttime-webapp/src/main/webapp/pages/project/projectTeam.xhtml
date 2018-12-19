@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:c="http://java.sun.com/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui">
+
+	<script type="text/javascript">
+		document.ready = function () {
+			$("div.ui-datatable-scrollable-body").scroll(function () {
+				$("div[id$=':menu_panel'].ui-selectcheckboxmenu-panel").each(function () {
+					if ($(this).is(':visible')) {
+						$(this).hide();
+					}
+				});
+			});
+		}
+	</script>
+	<ui:include src="addTeamMember.xhtml"/>
+
+	<c:set var="activeProjects" value="#{(project.id == null) ? null : projectBean.activeProjects}"/>
+	<c:set var="hasSubprojects" value="#{activeProjects != null and activeProjects.size() > 1}"/>
+
+	<p:dataTable id="projectTeam"
+				 var="employee"
+				 value="#{projectBean.orderedTeam}"
+				 widgetVar="projectTeamTable"
+				 filteredValue="#{projectBean.filtered}"
+				 emptyMessage="#{messages['warning.datatable.empty']}"
+				 scrollable="true"
+				 styleClass="dictionaryTable"
+				 filterDelay="1000">
+
+		<p:column id="name" filterBy="#{employee.fullName}" filterMatchMode="contains" width="150">
+			<f:facet name="header">#{messages['projectTeam.column.employee']}</f:facet>
+			<h:outputText value="#{employee.fullName}" title="#{employee.email}"/>
+		</p:column>
+
+		<p:column filterMatchMode="in" filterBy="#{employee.department}" width="150">
+			<f:facet name="header">#{messages['employees.column.department']}</f:facet>
+			<f:facet name="filter">
+				<p:selectCheckboxMenu label="" styleClass="avoidChangeTracking"
+									  id="departmentFilter"
+									  required="false"
+									  onchange="PF('projectTeamTable').filter()"
+									  showHeader="false" updateLabel="true">
+					<f:selectItems value="#{departmentService.all}"
+								   var="department"
+								   itemLabel='#{not empty department ? department : messages["department.label.noDepartment"]}'/>
+				</p:selectCheckboxMenu>
+			</f:facet>
+			#{not empty employee.department ? employee.department : messages['department.label.noDepartment']}
+		</p:column>
+
+		<p:column width="92">
+			<f:facet name="header">#{messages['projectTeam.column.action']}</f:facet>
+			<p:commandButton value="#{messages['button.delete']}"
+							 rendered="#{!hasSubprojects}"
+							 action="#{projectBean.delete(employee)}"
+							 update="projectTeam"
+							 process="@this"
+							 onstart="return confirm('#{messages['label.confirm.delete']}');"
+							 styleClass="invisibleBorder ui-fa"
+							 icon="fa fa-trash"
+							 oncomplete="PF('projectTeamTable').filter()"/>
+
+			<p:commandButton value="#{messages['button.delete']}"
+							 rendered="#{hasSubprojects}"
+							 action="#{projectBean.deleteFromAllProjects(employee)}"
+							 update="@widgetVar(projectTeamTable)"
+							 process="@this"
+							 styleClass="invisibleBorder ui-fa"
+							 icon="fa fa-trash"
+							 title="#{messages['button.deleteFromAllProjects.title']}"
+							 oncomplete="$(window).trigger('resize');"/>
+		</p:column>
+
+		<p:column rendered="#{hasSubprojects}">
+			<f:facet name="header">
+				#{messages['projectTeam.column.projects']}
+			</f:facet>
+			<h:panelGroup layout="block" style="float: left;" styleClass="project-team">
+				<p:selectCheckboxMenu id="projectTeamParticipants"
+									  value="#{projectBean.participations[employee]}"
+									  showHeader="false"
+									  filter="true"
+									  filterMatchMode="contains"
+									  label="..."
+									  multiple="true"
+									  converter="projectConverter">
+					<f:selectItems value="#{projectBean.activeProjects}" var="prj" itemLabel="#{prj.code}"/>
+				</p:selectCheckboxMenu>
+			</h:panelGroup>
+		</p:column>
+
+	</p:dataTable>
+
+</ui:composition>

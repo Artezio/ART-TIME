@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <module name="org.dom4j"/>
+            <module name="com.google.guava"/>
+            <module name="org.apache.commons.beanutils"/>
+            <module name="org.apache.commons.io"/>
+            <module name="org.apache.commons.lang"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

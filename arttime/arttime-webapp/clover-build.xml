@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Ant task sequence for making Clover report.
+	1. [init] Move original `classes` directory away to avoid issues with classpath (which is received from Maven)
+	2. [with.clover] Configure Clover, set filters. Clover is then invoked before compiler automatically
+	3. [code.compile] Compile main source code with Clover
+	4. [test.compile] Compile test source code with Clover
+	5. [test.run] Run JUnit tasks. Clover databases are generated in this step
+	6. [clover.report] Combine generated clover db files into HTML report, then remove all created files and
+	   move original `classes` directory back
+-->
+
+<project name="generate-clover-report" >
+
+	<property name="clover.db.dir" location="${build.dir}/clover.db" />
+	<property name="source.build.dir" location="${build.dir}/build/main"/>
+	<property name="test.build.dir" location="${build.dir}/build/test"/>
+	<property name="test.result" location="${build.dir}/surefire-reports"/>
+	<property name="test.manifestjar.dir" location="${build.dir}/test-mfcp"/>
+	<property name="test.manifestjar.file" location="${build.dir}/mfile.jar"/>
+	<path id="source.compile.classpath">
+		<pathelement path="${mvn.compile.classpath}"/>
+		<pathelement path="${mvn.plugin.classpath}"/>
+	</path>
+	<path id="test.compile.classpath">
+		<pathelement path="${source.build.dir}"/>
+		<pathelement path="${mvn.plugin.classpath}"/>
+		<pathelement path="${mvn.test.classpath}"/>
+	</path>
+	<path id="mfile.incoming.classpath">
+		<pathelement path="${mvn.plugin.classpath}"/>
+		<pathelement path="${mvn.test.classpath}"/>
+	</path>
+	<path id="pluginclasspath">
+		<pathelement path="${plugin.classpath}"/>
+	</path>
+
+	<taskdef resource="cloverlib.xml" classpathref="pluginclasspath"/>
+
+	<!-- Prepare for instrumentation -->
+	<target name="init">
+		<delete file="${clover.db.dir}"/>
+		<delete dir="${source.build.dir}"/>
+		<delete dir="${test.build.dir}"/>
+		<delete dir="${test.result}"/>
+
+		<!-- Move original build classes temporary aside from classpath -->
+		<move todir="${build.dir}/original_classes">
+			<fileset dir="${build.dir}/classes"/>
+		</move>
+	</target>
+
+	<!-- Set clover filters here -->
+	<target name="with.clover">
+		<clover-setup initstring="${clover.db.dir}"
+					  instrumentLambda="all_but_reference"> <!-- Clover has issue with instrumenting generic expression lambdas with method reference -->
+			<methodContext name="trivialSetter" regexp="(.*)public .*(set)[A-Z].*" maxAggregatedStatements="1" maxAggregatedComplexity="1"/>
+			<methodContext name="trivialGetter" regexp="(.*)public .*(get|is)[A-Z].*\(\)" maxAggregatedStatements="1" maxAggregatedComplexity="1"/>
+			<methodContext name="equals" regexp="(.*)public boolean equals\(.*\)"/>
+			<methodContext name="hashCode" regexp="(.*)public int hashCode\(\)"/>
+			<methodContext name="toString" regexp="(.* )?public String toString\(\)"/>
+		</clover-setup>
+	</target>
+
+	<!-- Compile Clover-Instrumented source files -->
+	<target name="code.compile" depends="init,with.clover">
+		<echo>Compiling application</echo>
+		<mkdir dir="${source.build.dir}"/>
+		<javac srcdir="${src.dir}"
+			   destdir="${source.build.dir}"
+			   classpathref="source.compile.classpath"
+			   source="1.8"/>
+	</target>
+	<target name="test.compile" depends="code.compile">
+		<mkdir dir="${test.build.dir}"/>
+		<echo>Compiling tests</echo>
+		<javac srcdir="${test.src}"
+			   destdir="${test.build.dir}"
+			   classpathref="test.compile.classpath"
+			   source="1.8"/>
+	</target>
+
+	<!-- Package entire classpath into single JAR to avoid Windows filename length limitation -->
+	<target name="test-manifestjar.package">
+		<mkdir dir="${test.manifestjar.dir}"/>
+
+		<path id="test-cp-to-refine">
+			<path refid="test.compile.classpath"/>
+			<pathelement path="${test.build.dir}"/>
+			<pathelement path="${test-classes.dir}"/>
+			<pathelement path="${source.build.dir}"/>
+		</path>
+
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+		<pathconvert property="compile_classpath_raw" pathsep=" ">
+			<path refid="test-cp-to-refine"/>
+			<mapper>
+				<scriptmapper language="javascript">
+					<![CDATA[
+						var encodedUrl = "file:///" + encodeURIComponent(source);
+						self.addMappedName(encodedUrl);
+					]]>
+				</scriptmapper>
+			</mapper>
+		</pathconvert>
+
+		<!-- Create pathing Jar -->
+		<jar destfile="${test.manifestjar.file}">
+			<manifest>
+				<attribute name="Class-Path" value="${compile_classpath_raw}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- Run JUnit -->
+	<target name="test.run" depends="test.compile,test-manifestjar.package">
+		<mkdir dir="${test.result}"/>
+		<echo>Running JUnit</echo>
+
+		<path id="junit-with-mf.classpath">
+			<pathelement path="${test.build.dir}"/>
+			<pathelement path="${test-classes.dir}"/>
+			<pathelement path="${source.build.dir}"/>
+			<pathelement location="${test.manifestjar.file}"/>
+		</path>
+
+		<pathconvert property="junit-with-mf.classpath.string" refid="junit-with-mf.classpath"/>
+
+		<junit printsummary="true" haltonfailure="yes" dir="${base.dir}" fork="yes">
+			<classpath>
+				<path refid="junit-with-mf.classpath"/>
+			</classpath>
+			<formatter type="xml"/>
+			<formatter usefile="false" type="plain"/>
+			<batchtest fork="yes" todir="${test.result}">
+				<fileset dir="${test.src}">
+					<include name="**/*Test.java"/>
+					<exclude name="**/LoggedClassForTest.java" />			<!-- Include or exclude test files here -->
+					<exclude name="**/*IntegrationTest.java"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<!-- Generate HTML report file from Clover database -->
+	<target name="clover.report" depends="test.run">
+		<clover-report initstring="${clover.db.dir}">
+			<current outfile="clover_html" title="Art-Time Test Coverage">
+				<format type="html" filter="trivialGetter,trivialSetter,toString,equals"/>
+			</current>
+			<current outfile="clover_html/clover.xml">
+				<format type="xml" filter="trivialGetter,trivialSetter,toString,equals"/>
+			</current>
+		</clover-report>
+		<clover-clean initstring="${clover.db.dir}"/>
+		<delete dir="${source.build.dir}"/>
+		<delete dir="${test.build.dir}"/>
+		<delete dir="${build.dir}/build"/>
+
+		<!-- Restore original classes as they do not interfere with Clover anymore -->
+		<move todir="${build.dir}/classes">
+			<fileset dir="${build.dir}/original_classes"/>
+		</move>
+	</target>
+
+</project>
