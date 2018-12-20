@@ -30,35 +30,37 @@
                 <f:selectItem itemValue="BASED_ON_MASTER"
                               itemLabel="#{messages['project.label.teamImport.basedOnMaster']}"/>
             </c:if>
-            <f:ajax event="change" render="teamFilterValueGroup teamFilterMessage" execute="@this"
+            <f:ajax event="change" render="teamFilterValueGroup teamFilterDepartmentsMessage teamFilterGroupsMessage" execute="@this"
                     listener="#{projectBean.filterTypeChanged}"/>
         </p:selectOneMenu>
         <h:panelGroup id="teamFilterValueGroup">
-            <h:panelGrid columns="2" rendered="#{project.teamFilter.filterType ne 'DISABLED'
-                                     and project.teamFilter.filterType ne 'DEPARTMENTS'
-                                     and project.teamFilter.filterType ne 'BASED_ON_MASTER'}">
-                <p:inputText id="teamFilterValue" value="#{project.teamFilter.value}" maxlength="255">
-                </p:inputText>
+            <h:panelGrid columns="4" rendered="#{project.teamFilter.filterType eq 'PROJECT_CODES'}">
+                <p:inputText id="teamFilterValue" value="#{project.teamFilter.value}" maxlength="255" required="true"/>
+                <p:outputLabel for="teamFilterValue" value=""/>
+                <p:message id="teamFilterGroupsMessage" for="teamFilterValue" display="text"/>
                 <h:outputText value="#{messages['project.importSettings.label.groups.description']}"/>
             </h:panelGrid>
 
-            <p:selectCheckboxMenu id="teamFilterDepartments"
-                                  styleClass="team-filter-departments"
-                                  required="false"
-                                  rendered="#{project.teamFilter.filterType eq 'DEPARTMENTS'}"
-                                  value="#{projectBean.departments}"
-                                  showHeader="false"
-                                  label="..."
-                                  updateLabel="true"
-                                  multiple="true">
-                <f:selectItems value="#{departmentService.all}"
-                               var="department"
-                               itemLabel="#{department ne null and department != '' ? department : messages['department.label.noDepartment']}"
-                               itemValue="#{department}"/>
-                <f:attribute name="collectionType" value="java.util.ArrayList"/>
-            </p:selectCheckboxMenu>
+            <h:panelGrid columns="4" rendered="#{project.teamFilter.filterType eq 'DEPARTMENTS'}">
+                <p:selectCheckboxMenu id="teamFilterDepartments"
+                                      styleClass="team-filter-departments"
+                                      required="true"
+                                      value="#{projectBean.departments}"
+                                      showHeader="false"
+                                      label="..."
+                                      updateLabel="true"
+                                      multiple="true">
+                    <f:selectItems value="#{departmentService.all}"
+                                   var="department"
+                                   itemLabel="#{department ne null and department != '' ? department : messages['department.label.noDepartment']}"
+                                   itemValue="#{department}"/>
+                    <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                </p:selectCheckboxMenu>
+                <p:outputLabel for="teamFilterDepartments" value=""/>
+                <p:message id="teamFilterDepartmentsMessage" for="teamFilterDepartments" display="text"/>
+                <h:outputText value="#{messages['project.importSettings.label.departments.description']}"/>
+            </h:panelGrid>
         </h:panelGroup>
-        <p:message id="teamFilterMessage" for="teamFilterValue" display="tooltip"/>
     </h:panelGrid>
 
 </ui:composition>	
