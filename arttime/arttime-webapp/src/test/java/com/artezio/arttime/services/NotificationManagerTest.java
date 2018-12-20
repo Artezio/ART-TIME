@@ -86,7 +86,6 @@ public class NotificationManagerTest {
         setMockServices(notificationManager);
         Employee employee = new Employee("iivanov");
         employee.setEmail("iivanov@mail.com");
-        Employee sender = new Employee("", "", "", "testSender@mail.com");
         List<Employee> employees = Arrays.asList(employee);
         Map<Employee, Map<Date, BigDecimal>> timeProblems = new HashMap<>();
         timeProblems.put(employee, new HashMap<>());
@@ -99,10 +98,10 @@ public class NotificationManagerTest {
         EasyMock.expect(workTimeService.getWorkTimeDeviations(period, employees)).andReturn(timeProblems);
         EasyMock.expect(mailTemplateManager.getTemplateText(eq(MailTemplate.TIME_PROBLEM_BODY.getFileName()), anyObject(Map.class))).andReturn(body);
         EasyMock.expect(mailTemplateManager.getTemplateText(eq(MailTemplate.TIME_PROBLEM_SUBJECT.getFileName()), anyObject(Map.class))).andReturn(subject);
-        EasyMock.expect(settings.getSmtpUsername()).andReturn("sender");
+        EasyMock.expect(settings.getSmtpUsername()).andReturn("username");
+        EasyMock.expect(settings.getSmtpSender()).andReturn("sender");
         EasyMock.expect(settings.getApplicationBaseUrl()).andReturn("appHost");
-        EasyMock.expect(employeeRepository.find("sender")).andReturn(sender);
-        mailingEngine.send(new Mail(subject, body, "testSender@mail.com", "iivanov@mail.com"));
+        mailingEngine.send(new Mail(subject, body, "sender", "iivanov@mail.com"));
         String principalName = "someuser";
         Principal principal = Mockito.mock(Principal.class);
         Mockito.when(principal.getName()).thenReturn(principalName);
@@ -142,11 +141,10 @@ public class NotificationManagerTest {
         EasyMock.expect(mailTemplateManager.getTemplateText(eq(MailTemplate.TIME_PROBLEM_BODY_FOR_PM.getFileName()), anyObject(Map.class))).andReturn(body);
         EasyMock.expect(mailTemplateManager.getTemplateText(eq(MailTemplate.TIME_PROBLEM_SUBJECT.getFileName()), anyObject(Map.class))).andReturn(subject);
         EasyMock.expect(settings.getSmtpUsername()).andReturn("testSmtpUsername");
+        EasyMock.expect(settings.getSmtpSender()).andReturn("sender");
         EasyMock.expect(settings.getApplicationBaseUrl()).andReturn("appHost");
-        EasyMock.expect(employeeRepository.find("testSmtpUsername")).andReturn(sender);
         mailingEngine.send(new Mail(subject, body, sender.getEmail(), pm.getEmail()));
-        EasyMock.replay(notificationManager, hourTypeService, workTimeService, mailTemplateManager, mailingEngine,
-                employeeRepository, settings);
+        EasyMock.replay(notificationManager, hourTypeService, workTimeService, mailTemplateManager, mailingEngine, settings);
 
         notificationManager.notifyProjectManagers(employees, period, comment);
 
