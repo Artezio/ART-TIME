@@ -33,8 +33,6 @@ public class ProjectBean implements Serializable {
     private String selectedTab;
     private Project project;
     @Inject
-    private DepartmentService departmentService;
-    @Inject
     private ProjectService projectService;
     @Inject
     private EmployeeService employeeService;
@@ -300,7 +298,7 @@ public class ProjectBean implements Serializable {
 
     public void filterTypeChanged(javax.faces.event.AjaxBehaviorEvent ignored) throws javax.faces.event.AbortProcessingException {
         if (project != null && project.getTeamFilter() != null) {
-            project.getTeamFilter().setValue("");
+            project.getTeamFilter().setValue(null);
         }
     }
 

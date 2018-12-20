@@ -17,30 +17,30 @@
 
     <ui:define name="leftToolbarGroup">
         <c:set var="project" value="#{projectBean.project}"/>
-        <p:commandButton value="#{messages['button.cancel']}"
-                         action="cancel"
-                         immediate="true"
-                         styleClass="avoidChangeTracking cancelTrackedChanges"
-                         ajax="false"/>
-
-        <p:commandButton value="#{messages['button.back']}" onclick="PF('createProjectWizard').back();"
-                         styleClass="avoidChangeTracking cancelTrackedChanges"
-                         update="@form"
-                         rendered="#{projectBean.selectedTab != null and projectBean.selectedTab != 'details'}"/>
-    </ui:define>
-
-    <ui:define name="rightToolbarGroup">
-        <c:set var="project" value="#{projectBean.project}"/>
-        <p:commandButton value="#{messages['button.next']}" onclick="PF('createProjectWizard').next();"
-                         styleClass="avoidChangeTracking cancelTrackedChanges"
-                         update="@form" oncomplete="$(window).trigger('resize');"
-                         rendered="#{projectBean.selectedTab != 'team'}"/>
-
-        <p:commandButton value="#{messages['button.create']}" ajax="false"
-                         action="create" actionListener="#{projectBean.create()}"
-                         styleClass="avoidChangeTracking cancelTrackedChanges"
-                         rendered="#{projectBean.selectedTab == 'team'}"/>
-
+        <h:panelGroup id="projectWizardButtons">
+            <p:commandButton id="cancelButton"
+                             value="#{messages['button.cancel']}"
+                             action="cancel"
+                             immediate="true"
+                             styleClass="avoidChangeTracking cancelTrackedChanges"
+                             ajax="false"/>
+            <p:commandButton id="backButton"
+                             value="#{messages['button.back']}" onclick="PF('createProjectWizard').back();"
+                             styleClass="avoidChangeTracking cancelTrackedChanges"
+                             update="projectWizardButtons"
+                             rendered="#{projectBean.selectedTab != null and projectBean.selectedTab != 'details'}"/>
+            <p:commandButton id="nextButton"
+                             value="#{messages['button.next']}" onclick="PF('createProjectWizard').next();"
+                             styleClass="avoidChangeTracking cancelTrackedChanges"
+                             update="projectWizardButtons"
+                             oncomplete="$(window).trigger('resize');"
+                             rendered="#{projectBean.selectedTab != 'team'}"/>
+            <p:commandButton id="projectCreateWizardCreateButton"
+                             value="#{messages['button.create']}" ajax="false"
+                             action="create" actionListener="#{projectBean.create()}"
+                             styleClass="avoidChangeTracking cancelTrackedChanges"
+                             rendered="#{projectBean.selectedTab == 'team'}"/>
+        </h:panelGroup>
     </ui:define>
 
     <ui:define name="content">

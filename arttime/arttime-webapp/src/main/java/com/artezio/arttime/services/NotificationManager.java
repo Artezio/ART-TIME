@@ -7,7 +7,6 @@ import com.artezio.arttime.datamodel.HourType;
 import com.artezio.arttime.datamodel.Period;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.repositories.EmployeeRepository;
-import com.artezio.arttime.repositories.HourTypeRepository;
 import com.artezio.arttime.repositories.ProjectRepository;
 import com.artezio.arttime.services.mailing.*;
 import com.artezio.arttime.web.interceptors.FacesMessage;
@@ -38,8 +37,6 @@ public class NotificationManager implements NotificationManagerLocal {
     private MailTemplateManager mailTemplateManager;
     @Inject
     private WorkTimeService workTimeService;
-    @Inject
-    private HourTypeRepository hourTypeRepository;
     @Inject
     private HourTypeService hourTypeService;
     @Inject
@@ -90,7 +87,7 @@ public class NotificationManager implements NotificationManagerLocal {
         Map<Employee, Map<Date, BigDecimal>> timeProblems = workTimeService.getWorkTimeDeviations(period, employees);
         HourType actualTime = hourTypeService.findActualTime();
         TimeProblemsMailBuilder mailTemplateBuilder = new TimeProblemsMailBuilder(mailTemplateManager);
-        mailTemplateBuilder.setSenderEmailAddress(getSenderEmailAddress())
+        mailTemplateBuilder.setSenderEmailAddress(settings.getSmtpSender())
                 .setHourType(actualTime)
                 .setPeriod(period)
                 .setComment(comment)
@@ -112,7 +109,7 @@ public class NotificationManager implements NotificationManagerLocal {
         Map<Employee, Map<Date, BigDecimal>> timeProblems = workTimeService.getWorkTimeDeviations(period, employees);
         HourType actualTime = hourTypeService.findActualTime();
         TimeProblemsForPmMailBuilder mailTemplateBuilder = new TimeProblemsForPmMailBuilder(mailTemplateManager);
-        mailTemplateBuilder.setSenderEmailAddress(getSenderEmailAddress())
+        mailTemplateBuilder.setSenderEmailAddress(settings.getSmtpSender())
                 .setHourType(actualTime)
                 .setPeriod(period)
                 .setComment(comment)
@@ -220,11 +217,6 @@ public class NotificationManager implements NotificationManagerLocal {
             return NotificationManager.this;
         }
 
-    }
-
-    private String getSenderEmailAddress() {
-        Employee employee = employeeRepository.find(settings.getSmtpUsername());
-        return employee != null ? employee.getEmail() : "";
     }
 
 }
