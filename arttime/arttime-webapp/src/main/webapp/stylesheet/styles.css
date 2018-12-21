@@ -3839,32 +3839,48 @@ button.approveAll, button.disapproveAll {
     vertical-align: top;
 }
 
-.session-expired-dlg {
+.session-expired-dialog {
     background: #fff;
     border: 1px solid #a5a5a5;
     border-radius: 4px;
     padding: 8px;
 }
 
-.session-expired-dlg.ui-dialog .ui-dialog-title {
+.session-expired-dialog .ui-dialog-title {
     font-size: 22px;
     color: #555;
     margin: 0;
 }
 
-.ui-dialog.session-expired-dlg .ui-dialog-titlebar {
+.session-expired-dialog .ui-dialog-titlebar {
     padding-top: 6px;
 }
 
-.session-expired-dlg a {
-    font-size: 14px;
+.session-expired-dialog__refresh-link {
+    font-size: 13px;
+    color: #4e4e4e;
 }
 
-.session-expired-dlg .ui-dialog-actions {
+.session-expired-dialog__refresh-link i {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.session-expired-dialog__refresh-link:hover {
+    font-size: 13px;
+    background-color: #e9e9e9;
+}
+
+.session-expired-dialog__refresh-link:visited {
+    text-decoration: none;
+    color: #4e4e4e;
+}
+
+.session-expired-dialog__actions {
     margin-top: 20px;
 }
 
-.session-expired-dlg.ui-dialog .ui-dialog-content {
+.session-expired-dialog .ui-dialog-content {
     color: #555;
 }
 
