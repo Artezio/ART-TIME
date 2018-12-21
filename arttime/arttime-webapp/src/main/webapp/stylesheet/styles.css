@@ -3800,20 +3800,20 @@ button.approveAll, button.disapproveAll {
 }
 
 .departments-access ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
-.team-filter-departments ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
+.team-filter__departments-select ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
 .project-team ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close {
     background: url(../img/close_autocomplete_token.png) no-repeat 0 0;
 }
 
 .departments-access .ui-selectcheckboxmenu,
-.team-filter-departments.ui-selectcheckboxmenu,
+.team-filter__departments-select.ui-selectcheckboxmenu,
 .project-team .ui-selectcheckboxmenu {
     width: auto;
     height: auto;
 }
 
 .departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
-.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
+.team-filter__departments-select.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
 .project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active {
     background-color: #42a9d9;
     padding: 3px 0 2px 2px;
@@ -3821,16 +3821,22 @@ button.approveAll, button.disapproveAll {
 }
 
 .departments-access .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
-.team-filter-departments.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
+.team-filter__departments-select.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
 .project-team .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon {
     margin-top: -18px;
     text-align: center;
 }
 
 .departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
-.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
+.team-filter__departments-select.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
 .project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon {
     margin-top: -8px;
+}
+
+.team-filter__type-select,
+.team-filter__departments-select {
+    margin-top: 0;
+    vertical-align: top;
 }
 
 .session-expired-dlg {

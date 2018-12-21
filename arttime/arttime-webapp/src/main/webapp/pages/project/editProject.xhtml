@@ -1,102 +1,102 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"	
-	xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core" 
-	xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk" 
-	template="/layout/one-form-content.template.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://myfaces.apache.org/tomahawk"
+                template="/layout/one-form-content.template.xhtml">
 
-	<ui:define name="titleHead">		
-		<h:outputFormat value="#{messages['editProject.title']}" >
-			<f:param value="#{projectBean.project.code}"/>
-		</h:outputFormat>			
-	</ui:define>
-	
-	<ui:define name="titleBody">
-		<p:breadCrumb>
-			<p:menuitem value="#{messages['projects.title']}" outcome="cancel" />
-			<p:menuitem rendered="#{projectBean.project.subproject}" value="#{projectBean.project.master.code}"
-						url="#{projectBean.isMasterAvailableForLoggedInEmployee() ? '?project=' += projectBean.project.master.id.toString() : '#'}" />
-			<p:menuitem value="#{projectBean.project.code}"/>
-		</p:breadCrumb>
-	</ui:define>
-	
-	<ui:define name="leftToolbarGroup">
-		<c:set var="project" value="#{projectBean.project}"/>
-		<h:panelGrid columns="1">			
-			<h:panelGrid columns="9" styleClass="tabbedButtonsPanel">				
-				<p:commandButton value="#{messages['project.button.team']}"
-								 action="#{projectBean.setSelectedTab(0)}" ajax="false"
-								 styleClass="avoidChangeTracking cancelTrackedChanges leftPositionButton
+    <ui:define name="titleHead">
+        <h:outputFormat value="#{messages['editProject.title']}">
+            <f:param value="#{projectBean.project.code}"/>
+        </h:outputFormat>
+    </ui:define>
+
+    <ui:define name="titleBody">
+        <p:breadCrumb>
+            <p:menuitem value="#{messages['projects.title']}" outcome="cancel"/>
+            <p:menuitem rendered="#{projectBean.project.subproject}" value="#{projectBean.project.master.code}"
+                        url="#{projectBean.isMasterAvailableForLoggedInEmployee() ? '?project=' += projectBean.project.master.id.toString() : '#'}"/>
+            <p:menuitem value="#{projectBean.project.code}"/>
+        </p:breadCrumb>
+    </ui:define>
+
+    <ui:define name="leftToolbarGroup">
+        <c:set var="project" value="#{projectBean.project}"/>
+        <h:panelGrid columns="1">
+            <h:panelGrid columns="9" styleClass="tabbedButtonsPanel">
+                <p:commandButton value="#{messages['project.button.team']}"
+                                 action="#{projectBean.setSelectedTab(0)}" ajax="false"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges leftPositionButton
 								  			#{(projectBean.selectedTab == 0 or projectBean.selectedTab == null) ? 'selected' : ''}"
-								 rendered="#{project.status.name().equals('ACTIVE')}">
-				</p:commandButton>
-				<p:commandButton value="#{messages['project.button.subprojects']}"
-								 action="#{projectBean.setSelectedTab(1)}" ajax="false"
-								 styleClass="avoidChangeTracking cancelTrackedChanges
+                                 rendered="#{project.status.name().equals('ACTIVE')}">
+                </p:commandButton>
+                <p:commandButton value="#{messages['project.button.subprojects']}"
+                                 action="#{projectBean.setSelectedTab(1)}" ajax="false"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges
 								 			#{project.status.name().equals('ACTIVE') ? 'middlePositionButton' : 'leftPositionButton'}
 					 			 			#{projectBean.selectedTab == 1 ? 'selected' : ''}"
-								 rendered="#{!project.isSubproject()}">
-				</p:commandButton>
-				<p:commandButton value="#{messages['project.button.details']}"
-								 action="#{projectBean.setSelectedTab(2)}" ajax="false"
-								 styleClass="avoidChangeTracking cancelTrackedChanges
+                                 rendered="#{!project.isSubproject()}">
+                </p:commandButton>
+                <p:commandButton value="#{messages['project.button.details']}"
+                                 action="#{projectBean.setSelectedTab(2)}" ajax="false"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges
 											#{project.status.name().equals('ACTIVE') or !project.isSubproject() ?
 												'middlePositionButton' : 'leftPositionButton'}
 						 					#{projectBean.selectedTab == 2 ? 'selected' : ''}">
-				</p:commandButton>
-				<p:commandButton value="#{messages['project.button.importSettings']}"
-								 action="#{projectBean.setSelectedTab(3)}" ajax="false"
-								 styleClass="avoidChangeTracking cancelTrackedChanges rightPositionButton #{projectBean.selectedTab == 3 ? 'selected' : ''}"/>
-				<p:separator rendered="#{!project.isSubproject()}"/>
-				<p:button value="#{messages['projectDetails.button.createSubproject']}"
-						  outcome="addNew" includeViewParams="true"
-						  styleClass="avoidChangeTracking ui-fa"
-						  ajax="false" icon="fa fa-plus-circle" rendered="#{!project.isSubproject()}">
-					<f:param name="master" value="#{project.id}"/>
-				</p:button>
-				<p:separator/>
-				<p:commandButton value="#{messages['button.save']}" ajax="false"
-								 action="update" actionListener="#{projectBean.update()}"
-								 styleClass="cancelTrackedChanges avoidChangeTracking ui-fa"
-								 icon="fa fa-save">
-		    	</p:commandButton>
-				<p:commandButton value="#{messages['button.cancel']}" ajax="false"
-								 action="cancel" immediate="true"
-								 styleClass="cancelTrackedChanges avoidChangeTracking ui-fa">
-				</p:commandButton>
-	    	</h:panelGrid>
-		</h:panelGrid>
-				
-	</ui:define>
-		
-    <ui:define name="content">    
-    	<t:panelTabbedPane id="projectTabsPanel"
-						   immediateTabChange="false" width="1400"
-						   selectedIndex="#{projectBean.selectedTab}"
-						   serverSideTabSwitch="false">
-    			
-    		<t:panelTab id="teamTab" rendered="#{project.status.name().equals('ACTIVE')}">
-    			<ui:include src="/pages/project/projectTeam.xhtml">
-				   	<ui:param name="project" value="#{project}" />	    		
-				</ui:include>
-    		</t:panelTab>
-    		
-    		<t:panelTab id="subprojectsTab">
-    			<ui:include src="/pages/project/projectSubprojects.xhtml">
-				   	<ui:param name="project" value="#{project}" />				   		    	
-				</ui:include>
-    		</t:panelTab>
-    		
-    		<t:panelTab id="detailsTab">
-    			<ui:include src="/pages/project/projectDetails.xhtml">
-				   	<ui:param name="project" value="#{project}" />	    		
-				</ui:include>
-    		</t:panelTab>
-    		
-    		<t:panelTab id="importSettingsTab">
-    			<ui:include src="/pages/project/importSettings.xhtml">
-				   	<ui:param name="project" value="#{project}" />				   		    	
-				</ui:include>
-    		</t:panelTab>
-    	</t:panelTabbedPane>
+                </p:commandButton>
+                <p:commandButton value="#{messages['project.button.importSettings']}"
+                                 action="#{projectBean.setSelectedTab(3)}" ajax="false"
+                                 styleClass="avoidChangeTracking cancelTrackedChanges rightPositionButton #{projectBean.selectedTab == 3 ? 'selected' : ''}"/>
+                <p:separator rendered="#{!project.isSubproject()}"/>
+                <p:button value="#{messages['projectDetails.button.createSubproject']}"
+                          outcome="addNew" includeViewParams="true"
+                          styleClass="avoidChangeTracking ui-fa"
+                          ajax="false" icon="fa fa-plus-circle" rendered="#{!project.isSubproject()}">
+                    <f:param name="master" value="#{project.id}"/>
+                </p:button>
+                <p:separator/>
+                <p:commandButton value="#{messages['button.save']}" ajax="false"
+                                 action="update" actionListener="#{projectBean.update()}"
+                                 styleClass="cancelTrackedChanges avoidChangeTracking ui-fa"
+                                 icon="fa fa-save">
+                </p:commandButton>
+                <p:commandButton value="#{messages['button.cancel']}" ajax="false"
+                                 action="cancel" immediate="true"
+                                 styleClass="cancelTrackedChanges avoidChangeTracking ui-fa">
+                </p:commandButton>
+            </h:panelGrid>
+        </h:panelGrid>
+
+    </ui:define>
+
+    <ui:define name="content">
+        <t:panelTabbedPane id="projectTabsPanel"
+                           immediateTabChange="false" width="1400"
+                           selectedIndex="#{projectBean.selectedTab}"
+                           serverSideTabSwitch="false">
+
+            <t:panelTab id="teamTab" rendered="#{project.status.name().equals('ACTIVE')}">
+                <ui:include src="/pages/project/projectTeam.xhtml">
+                    <ui:param name="project" value="#{project}"/>
+                </ui:include>
+            </t:panelTab>
+
+            <t:panelTab id="subprojectsTab">
+                <ui:include src="/pages/project/projectSubprojects.xhtml">
+                    <ui:param name="project" value="#{project}"/>
+                </ui:include>
+            </t:panelTab>
+
+            <t:panelTab id="detailsTab">
+                <ui:include src="/pages/project/projectDetails.xhtml">
+                    <ui:param name="project" value="#{project}"/>
+                </ui:include>
+            </t:panelTab>
+
+            <t:panelTab id="importSettingsTab">
+                <ui:include src="/pages/project/importSettings.xhtml">
+                    <ui:param name="project" value="#{project}"/>
+                </ui:include>
+            </t:panelTab>
+        </t:panelTabbedPane>
     </ui:define>
 </ui:composition>

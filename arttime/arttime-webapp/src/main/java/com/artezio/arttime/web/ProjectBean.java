@@ -4,7 +4,6 @@ import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.datamodel.Project.Status;
 import com.artezio.arttime.datamodel.TeamFilter;
-import com.artezio.arttime.services.DepartmentService;
 import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.ProjectService;
 import com.artezio.arttime.utils.NoDuplicatesList;
@@ -43,7 +42,6 @@ public class ProjectBean implements Serializable {
     private List<Project> subprojects;
     private List<Project> projects;
     private Map<Employee, Project[]> participations;
-    private List<String> departments;
 
     @PostConstruct
     public void init() {
@@ -62,7 +60,7 @@ public class ProjectBean implements Serializable {
         }
         selectedTab = calculateIndexTab(project);
     }
-    
+
     public List<Employee> getManagersOrdered(Project project) {
         return project.getManagers().stream()
                 .sorted(Employee.NAME_COMPARATOR)
@@ -97,7 +95,7 @@ public class ProjectBean implements Serializable {
 
     public void delete(Employee employee) {
         Project[] participations = getParticipations().get(employee);
-        participations = (Project[])ArrayUtils.removeElement(participations, project);
+        participations = (Project[]) ArrayUtils.removeElement(participations, project);
         getParticipations().put(employee, participations);
     }
 
@@ -221,8 +219,10 @@ public class ProjectBean implements Serializable {
                 .collect(Collectors.toSet());
     }
 
-    private String calculateIndexTab(Project project) {
-        return project.getStatus().equals(Status.ACTIVE) ? "0" : !project.isSubproject() ? "1" : "2";
+    public String calculateIndexTab(Project project) {
+        return project.getStatus().equals(Status.ACTIVE)
+                ? "0"
+                : !project.isSubproject() ? "1" : "2";
     }
 
     private List<Employee> getTeamIncludeSubprojects(Project project) {
@@ -274,31 +274,23 @@ public class ProjectBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getDepartments() {
-        if (departments == null) {
-            if (project == null || (project.getTeamFilter().getFilterType() != TeamFilter.Type.DEPARTMENTS)) {
-                departments = new ArrayList<>();
-            } else {
-                TeamFilter teamFilter = project.getTeamFilter();
-                if (teamFilter != null && teamFilter.getValue() != null) {
-                    departments = Arrays.asList(teamFilter.getValue().split(","));
-                } else {
-                    departments = new ArrayList<>();
-                }
-            }
+    public String[] getDepartments() {
+        if (project == null
+                || (project.getTeamFilter() == null)
+                || (project.getTeamFilter().getFilterType() != TeamFilter.Type.DEPARTMENTS)) {
+            return new String[0];
         }
-        return departments;
+        TeamFilter teamFilter = project.getTeamFilter();
+        if (teamFilter.getValue() != null) {
+            return teamFilter.getValue().split(",");
+        } else {
+            return new String[0];
+        }
     }
 
-    public void setDepartments(List<String> departments) {
+    public void setDepartments(String[] departments) {
         if (project != null && project.getTeamFilter().getFilterType() == TeamFilter.Type.DEPARTMENTS) {
-            project.getTeamFilter().setValue(Strings.join(departments, ","));
-        }
-    }
-
-    public void filterTypeChanged(javax.faces.event.AjaxBehaviorEvent ignored) throws javax.faces.event.AbortProcessingException {
-        if (project != null && project.getTeamFilter() != null) {
-            project.getTeamFilter().setValue(null);
+            project.getTeamFilter().setValue(Strings.join(Arrays.asList(departments), ","));
         }
     }
 
