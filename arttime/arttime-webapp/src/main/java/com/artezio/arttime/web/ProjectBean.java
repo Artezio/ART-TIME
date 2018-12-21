@@ -14,6 +14,7 @@ import org.primefaces.event.FlowEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -291,6 +292,12 @@ public class ProjectBean implements Serializable {
     public void setDepartments(String[] departments) {
         if (project != null && project.getTeamFilter().getFilterType() == TeamFilter.Type.DEPARTMENTS) {
             project.getTeamFilter().setValue(Strings.join(Arrays.asList(departments), ","));
+        }
+    }
+
+    public void teamFilterTypeChanged(AjaxBehaviorEvent event) {
+        if (project != null && project.getTeamFilter().getValue() != null) {
+            project.getTeamFilter().setValue(null);
         }
     }
 

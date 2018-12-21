@@ -33,7 +33,8 @@
             </c:if>
             <f:ajax render="teamFilterValueGroup teamFilterDepartmentsMessage teamFilterGroupsMessage"
                     event="change"
-                    execute="@this"/>
+                    execute="@this"
+                    listener="#{projectBean.teamFilterTypeChanged}"/>
         </p:selectOneMenu>
         <h:panelGroup id="teamFilterValueGroup" styleClass="team-filter__value-group">
             <h:panelGrid columns="4" rendered="#{project.teamFilter.filterType eq 'PROJECT_CODES'}"
