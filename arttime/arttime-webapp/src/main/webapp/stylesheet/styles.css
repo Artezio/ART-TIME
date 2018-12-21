@@ -3950,3 +3950,18 @@ button.approveAll, button.disapproveAll {
 .trackingSystemTabs .ui-tabs-nav {
     display: none;
 }
+
+.filter-save-panel__name-group,
+.filter-save-panel__button-group {
+    display: inline-block;
+}
+
+.filter-save-panel__name-errors {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.filter-save-panel__name-input {
+    display: inline-block;
+}
+

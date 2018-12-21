@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.artezio.javax.jpa.abac.AbacRule;
@@ -40,6 +41,7 @@ public class Filter implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
     private String owner;
     @ManyToMany
