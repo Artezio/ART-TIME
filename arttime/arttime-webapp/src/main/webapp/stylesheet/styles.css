@@ -3965,3 +3965,11 @@ button.approveAll, button.disapproveAll {
     display: inline-block;
 }
 
+table.calendar-editor > tbody > tr > td {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+table.calendar-editor > tbody > tr > td:first-child {
+    padding-left: 0;
+}
