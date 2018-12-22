@@ -6,6 +6,8 @@ import com.artezio.arttime.datamodel.Project.Status;
 import com.artezio.arttime.datamodel.TeamFilter;
 import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.ProjectService;
+import com.artezio.arttime.services.integration.EmployeeTrackingSystem;
+import com.artezio.arttime.services.integration.TeamTrackingSystem;
 import com.artezio.arttime.utils.NoDuplicatesList;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.ArrayUtils;
@@ -37,6 +39,8 @@ public class ProjectBean implements Serializable {
     @Inject
     private EmployeeService employeeService;
     @Inject
+    private EmployeeTrackingSystem employeeTrackingSystem;
+    @Inject
     private ExternalContext externalContext;
     private List<Employee> filtered;
     private Employee employee;
@@ -56,10 +60,18 @@ public class ProjectBean implements Serializable {
         } else if (masterId != null) {
             this.project = new Project(projectService.loadProject(Long.parseLong(masterId)));
         } else {
-            project = new Project();
-            employeeService.getLoggedEmployee().ifPresent(project::addManager);
+            createNewProject();
         }
         selectedTab = calculateIndexTab(project);
+    }
+
+    protected void createNewProject() {
+        project = new Project();
+        Optional<Employee> loggedEmployee = Optional.ofNullable(
+                employeeService
+                        .getLoggedEmployee()
+                        .orElse(employeeTrackingSystem.findEmployee(externalContext.getUserPrincipal().getName())));
+        loggedEmployee.ifPresent(project::addManager);
     }
 
     public List<Employee> getManagersOrdered(Project project) {
