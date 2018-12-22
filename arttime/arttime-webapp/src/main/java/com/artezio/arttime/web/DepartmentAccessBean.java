@@ -42,37 +42,33 @@ public class DepartmentAccessBean implements Serializable {
     }
 
     public String save() {
-        Set<Employee> modifiedEmployees = modifyAccessForChangedEmployees();
-        employeeService.update(modifiedEmployees);
+        modifyAccessForChangedEmployees();
         return "";
     }
 
-    private Set<Employee> modifyAccessForChangedEmployees() {
-        return departmentService.getAll().stream()
-                .flatMap(this::modifyAccessForChangedEmployees)
-                .collect(Collectors.toSet());
+    private void modifyAccessForChangedEmployees() {
+        departmentService.getAll().forEach(this::modifyAccessForChangedEmployees);
     }
 
-    private Stream<Employee> modifyAccessForChangedEmployees(String department) {
-        Set<Employee> employeesWithRevokedAccess = revokeAccessForChangedEmployees(department);
-        Set<Employee> employeesWithGrantedAccess = grantAccessForChangedEmployees(department);
-        return Sets.union(employeesWithGrantedAccess, employeesWithRevokedAccess).stream();
+    private void modifyAccessForChangedEmployees(String department) {
+        revokeAccessForChangedEmployees(department);
+        grantAccessForChangedEmployees(department);
     }
 
-    protected Set<Employee> revokeAccessForChangedEmployees(String department) {
+    protected void revokeAccessForChangedEmployees(String department) {
         Set<Employee> employeesWithAccess = getEmployeesByAccessTo(department);
         Set<Employee> selectedEmployees = Sets.newHashSet(Optional.ofNullable(getAccessToDepartments().get(department)).orElse(new ArrayList<>()));
         Set<Employee> employeesToRevokeAccess = Sets.difference(employeesWithAccess, selectedEmployees);
         employeesToRevokeAccess.forEach(employee -> employee.revokeAccessToDepartment(department));
-        return employeesToRevokeAccess;
+        employeeService.update(employeesToRevokeAccess);
     }
 
-    protected Set<Employee> grantAccessForChangedEmployees(String department) {
+    protected void grantAccessForChangedEmployees(String department) {
         Set<Employee> employeesWithAccess = getEmployeesByAccessTo(department);
         Set<Employee> selectedEmployees = Sets.newHashSet(Optional.ofNullable(getAccessToDepartments().get(department)).orElse(new ArrayList<>()));
         Set<Employee> employeesToGrantAccess = Sets.difference(selectedEmployees, employeesWithAccess);
         employeesToGrantAccess.forEach(employee -> employee.grantAccessToDepartment(department));
-        return employeesToGrantAccess;
+        employeeService.update(employeesToGrantAccess);
     }
 
     private Set<Employee> getEmployeesByAccessTo(String department) {
