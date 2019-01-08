@@ -1,56 +1,68 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui">
-	
-	<script type="text/javascript">
-		//<![CDATA[
-			function showPanel(selector) {
-				$("span[id$='"+selector+"']").css('display','inline-block');
-			}
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-			function hidePanel(selector) {
-				$("span[id$='"+selector+"']").css('display','none');
-			}
+    <script type="text/javascript">
+        //<![CDATA[
+        function showPanel(selector) {
+            $("span[id$='" + selector + "']").css('display', 'inline-block');
+        }
 
-			function focusInput(selector, value){
-				$("input[id$='"+selector+"']").val(value);
-				$("input[id$='"+selector+"']").focus();
-			}
-	    //]]>	
-		</script>
-		
-			<h:panelGroup id="title">#{title}:</h:panelGroup>
-			<h:panelGroup style="display: inline-block"
-						  id="filterSavaAsButton"
-						  styleClass="avoidChangeTracking cancelTrackedChanges">
-				#{filterBean.currentFilter.name}
-				<p:commandButton value="#{messages['filter.button.saveAs']}"
-						styleClass="saveAsButton ui-fa"
-						icon="fa fa-save" type="button"
-						onclick="showPanel('filerSaveAsPanel');
+        function hidePanel(selector) {
+            $("span[id$='" + selector + "']").css('display', 'none');
+        }
+
+        function focusInput(selector, value) {
+            var filterNameInput = $("input[id$='" + selector + "']");
+            filterNameInput.val(value);
+            filterNameInput.focus();
+        }
+
+        //]]>
+    </script>
+
+    <h:panelGroup id="title">#{title}:</h:panelGroup>
+    <h:panelGroup style="display: inline-block"
+                  id="filterSavaAsButton"
+                  styleClass="avoidChangeTracking cancelTrackedChanges">
+        <h:outputText id="currentFilterName" value="#{filterBean.currentFilter.name}"/>
+        <p:commandButton value="#{messages['filter.button.saveAs']}"
+                         id="saveAsButton"
+                         styleClass="saveAsButton ui-fa"
+                         icon="fa fa-save" type="button"
+                         onclick="showPanel('filerSaveAsPanel');
 								 hidePanel('filterSavaAsButton');
-								 focusInput('newFilterName', '#{filterBean.newFilterName}');"/>
-			</h:panelGroup>
-			
-			<h:panelGroup style="display: none"
-						  id="filerSaveAsPanel"
-						  styleClass="avoidChangeTracking cancelTrackedChanges">
-				<p:inputText value="#{filterBean.newFilterName}" id="newFilterName" onfocus="this.select()"/>
-				<p:commandButton value=""
-					title="#{messages['button.save']}"
-					process="@form"
-					ajax="false"
-	                icon="fa fa-check"
-	                actionListener="#{filterBean.save}"
-	                styleClass="avoidChangeTracking cancelTrackedChanges">
-	            </p:commandButton>
-				<p:commandButton value=""
-					title="#{messages['button.cancel']}"
-					icon="fa fa-times"
-					type="button"
-					onclick="hidePanel('filerSaveAsPanel');showPanel('filterSavaAsButton');"
-					styleClass="avoidChangeTracking cancelTrackedChanges"/>
-			</h:panelGroup>
-	
+								 focusInput('newFilterName', '#{filterBean.currentFilter.name}');"/>
+    </h:panelGroup>
+
+    <h:panelGroup style="display: none"
+                  id="filerSaveAsPanel"
+                  styleClass="avoidChangeTracking cancelTrackedChanges filter-save-panel">
+        <h:panelGroup styleClass="filter-save-panel__name-group">
+            <p:inputText styleClass="filter-save-panel__name-input" value="#{filterBean.currentFilter.name}"
+                         id="newFilterName" onfocus="this.select()"/>
+            <p:message id="newFilterNameMessage" for="newFilterName" styleClass="filter-save-panel__name-errors"
+                       display="text"/>
+        </h:panelGroup>
+        <h:panelGroup styleClass="filter-save-panel__button-group">
+            <p:commandButton value=""
+                             title="#{messages['button.save']}"
+                             process="@this projects location employees hourTypes newFilterName"
+                             update="savedFiltersContainer newFilterNameMessage currentFilterName newFilterName saveAsButton"
+                             ajax="true"
+                             icon="fa fa-check"
+                             actionListener="#{filterBean.save}"
+                             oncomplete="if (!args.validationFailed){hidePanel('filerSaveAsPanel');showPanel('filterSavaAsButton');} return true;"
+                             styleClass="avoidChangeTracking cancelTrackedChanges filter-save-panel__save-button">
+            </p:commandButton>
+            <p:commandButton value=""
+                             title="#{messages['button.cancel']}"
+                             icon="fa fa-times"
+                             type="button"
+                             onclick="hidePanel('filerSaveAsPanel');showPanel('filterSavaAsButton');"
+                             styleClass="avoidChangeTracking cancelTrackedChanges filter-save-panel__cancel-button"/>
+        </h:panelGroup>
+    </h:panelGroup>
+
 </ui:composition>

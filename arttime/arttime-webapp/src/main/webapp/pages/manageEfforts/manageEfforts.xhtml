@@ -1,10 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:p="http://primefaces.org/ui" xmlns:lcg="http://www.lassitercg.com/jsf"
-    xmlns:arttime="http://java.sun.com/jsf/composite/components"
-    xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions"
-    template="/layout/one-form-content.template.xhtml">
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:lcg="http://www.lassitercg.com/jsf"
+                xmlns:arttime="http://java.sun.com/jsf/composite/components"
+                xmlns:o="http://omnifaces.org/ui" xmlns:of="http://omnifaces.org/functions"
+                template="/layout/one-form-content.template.xhtml">
 
     <ui:define name="titleHead">#{messages['manageEfforts.title']}</ui:define>
 
@@ -17,16 +17,16 @@
     <ui:define name="additionalActionPanel">
         <c:set var="grouping" value="#{manageEffortsBean.grouping}"/>
         <p:commandButton value="#{messages['manageEfforts.button.byProjects']}"
-             actionListener="#{manageEffortsBean.resetData()}"
-             styleClass="leftPositionButton avoidChangeTracking #{grouping == 'BY_PROJECTS' ? 'selected' : ''}"
-             ajax="false">
-            <f:setPropertyActionListener value="BY_PROJECTS" target="#{grouping}" />
+                         actionListener="#{manageEffortsBean.resetData()}"
+                         styleClass="leftPositionButton avoidChangeTracking #{grouping == 'BY_PROJECTS' ? 'selected' : ''}"
+                         ajax="false">
+            <f:setPropertyActionListener value="BY_PROJECTS" target="#{grouping}"/>
         </p:commandButton>
         <p:commandButton value="#{messages['manageEfforts.button.byEmployees']}"
-             actionListener="#{manageEffortsBean.resetData()}"
-             styleClass="rightPositionButton avoidChangeTracking #{grouping == 'BY_EMPLOYEES' ? 'selected' : ''}"
-             ajax="false">
-            <f:setPropertyActionListener value="BY_EMPLOYEES" target="#{grouping}" />
+                         actionListener="#{manageEffortsBean.resetData()}"
+                         styleClass="rightPositionButton avoidChangeTracking #{grouping == 'BY_EMPLOYEES' ? 'selected' : ''}"
+                         ajax="false">
+            <f:setPropertyActionListener value="BY_EMPLOYEES" target="#{grouping}"/>
         </p:commandButton>
     </ui:define>
 
@@ -80,7 +80,8 @@
     <ui:define name="leftToolbarGroup">
         <h:panelGroup layout="block" styleClass="filter">
             <h:panelGroup layout="block" styleClass="filter-body">
-                <arttime:advancedPeriodSelector id="advancedPeriodSelector" selector="#{filterBean.currentFilter.rangePeriodSelector}"/>
+                <arttime:advancedPeriodSelector id="advancedPeriodSelector"
+                                                selector="#{filterBean.currentFilter.rangePeriodSelector}"/>
                 <ui:include src="/pages/filter.xhtml">
                     <ui:param name="itemBean" value="#{manageEffortsBean}"/>
                     <ui:param name="itemAction" value="setCurrentFilterAndResetData"/>
@@ -108,7 +109,7 @@
         <h:outputScript name="effortsTableValidation.js?v=#{buildInfo['application.version']}" library="js"/>
 
         <script type="text/javascript">
-        //<![CDATA[
+            //<![CDATA[
             function waitForHoursSubmit(button) {
                 //Wait if hours submitted simultaneously with button click
                 setTimeout(function () {
@@ -118,11 +119,11 @@
                 return false;
             }
 
-            $(document).ready(function() {
+            $(document).ready(function () {
                 showTitlesInsideSheet();
                 setTimeout(function () {
                     PF('effortsSheet').ht.render();
-                    $("div.ui-handsontable tr").hover(function(e){
+                    $("div.ui-handsontable tr").hover(function (e) {
                         $("tr td.firstCol a.requestReportAction").remove();
                         var index = $(this).index();
                         var td = $("div.ht_clone_left table.htCore tbody tr:eq(" + index + ") td:first");
@@ -133,8 +134,7 @@
                             $anchor.attr("title", "#{messages['manageEfforts.requestReport.title']}");
                             $anchor.prependTo(td);
                             td.prop('title', email);
-                        } else
-                        if (displayCode) {
+                        } else if (displayCode) {
                             td.prop('title', displayCode);
                         } else {
                             td.prop('title', '');
@@ -143,104 +143,112 @@
                 }, 100);
             });
 
-            $(window).on("load",  function() {
+            $(window).on("load", function () {
                 $(window).trigger('resize');
             });
 
 
-        //]]>
+            //]]>
         </script>
 
         <f:metadata>
             <f:viewParam name="usernames" value="#{manageEffortsBean.employees}" converter="listEmployeeConverter"/>
-            <f:viewParam name="start" value="#{manageEffortsBean.period.start}" >
-                <f:convertDateTime pattern="dd.MM.yy" />
+            <f:viewParam name="start" value="#{manageEffortsBean.period.start}">
+                <f:convertDateTime pattern="dd.MM.yy"/>
             </f:viewParam>
             <f:viewParam name="finish" value="#{manageEffortsBean.period.finish}">
-                <f:convertDateTime pattern="dd.MM.yy" />
+                <f:convertDateTime pattern="dd.MM.yy"/>
             </f:viewParam>
-            <f:viewAction  action="#{manageEffortsBean.initByGetRequest}"/>
+            <f:viewAction action="#{manageEffortsBean.initByGetRequest}"/>
         </f:metadata>
         <o:commandScript name="requestReport" action="#{manageEffortsBean.requestReport}"/>
-            <c:set var="days" value="#{manageEffortsBean.spreadSheet.filter.period.getDays()}" scope="view"/>
-            <c:set var="rows" value="#{manageEffortsBean.spreadSheet.getRows()}" scope="view"/>
+        <c:set var="days" value="#{manageEffortsBean.spreadSheet.filter.period.getDays()}" scope="view"/>
+        <c:set var="rows" value="#{manageEffortsBean.spreadSheet.getRows()}" scope="view"/>
 
-            <lcg:sheet id="manageEffortsSheet" value="#{rows}" widgetVar="effortsSheet"
-                       var="row" stretchH="true" fixedCols="3" rowKey="#{row.getKey()}"
-                       showRowHeaders="false" binding="#{manageEffortsBean.spreadSheet.sheet}"
-                       emptyMessage="#{messages['warning.datatable.empty']}" height='2000'>
+        <lcg:sheet id="manageEffortsSheet" value="#{rows}" widgetVar="effortsSheet"
+                   var="row" stretchH="true" fixedCols="3" rowKey="#{row.getKey()}"
+                   showRowHeaders="false" binding="#{manageEffortsBean.spreadSheet.sheet}"
+                   emptyMessage="#{messages['warning.datatable.empty']}" height='2000'>
 
-                <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}" async="false"/>
-                <c:set var="firstColValue" value="#{row.getFirstColValue(grouping)}"/>
-                <c:set var="rowIndex" value="#{manageEffortsBean.spreadSheet.sheet.rowIndex}"/>
-                <c:set var="previousFirstColValue" value="#{(rowIndex == 0) ? '' : rows.get(rowIndex-1).getFirstColValue(grouping)}"/>
-                <c:set var="nextFirstColValue" value="#{(rowIndex == rows.size()-1) ? '' : rows.get(rowIndex+1).getFirstColValue(grouping)}"/>
-                <c:set var="firstheader" value="#{messages['manageEfforts.table.project']}"/>
-                <c:set var="highLevelRow" value="#{manageEffortsBean.spreadSheet.isHighLevel(row)}"/>
-                <c:set var="headRow" value="#{row.getClass().simpleName == 'HeadSpreadSheetRow'}"/>
-                <c:set var="hoursRow" value="#{row.getClass().simpleName == 'HoursSpreadSheetRow'}"/>
-                <c:set var="totalRow" value="#{row.getClass().simpleName == 'TotalsSpreadSheetRow'}"/>
-                <c:set var="showFirstColValue" value="#{firstColValue != previousFirstColValue or manageEffortsBean.showMasterProjectTotalsLabel(row)}"/>
-                <c:set var="employeeNameInFirstCol" value="#{(grouping == 'BY_PROJECTS' and showFirstColValue and hoursRow) or (grouping == 'BY_EMPLOYEES' and headRow)}"/>
-                <c:set var="projectDisplayCodeInFirstCol" value="#{(grouping == 'BY_PROJECTS' and headRow) or (grouping == 'BY_EMPLOYEES' and hoursRow)}"/>
-                <c:set var="projectId" value="#{(grouping == 'BY_PROJECTS' and headRow) ? row.project.id : (grouping == 'BY_EMPLOYEES' and hoursRow) ? row.project.id : null}"/>
-                <c:set var="projectLink"
-                       value="#{
+            <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}" async="false"/>
+            <c:set var="firstColValue" value="#{row.getFirstColValue(grouping)}"/>
+            <c:set var="rowIndex" value="#{manageEffortsBean.spreadSheet.sheet.rowIndex}"/>
+            <c:set var="previousFirstColValue"
+                   value="#{(rowIndex == 0) ? '' : rows.get(rowIndex-1).getFirstColValue(grouping)}"/>
+            <c:set var="nextFirstColValue"
+                   value="#{(rowIndex == rows.size()-1) ? '' : rows.get(rowIndex+1).getFirstColValue(grouping)}"/>
+            <c:set var="firstheader" value="#{messages['manageEfforts.table.project']}"/>
+            <c:set var="highLevelRow" value="#{manageEffortsBean.spreadSheet.isHighLevel(row)}"/>
+            <c:set var="headRow" value="#{row.getClass().simpleName == 'HeadSpreadSheetRow'}"/>
+            <c:set var="hoursRow" value="#{row.getClass().simpleName == 'HoursSpreadSheetRow'}"/>
+            <c:set var="totalRow" value="#{row.getClass().simpleName == 'TotalsSpreadSheetRow'}"/>
+            <c:set var="showFirstColValue"
+                   value="#{firstColValue != previousFirstColValue or manageEffortsBean.showMasterProjectTotalsLabel(row)}"/>
+            <c:set var="employeeNameInFirstCol"
+                   value="#{(grouping == 'BY_PROJECTS' and showFirstColValue and hoursRow) or (grouping == 'BY_EMPLOYEES' and headRow)}"/>
+            <c:set var="projectDisplayCodeInFirstCol"
+                   value="#{(grouping == 'BY_PROJECTS' and headRow) or (grouping == 'BY_EMPLOYEES' and hoursRow)}"/>
+            <c:set var="projectId"
+                   value="#{(grouping == 'BY_PROJECTS' and headRow) ? row.project.id : (grouping == 'BY_EMPLOYEES' and hoursRow) ? row.project.id : null}"/>
+            <c:set var="projectLink"
+                   value="#{
                        (request.isUserInRole('exec') or (employeeService.loggedEmployee.present and row.project.canBeManaged(employeeService.loggedEmployee)))
                             ? of:format2('{0}/pages/project/editProject.xhtml?project={1}', request.contextPath, projectId)
                             : null
                        }"/>
 
-                <lcg:column headerText="#{firstheader}"
-                            value="#{showFirstColValue
+            <lcg:column headerText="#{firstheader}"
+                        value="#{showFirstColValue
                                         ? (totalRow
                                             ? messages['manageEfforts.table.total']
                                             : ((projectId != null) and (projectLink != null))
                                                 ? of:format2('&lt;a href={0}&gt;{1}&lt;/a&gt;', projectLink, firstColValue)
                                                 : firstColValue)
                                         : ''}"
-                            readonly="true" colWidth="250" escape="false"
-                            styleClass="#{firstColValue == nextFirstColValue ? 'hiddenBottomBorder' : ''}
+                        readonly="true" colWidth="250" escape="false"
+                        styleClass="#{firstColValue == nextFirstColValue ? 'hiddenBottomBorder' : ''}
                                         #{headRow ? 'groupHeader' : ''} tdLongTextContainer
                                         #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''} firstCol
                                         #{highLevelRow ? 'firstLevel' : 'secondLevel'}
                                         #{projectId != null ? 'projectLink' : ''}">
-                    <f:passThroughAttribute name="email" value="#{employeeNameInFirstCol ? row.employee.email : '' }"/>
-                    <f:passThroughAttribute name="projectDisplayCode" value="#{projectDisplayCodeInFirstCol ? row.project.displayCode : '' }"/>
-                </lcg:column>
+                <f:passThroughAttribute name="email" value="#{employeeNameInFirstCol ? row.employee.email : '' }"/>
+                <f:passThroughAttribute name="projectDisplayCode"
+                                        value="#{projectDisplayCodeInFirstCol ? row.project.displayCode : '' }"/>
+            </lcg:column>
 
-                <lcg:column headerText="#{messages['manageEfforts.table.hourType']}"
-                            value="#{row.getHourType().type}"
-                            readonly="true" colWidth="120"
-                            styleClass="#{headRow ? 'groupHeader' : ''} tdLongTextContainer hiddenRightBorder
+            <lcg:column headerText="#{messages['manageEfforts.table.hourType']}"
+                        value="#{row.getHourType().type}"
+                        readonly="true" colWidth="120"
+                        styleClass="#{headRow ? 'groupHeader' : ''} tdLongTextContainer hiddenRightBorder
                                         #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}"/>
 
-                <lcg:column headerText="#{messages['manageEfforts.table.total']}"
-                            value="#{row.rowTotal}"
-                            readonly="true" colWidth="80"
-                            headerStyleClass="totalColumn"
-                            styleClass="#{headRow ? 'groupHeader' : ''} totalColumn
+            <lcg:column headerText="#{messages['manageEfforts.table.total']}"
+                        value="#{row.rowTotal}"
+                        readonly="true" colWidth="80"
+                        headerStyleClass="totalColumn"
+                        styleClass="#{headRow ? 'groupHeader' : ''} totalColumn
                                         #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}">
-                    <f:convertNumber pattern="#0.##" locale="en"/>
-                </lcg:column>
+                <f:convertNumber pattern="#0.##" locale="en"/>
+            </lcg:column>
 
-                <c:forEach var="day" items="#{days}">
-                    <c:set var="dayClass" value="#{manageEffortsBean.getHeaderStyleClass(day)}"/>
-                    <c:set var="header" value="&lt;span class='#{dayClass}'&gt;&lt;span class='weekDay'&gt;#{of:formatDate(day, 'EE')}&lt;/span&gt;
+            <c:forEach var="day" items="#{days}">
+                <c:set var="dayClass" value="#{manageEffortsBean.getHeaderStyleClass(day)}"/>
+                <c:set var="header"
+                       value="&lt;span class='#{dayClass}'&gt;&lt;span class='weekDay'&gt;#{of:formatDate(day, 'EE')}&lt;/span&gt;
                             &lt;span class='dayNumber'&gt;#{of:formatDate(day, 'd')}&lt;/span&gt;
                             &lt;span class='month'&gt;#{of:formatDate(day, 'MMM/yy')}&lt;/span&gt;
                             &lt;/span&gt;"/>
-                    <lcg:column headerText="#{header}" colWidth="50"
-                                comment="#{hoursRow ? row.get(day).comment : null}"
-                                value="#{hoursRow ? row.get(day).quantity : row.get(day)}"
-                                readonlyCell="#{!hoursRow}"
-                                styleClass="#{headRow ? 'groupHeader' : ''}
+                <lcg:column headerText="#{header}" colWidth="50"
+                            comment="#{hoursRow ? row.get(day).comment : null}"
+                            value="#{hoursRow ? row.get(day).quantity : row.get(day)}"
+                            readonlyCell="#{!hoursRow}"
+                            styleClass="#{headRow ? 'groupHeader' : ''}
                                             #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}
                                             #{hoursRow ? manageEffortsBean.getStyleClass(row.get(day)) : ''}">
-                        <f:convertNumber pattern="#0.##" locale="en"/>
-                    </lcg:column>
-                </c:forEach>
-            </lcg:sheet>
+                    <f:convertNumber pattern="#0.##" locale="en"/>
+                </lcg:column>
+            </c:forEach>
+        </lcg:sheet>
     </ui:define>
 
 </ui:composition>

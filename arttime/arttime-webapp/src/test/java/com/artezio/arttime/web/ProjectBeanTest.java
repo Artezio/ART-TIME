@@ -8,6 +8,7 @@ import com.artezio.arttime.repositories.ProjectRepository;
 import com.artezio.arttime.repositories.WorkdaysCalendarRepository;
 import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.ProjectService;
+import com.artezio.arttime.services.integration.EmployeeTrackingSystem;
 import junitx.framework.ListAssert;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
@@ -21,6 +22,7 @@ import org.primefaces.event.FlowEvent;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.event.ValueChangeEvent;
+import java.security.Principal;
 import java.util.*;
 
 import static junitx.util.PrivateAccessor.getField;
@@ -47,11 +49,8 @@ public class ProjectBeanTest {
     private ValueChangeEvent valueChangeEvent;
     @Mock
     private SelectCheckboxMenu selectCheckboxMenu;
-
-    @Before
-    public void setUp() throws NoSuchFieldException {
-        setField(bean, "projectService", projectService);
-    }
+    @Mock
+    private EmployeeTrackingSystem employeeTrackingSystem;
 
     @Test
     public void testCreate() throws NoSuchFieldException {
@@ -237,15 +236,70 @@ public class ProjectBeanTest {
         Map<String, String> requestParams = new HashMap<>();
 
         expect(externalContext.getRequestParameterMap()).andReturn(requestParams);
+        Principal principal = mock(Principal.class);
+        expect(externalContext.getUserPrincipal()).andReturn(principal);
+        expect(principal.getName()).andReturn("username");
         expect(employeeService.getLoggedEmployee()).andReturn(Optional.of(loggedEmployee));
-        replay(externalContext, employeeService);
+        replay(externalContext, employeeService, principal);
 
         bean.init();
         Project actual = (Project) getField(bean, "project");
 
-        verify(externalContext, employeeService);
+        verify(externalContext, employeeService, principal);
         assertNotNull(actual);
         assertTrue(actual.getManagers().contains(loggedEmployee));
+    }
+
+    @Test
+    public void testCreateNewProject() throws NoSuchFieldException {
+        final String username = "username";
+        Employee loggedEmployee = new Employee(username);
+        expect(employeeService.getLoggedEmployee()).andReturn(Optional.of(loggedEmployee));
+        Principal principal = mock(Principal.class);
+        expect(externalContext.getUserPrincipal()).andReturn(principal);
+        expect(principal.getName()).andReturn(username);
+        replay(employeeService, principal, externalContext);
+
+        bean.createNewProject();
+
+        verify(employeeService, principal, externalContext);
+        Project actual = (Project)getField(bean, "project");
+        assertTrue(actual.getManagers().contains(loggedEmployee));
+    }
+
+    @Test
+    public void testCreateNewProject_loggedEmployeeNotFound_externalEmployeeFound() throws NoSuchFieldException {
+        final String username = "username";
+        Employee loggedEmployee = new Employee(username);
+        expect(employeeService.getLoggedEmployee()).andReturn(Optional.empty());
+        expect(employeeTrackingSystem.findEmployee(username)).andReturn(loggedEmployee);
+        Principal principal = mock(Principal.class);
+        expect(externalContext.getUserPrincipal()).andReturn(principal);
+        expect(principal.getName()).andReturn(username);
+        replay(employeeService, employeeTrackingSystem, principal, externalContext);
+
+        bean.createNewProject();
+
+        verify(employeeService, employeeTrackingSystem, principal, externalContext);
+        Project actual = (Project)getField(bean, "project");
+        assertTrue(actual.getManagers().contains(loggedEmployee));
+    }
+
+    @Test
+    public void testCreateNewProject_loggedEmployeeNotFound_externalEmployeeNotFound() throws NoSuchFieldException {
+        final String username = "username";
+        expect(employeeService.getLoggedEmployee()).andReturn(Optional.empty());
+        expect(employeeTrackingSystem.findEmployee(username)).andReturn(null);
+        Principal principal = mock(Principal.class);
+        expect(externalContext.getUserPrincipal()).andReturn(principal);
+        expect(principal.getName()).andReturn(username);
+        replay(employeeService, employeeTrackingSystem, principal, externalContext);
+
+        bean.createNewProject();
+
+        verify(employeeService, employeeTrackingSystem, principal, externalContext);
+        Project actual = (Project)getField(bean, "project");
+        assertTrue(actual.getManagers().isEmpty());
     }
 
     @Test

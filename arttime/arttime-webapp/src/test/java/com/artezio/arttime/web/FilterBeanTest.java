@@ -44,6 +44,18 @@ public class FilterBeanTest {
     private Employee loggedEmployee = new Employee();
 
     @Test
+    public void testInit() {
+        Filter activeProjectsFilter = mock(Filter.class);
+        expect(filterService.getActiveProjectsFilter()).andReturn(activeProjectsFilter);
+        replay(filterService);
+
+        filterBean.init();
+
+        verify(filterService);
+        assertNotSame(activeProjectsFilter, filterBean.getCurrentFilter());
+    }
+
+    @Test
     public final void testGetCurrentFilter() throws NoSuchFieldException {
         Filter expected = createMock(Filter.class);
         setField(filterBean, "currentFilter", expected);

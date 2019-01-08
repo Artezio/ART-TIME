@@ -28,9 +28,13 @@
                      var="workdaysCalendar" sortBy="#{workdaysCalendar.name.toLowerCase()}"
                      stickyHeader="false" styleClass="dictionaryTable"
                      emptyMessage="#{messages['warning.datatable.empty']}">
-            <p:column sortBy="#{workdaysCalendar.name.toLowerCase()}" style="width:80%;">
+            <p:column sortBy="#{workdaysCalendar.name.toLowerCase()}" width="40%">
                 <f:facet name="header">#{messages['calendars.column.name']}</f:facet>
                 <h:outputText value="#{workdaysCalendar.name}"/>
+            </p:column>
+            <p:column width="40%">
+                <f:facet name="header">#{messages['calendars.column.departments']}</f:facet>
+                <h:outputText value="#{workdaysCalendar.departments.stream().reduce((d1, d2) -> d1 += ', ' += d2).orElse('-')}"/>
             </p:column>
             <p:column>
                 <f:facet name="header">#{messages['calendars.column.action']}</f:facet>

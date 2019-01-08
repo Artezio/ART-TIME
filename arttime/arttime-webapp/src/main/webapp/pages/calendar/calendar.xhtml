@@ -1,57 +1,59 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:p="http://primefaces.org/ui"
-				xmlns:t="http://myfaces.apache.org/tomahawk"
-				xmlns:o="http://omnifaces.org/ui">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:o="http://omnifaces.org/ui">
 
-	<script type="text/javascript">
-		var observer;
-		var globalTimeout = null;
-		var monthCount = 0;
-		$(document).ready(initCalendarBehavior);
+    <script type="text/javascript">
+        var observer;
+        var globalTimeout = null;
+        var monthCount = 0;
+        $(document).ready(initCalendarBehavior);
 
-		function initCalendarBehavior(){
-			$(document).delegate('.ui-datepicker-updated-header .ui-datepicker-prev', 'click', function() {
+        function initCalendarBehavior() {
+            $(document).delegate('.ui-datepicker-updated-header .ui-datepicker-prev', 'click', function () {
                 monthCount++;
                 if ((globalTimeout !== null) &amp;&amp; ((monthCount % 7) !== 0)) {
                     clearTimeout(globalTimeout);
                 }
-                globalTimeout = setTimeout(function() {
+                globalTimeout = setTimeout(function () {
                     globalTimeout = null;
                     prevMonth([{name: 'monthCount', value: monthCount}]);
                     monthCount = 0;
                 }, 800)
-			});
-			$(document).delegate('.ui-datepicker-updated-header .ui-datepicker-next', 'click', function() {
+            });
+            $(document).delegate('.ui-datepicker-updated-header .ui-datepicker-next', 'click', function () {
                 monthCount++;
                 if ((globalTimeout !== null) &amp;&amp; ((monthCount % 7) !== 0)) {
-				    clearTimeout(globalTimeout);
-				}
-                globalTimeout = setTimeout(function() {
-					globalTimeout = null;
-					nextMonth([{name: 'monthCount', value: monthCount}]);
-					monthCount = 0;
-				}, 800)
-			});	
-			subscribeToMutations();
-		}
-		function subscribeToMutations(){
-			function addClassToCalendar(){
-				if(!PrimeFaces.widgets.calendarWidget || !PrimeFaces.widgets.calendarWidget.jqEl) return;
-				var calendarHeader = PrimeFaces.widgets.calendarWidget.jqEl.find('.ui-datepicker-header');
-				if(!calendarHeader.hasClass('ui-datepicker-updated-header')){
-					calendarHeader.addClass('ui-datepicker-updated-header');
-				}
-			}
-			addClassToCalendar();
-			MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-			observer = new MutationObserver(function(mutations, observer) {
-				addClassToCalendar();
-			});
+                    clearTimeout(globalTimeout);
+                }
+                globalTimeout = setTimeout(function () {
+                    globalTimeout = null;
+                    nextMonth([{name: 'monthCount', value: monthCount}]);
+                    monthCount = 0;
+                }, 800)
+            });
+            subscribeToMutations();
+        }
 
-			// <![CDATA[
+        function subscribeToMutations() {
+            function addClassToCalendar() {
+                if (!PrimeFaces.widgets.calendarWidget || !PrimeFaces.widgets.calendarWidget.jqEl) return;
+                var calendarHeader = PrimeFaces.widgets.calendarWidget.jqEl.find('.ui-datepicker-header');
+                if (!calendarHeader.hasClass('ui-datepicker-updated-header')) {
+                    calendarHeader.addClass('ui-datepicker-updated-header');
+                }
+            }
+
+            addClassToCalendar();
+            MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+            observer = new MutationObserver(function (mutations, observer) {
+                addClassToCalendar();
+            });
+
+            // <![CDATA[
 
             var cal = document.querySelector('.calendar');
             if (cal !== undefined && cal !== null) {
@@ -62,178 +64,188 @@
             }
 
             // ]]>
-		}		
-		function highlightDaysOffAndHolidays(date){
-			var daysOff = convertToMap(getValuesFromInput("#form\\:inputDaysOff"));
-			var holidays = convertToMap(getValuesFromInput("#form\\:inputHolidays"));
-			var value = toDashSeparatedDate(date);
-	        if (daysOff[value]) {
-	        	return [true, 'calendarNonWorkingDay'];
-	        }
-	        if (holidays[value]) {
-	        	return [true, 'calendarHolidays'];
-	        }
-			return [true, ''];
-		}
-		function getValuesFromInput(selector) {
-		    return $(selector).val();
-		}
-		function convertToMap(days){						
-			return days.split(',').reduce(function(prev, current){
-				if(!prev[current]){
-					prev[current] = true
-				}
-				return prev;
-			}, {});
-		}
-		function toDashSeparatedDate(date) {
+        }
+
+        function highlightDaysOffAndHolidays(date) {
+            var daysOff = convertToMap(getValuesFromInput("#form\\:inputDaysOff"));
+            var holidays = convertToMap(getValuesFromInput("#form\\:inputHolidays"));
+            var value = toDashSeparatedDate(date);
+            if (daysOff[value]) {
+                return [true, 'calendarNonWorkingDay'];
+            }
+            if (holidays[value]) {
+                return [true, 'calendarHolidays'];
+            }
+            return [true, ''];
+        }
+
+        function getValuesFromInput(selector) {
+            return $(selector).val();
+        }
+
+        function convertToMap(days) {
+            return days.split(',').reduce(function (prev, current) {
+                if (!prev[current]) {
+                    prev[current] = true
+                }
+                return prev;
+            }, {});
+        }
+
+        function toDashSeparatedDate(date) {
             var day = date.getDate();
             var month = date.getMonth() + 1;
             var year = date.getFullYear();
             return day + '-' + month + '-' + year;
-		}
+        }
+
         function refreshCalendar() {
             var datePicker = $.datepicker;
             var inst = datePicker._getInst(PrimeFaces.widgets['calendarWidget'].jqEl[0]);
             datePicker._updateDatepicker(inst);
         }
-	</script>
+    </script>
 
-	<p:remoteCommand name="prevMonth"
-					 action="#{workdaysCalendarBean.prevMonth()}"
-					 update="inputDaysOff inputHolidays #{p:component('dayShifts')}"
-					 oncomplete="refreshCalendar()"
-					 partialSubmit="true"
-					 process="@this"/>
-	<p:remoteCommand name="nextMonth"
-					 action="#{workdaysCalendarBean.nextMonth()}"
-					 update="inputDaysOff inputHolidays #{p:component('dayShifts')}"
-					 oncomplete="refreshCalendar()"
-					 partialSubmit="true"
-					 process="@this">
-	</p:remoteCommand>
-	<h:inputHidden id="inputDaysOff" value="#{workdaysCalendarBean.daysOff}"/>
-	<h:inputHidden id="inputHolidays" value="#{workdaysCalendarBean.holidays}"/>
+    <p:remoteCommand name="prevMonth"
+                     action="#{workdaysCalendarBean.prevMonth()}"
+                     update="inputDaysOff inputHolidays #{p:component('dayShifts')}"
+                     oncomplete="refreshCalendar()"
+                     partialSubmit="true"
+                     process="@this"/>
+    <p:remoteCommand name="nextMonth"
+                     action="#{workdaysCalendarBean.nextMonth()}"
+                     update="inputDaysOff inputHolidays #{p:component('dayShifts')}"
+                     oncomplete="refreshCalendar()"
+                     partialSubmit="true"
+                     process="@this">
+    </p:remoteCommand>
+    <h:inputHidden id="inputDaysOff" value="#{workdaysCalendarBean.daysOff}"/>
+    <h:inputHidden id="inputHolidays" value="#{workdaysCalendarBean.holidays}"/>
 
-	<t:panelGrid styleClass="panelGridDetails page-layout-dayshifts table-without-border" columns="3">
-		<p:outputLabel for="name" value="#{messages['calendar.label.name']}:"/>
-		<p:inputText id="name" value="#{calendar.name}" maxlength="255" required="true"/>
-		<p:message for="name" display="tooltip"/>
+    <t:panelGrid styleClass="panelGridDetails page-layout-dayshifts table-without-border calendar-editor" columns="3">
+        <p:outputLabel for="name" value="#{messages['calendar.label.name']}:"/>
+        <p:inputText id="name" value="#{calendar.name}" maxlength="255" required="true"/>
+        <p:message for="name" display="tooltip"/>
 
-		<h:outputText value="#{messages['editCalendar.label.notWorkingDays']}" rendered="#{showCalendar}"/>
-		<h:panelGrid id="calendarPanel"
-				styleClass="worktimeCalendarContainer" 
-				rendered="#{showCalendar}">
-			<p:calendar id="calendar" 
-				value="#{workdaysCalendarBean.selectedDate}" 
-				mode="inline"
-				beforeShowDay="highlightDaysOffAndHolidays" 
-				styleClass="calendar"
-				widgetVar="calendarWidget" 
-				navigator="">
-				<p:ajax event="dateSelect"
-					listener="#{workdaysCalendarBean.onDateSelect}"
-					update="inputDaysOff inputHolidays @this #{p:component('dayShifts')}" 
-					oncomplete="subscribeToMutations()"
-					for="console">
-				</p:ajax>
-			</p:calendar>
-		</h:panelGrid>
-		<h:panelGrid rendered="#{showCalendar}" styleClass="worktimeCalendar-legend">
-			<h:panelGroup>
-				<h:panelGroup styleClass="dayOff"/>
-				<h:outputText value=" - #{messages['editCalendar.label.dayOff']}"/>
-			</h:panelGroup>
-			<h:panelGroup>
-				<h:panelGroup  styleClass="workingDay"/>
-				<h:outputText value=" - #{messages['calendar.label.workingDay']}"/>
-			</h:panelGroup>
-			<h:panelGroup>
-				<h:panelGroup styleClass="holiday" />
-				<h:outputText value=" - #{messages['calendar.label.holiday']}"/>
-			</h:panelGroup>
-		</h:panelGrid>
+        <h:outputLabel for="departments" rendered="#{showCalendar}" value="#{messages['calendar.label.departments']}"/>
+        <h:outputText id="departments" rendered="#{showCalendar}"
+                      value="#{calendar.departments.stream().reduce((d1, d2) -> d1 += ', ' += d2).orElse('-')}"/>
+        <h:outputText rendered="#{showCalendar}" value=""/>
 
-		<h:outputText value="#{messages['editCalendar.label.dayShifts']}" rendered="#{showCalendar}"/>
-		<t:panelGroup colspan="2">
-			<t:subform>
-				<o:validateMultiple components="dayShifts:shiftFrom dayShifts:shiftTo"
-					validator="#{workdaysCalendarBean.validateDateBeforeCreateDayShift}" >
-				</o:validateMultiple>
-				<p:dataTable id="dayShifts"
-					value="#{workdaysCalendarBean.daysShift}" 
-					var="day"
-					styleClass="ui-datatable-daysshift" 
-					rendered="#{showCalendar}">
+        <h:outputText value="#{messages['editCalendar.label.notWorkingDays']}" rendered="#{showCalendar}"/>
+        <h:panelGrid id="calendarPanel"
+                     styleClass="worktimeCalendarContainer"
+                     rendered="#{showCalendar}">
+            <p:calendar id="calendar"
+                        value="#{workdaysCalendarBean.selectedDate}"
+                        mode="inline"
+                        beforeShowDay="highlightDaysOffAndHolidays"
+                        styleClass="calendar"
+                        widgetVar="calendarWidget"
+                        navigator="">
+                <p:ajax event="dateSelect"
+                        listener="#{workdaysCalendarBean.onDateSelect}"
+                        update="inputDaysOff inputHolidays @this #{p:component('dayShifts')}"
+                        oncomplete="subscribeToMutations()"
+                        for="console">
+                </p:ajax>
+            </p:calendar>
+        </h:panelGrid>
+        <h:panelGrid rendered="#{showCalendar}" styleClass="worktimeCalendar-legend">
+            <h:panelGroup>
+                <h:panelGroup styleClass="dayOff"/>
+                <h:outputText value=" - #{messages['editCalendar.label.dayOff']}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:panelGroup styleClass="workingDay"/>
+                <h:outputText value=" - #{messages['calendar.label.workingDay']}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+                <h:panelGroup styleClass="holiday"/>
+                <h:outputText value=" - #{messages['calendar.label.holiday']}"/>
+            </h:panelGroup>
+        </h:panelGrid>
 
-					<p:column id="dateFromColumn">
-						<f:facet name="header">
-							<h:outputText value="#{messages['calendar.label.day.shiftFrom']}"/>
-						</f:facet>
-						<h:outputText value="#{day.shiftedFrom}">
-							<f:convertDateTime pattern="dd.MM.yyyy" />
-						</h:outputText>
-						<f:facet name="footer">
-							<p:calendar id="shiftFrom"
-								value="#{workdaysCalendarBean.shiftFrom}"
-								mindate="#{workdaysCalendarBean.period.start}"
-								maxdate="#{workdaysCalendarBean.period.finish}"
-								styleClass="calendar-control"/>
-							<p:message for="shiftFrom" display="tooltip" />
-						</f:facet>
-					</p:column>
+        <h:outputText value="#{messages['editCalendar.label.dayShifts']}" rendered="#{showCalendar}"/>
+        <t:panelGroup colspan="2">
+            <t:subform>
+                <o:validateMultiple components="dayShifts:shiftFrom dayShifts:shiftTo"
+                                    validator="#{workdaysCalendarBean.validateDateBeforeCreateDayShift}">
+                </o:validateMultiple>
+                <p:dataTable id="dayShifts"
+                             value="#{workdaysCalendarBean.daysShift}"
+                             var="day"
+                             styleClass="ui-datatable-daysshift"
+                             rendered="#{showCalendar}">
 
-					<p:column>
-						<f:facet name="header">#{messages['calendar.label.day.shiftTo']}</f:facet>
-						<h:outputText value="#{day.shiftedTo}">
-							<f:convertDateTime pattern="dd.MM.yyyy" />
-						</h:outputText>
-						<f:facet name="footer">
-							<p:calendar id="shiftTo" 
-								value="#{workdaysCalendarBean.shiftTo}"
-								styleClass="calendar-control" />
-							<p:message for="shiftTo" display="tooltip" />
-						</f:facet>
-					</p:column>
-					<p:column width="320">
-						<f:facet name="header">#{messages['calendar.label.comment']}</f:facet>
-						<h:outputText value="#{day.comment}" style="word-wrap: break-word;"/>
-						<f:facet name="footer">
-							<p:inputText value="#{workdaysCalendarBean.comment}" maxlength="255" />
-						</f:facet>
-					</p:column>
+                    <p:column id="dateFromColumn">
+                        <f:facet name="header">
+                            <h:outputText value="#{messages['calendar.label.day.shiftFrom']}"/>
+                        </f:facet>
+                        <h:outputText value="#{day.shiftedFrom}">
+                            <f:convertDateTime pattern="dd.MM.yyyy"/>
+                        </h:outputText>
+                        <f:facet name="footer">
+                            <p:calendar id="shiftFrom"
+                                        value="#{workdaysCalendarBean.shiftFrom}"
+                                        mindate="#{workdaysCalendarBean.period.start}"
+                                        maxdate="#{workdaysCalendarBean.period.finish}"
+                                        styleClass="calendar-control"/>
+                            <p:message for="shiftFrom" display="tooltip"/>
+                        </f:facet>
+                    </p:column>
 
-					<p:column>
-						<f:facet name="header">#{messages['calendar.label.actionWithDayShift']}</f:facet>
-						<p:commandButton value=""
-							id="deleteButton"
-							onstart="return confirm('#{messages['label.confirm.delete']}');"
-							action="#{workdaysCalendarBean.removeDayShift(day)}"
-							oncomplete="subscribeToMutations()"
-							update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendarPanel')} #{p:component('inputHolidays')}"
-							icon="fa fa-trash"
-							process="@this"
-							styleClass="avoidChangeTracking invisibleBorder ui-fa">
-							<p:tooltip style="color:#2f3030; border-color:#2f3030;"
-									for="deleteButton" 
-									value="#{messages['button.deleteDayShift']}"
-									position="top" />
-						</p:commandButton>
-						<f:facet name="footer">
-							<p:commandButton value="" 
-								icon="fa fa-plus"
-								id="addButton"
-								action="#{workdaysCalendarBean.addDayShift()}"
-								oncomplete="subscribeToMutations()"
-								update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendar')} #{p:component('inputHolidays')}"
-								styleClass="avoidChangeTracking invisibleBorder" 
-								label="#{messages['button.addNewDayShift']}">
-							</p:commandButton>
-						</f:facet>
-					</p:column>
-				</p:dataTable>
-			</t:subform>
-		</t:panelGroup>
-	</t:panelGrid>
-	
+                    <p:column>
+                        <f:facet name="header">#{messages['calendar.label.day.shiftTo']}</f:facet>
+                        <h:outputText value="#{day.shiftedTo}">
+                            <f:convertDateTime pattern="dd.MM.yyyy"/>
+                        </h:outputText>
+                        <f:facet name="footer">
+                            <p:calendar id="shiftTo"
+                                        value="#{workdaysCalendarBean.shiftTo}"
+                                        styleClass="calendar-control"/>
+                            <p:message for="shiftTo" display="tooltip"/>
+                        </f:facet>
+                    </p:column>
+                    <p:column width="320">
+                        <f:facet name="header">#{messages['calendar.label.comment']}</f:facet>
+                        <h:outputText value="#{day.comment}" style="word-wrap: break-word;"/>
+                        <f:facet name="footer">
+                            <p:inputText value="#{workdaysCalendarBean.comment}" maxlength="255"/>
+                        </f:facet>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">#{messages['calendar.label.actionWithDayShift']}</f:facet>
+                        <p:commandButton value=""
+                                         id="deleteButton"
+                                         onstart="return confirm('#{messages['label.confirm.delete']}');"
+                                         action="#{workdaysCalendarBean.removeDayShift(day)}"
+                                         oncomplete="subscribeToMutations()"
+                                         update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendarPanel')} #{p:component('inputHolidays')}"
+                                         icon="fa fa-trash"
+                                         process="@this"
+                                         styleClass="avoidChangeTracking invisibleBorder ui-fa">
+                            <p:tooltip style="color:#2f3030; border-color:#2f3030;"
+                                       for="deleteButton"
+                                       value="#{messages['button.deleteDayShift']}"
+                                       position="top"/>
+                        </p:commandButton>
+                        <f:facet name="footer">
+                            <p:commandButton value=""
+                                             icon="fa fa-plus"
+                                             id="addButton"
+                                             action="#{workdaysCalendarBean.addDayShift()}"
+                                             oncomplete="subscribeToMutations()"
+                                             update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendar')} #{p:component('inputHolidays')}"
+                                             styleClass="avoidChangeTracking invisibleBorder"
+                                             label="#{messages['button.addNewDayShift']}">
+                            </p:commandButton>
+                        </f:facet>
+                    </p:column>
+                </p:dataTable>
+            </t:subform>
+        </t:panelGroup>
+    </t:panelGrid>
+
 </ui:composition>

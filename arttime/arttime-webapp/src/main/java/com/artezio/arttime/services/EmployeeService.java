@@ -69,7 +69,6 @@ public class EmployeeService implements Serializable {
 
     @RolesAllowed({EXEC_ROLE, OFFICE_MANAGER, SYSTEM_ROLE})
     @AbacContext(MANAGE_EMPLOYEES)
-    @FacesMessage(onCompleteMessageKey = "message.employeeSettingsAreSaved")
     public void update(Collection<Employee> employees) {
         employees.forEach(this::update);
     }

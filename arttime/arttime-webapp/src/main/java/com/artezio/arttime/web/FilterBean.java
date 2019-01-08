@@ -36,11 +36,10 @@ public class FilterBean implements Serializable {
     private DepartmentService departmentService;
     @Inject
     private HourTypeService hourTypeService;
-    private String newFilterName;
 
     @PostConstruct
     public void init() {
-        currentFilter = filterService.getActiveProjectsFilter();
+        currentFilter = new Filter(filterService.getActiveProjectsFilter());
     }
 
     public Filter getCurrentFilter() {
@@ -52,11 +51,9 @@ public class FilterBean implements Serializable {
         filter.setRangePeriodSelector(currentFilter.getRangePeriodSelector());
         currentFilter = filter;
         setSelectedProjects(filter.getProjects());
-        newFilterName = currentFilter.getName();
     }
 
     public void save() {
-        currentFilter.setName(newFilterName);
         setCurrentFilter(filterService.save(currentFilter));
     }
 
@@ -65,14 +62,6 @@ public class FilterBean implements Serializable {
         if (currentFilter.equals(filter)) {
             currentFilter.setId(null);
         }
-    }
-
-    public String getNewFilterName() {
-        return newFilterName;
-    }
-
-    public void setNewFilterName(String newFilterName) {
-        this.newFilterName = newFilterName;
     }
 
     public List<Project> getSelectedProjects() {

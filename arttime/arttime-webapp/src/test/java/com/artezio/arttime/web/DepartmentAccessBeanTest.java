@@ -7,10 +7,7 @@ import com.artezio.arttime.services.EmployeeService;
 import com.google.common.collect.Sets;
 import junitx.util.PrivateAccessor;
 import org.apache.commons.lang.WordUtils;
-import org.easymock.EasyMock;
-import org.easymock.EasyMockRunner;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
+import org.easymock.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -82,20 +79,25 @@ public class DepartmentAccessBeanTest {
         selectedAccess.put(department2, Arrays.asList(employee1, employee2));
         PrivateAccessor.setField(departmentAccessBean, "accessToDepartments", selectedAccess);
         expect(employeeService.getEmployeesHavingAccessToAnyDepartment()).andReturn(Arrays.asList(employee1, employee2)).anyTimes();
+        Capture<Collection<Employee>> updatedEmployees = Capture.newInstance();
+        employeeService.update(capture(updatedEmployees));
+        expectLastCall();
         replay(employeeService);
         assertFalse(employee1.hasAccessTo(department1));
         assertTrue(employee1.hasAccessTo(department2));
         assertTrue(employee2.hasAccessTo(department1));
         assertTrue(employee2.hasAccessTo(department2));
 
-        Set<Employee> actual = departmentAccessBean.grantAccessForChangedEmployees(department1);
+        departmentAccessBean.grantAccessForChangedEmployees(department1);
 
+        assertTrue(updatedEmployees.hasCaptured());
+        Collection<Employee> capturedEmployees = updatedEmployees.getValue();
+        assertTrue(capturedEmployees.contains(employee1));
+        assertFalse(capturedEmployees.contains(employee2));
         assertTrue(employee1.hasAccessTo(department1));
         assertTrue(employee1.hasAccessTo(department2));
         assertTrue(employee2.hasAccessTo(department1));
         assertTrue(employee2.hasAccessTo(department2));
-        assertTrue(actual.contains(employee1));
-        assertFalse(actual.contains(employee2));
     }
 
     @Test
@@ -111,6 +113,9 @@ public class DepartmentAccessBeanTest {
         selectedAccess.put(department2, Arrays.asList(employee1, employee2));
         PrivateAccessor.setField(departmentAccessBean, "accessToDepartments", selectedAccess);
         expect(employeeService.getEmployeesHavingAccessToAnyDepartment()).andReturn(Arrays.asList(employee1, employee2)).anyTimes();
+        Capture<Collection<Employee>> updatedEmployees = Capture.newInstance();
+        employeeService.update(capture(updatedEmployees));
+        expectLastCall();
         replay(employeeService);
 
         assertTrue(employee1.hasAccessTo(department1));
@@ -118,25 +123,26 @@ public class DepartmentAccessBeanTest {
         assertTrue(employee2.hasAccessTo(department1));
         assertTrue(employee2.hasAccessTo(department2));
 
-        Set<Employee> actual = departmentAccessBean.revokeAccessForChangedEmployees(department1);
+        departmentAccessBean.revokeAccessForChangedEmployees(department1);
 
+        assertTrue(updatedEmployees.hasCaptured());
+        Collection<Employee> capturedEmployees = updatedEmployees.getValue();
+        assertTrue(capturedEmployees.contains(employee1));
+        assertFalse(capturedEmployees.contains(employee2));
         assertFalse(employee1.hasAccessTo(department1));
         assertTrue(employee1.hasAccessTo(department2));
         assertTrue(employee2.hasAccessTo(department1));
         assertTrue(employee2.hasAccessTo(department2));
-        assertTrue(actual.contains(employee1));
-        assertFalse(actual.contains(employee2));
     }
 
     @Test
     public void testSave() {
-        employeeService.update(anyObject(Set.class));
         EasyMock.expect(departmentService.getAll()).andReturn(Collections.emptyList()).anyTimes();
-        EasyMock.replay(employeeService, departmentService);
+        EasyMock.replay(departmentService);
 
         departmentAccessBean.save();
 
-        EasyMock.verify(employeeService, departmentService);
+        EasyMock.verify(departmentService);
     }
 
     protected String toNameCase(String department) {

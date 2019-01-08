@@ -4,9 +4,10 @@ import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.datamodel.Project.Status;
 import com.artezio.arttime.datamodel.TeamFilter;
-import com.artezio.arttime.services.DepartmentService;
 import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.ProjectService;
+import com.artezio.arttime.services.integration.EmployeeTrackingSystem;
+import com.artezio.arttime.services.integration.TeamTrackingSystem;
 import com.artezio.arttime.utils.NoDuplicatesList;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.ArrayUtils;
@@ -15,6 +16,7 @@ import org.primefaces.event.FlowEvent;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,13 +39,14 @@ public class ProjectBean implements Serializable {
     @Inject
     private EmployeeService employeeService;
     @Inject
+    private EmployeeTrackingSystem employeeTrackingSystem;
+    @Inject
     private ExternalContext externalContext;
     private List<Employee> filtered;
     private Employee employee;
     private List<Project> subprojects;
     private List<Project> projects;
     private Map<Employee, Project[]> participations;
-    private List<String> departments;
 
     @PostConstruct
     public void init() {
@@ -57,12 +60,20 @@ public class ProjectBean implements Serializable {
         } else if (masterId != null) {
             this.project = new Project(projectService.loadProject(Long.parseLong(masterId)));
         } else {
-            project = new Project();
-            employeeService.getLoggedEmployee().ifPresent(project::addManager);
+            createNewProject();
         }
         selectedTab = calculateIndexTab(project);
     }
-    
+
+    protected void createNewProject() {
+        project = new Project();
+        Optional<Employee> loggedEmployee = Optional.ofNullable(
+                employeeService
+                        .getLoggedEmployee()
+                        .orElse(employeeTrackingSystem.findEmployee(externalContext.getUserPrincipal().getName())));
+        loggedEmployee.ifPresent(project::addManager);
+    }
+
     public List<Employee> getManagersOrdered(Project project) {
         return project.getManagers().stream()
                 .sorted(Employee.NAME_COMPARATOR)
@@ -97,7 +108,7 @@ public class ProjectBean implements Serializable {
 
     public void delete(Employee employee) {
         Project[] participations = getParticipations().get(employee);
-        participations = (Project[])ArrayUtils.removeElement(participations, project);
+        participations = (Project[]) ArrayUtils.removeElement(participations, project);
         getParticipations().put(employee, participations);
     }
 
@@ -221,8 +232,10 @@ public class ProjectBean implements Serializable {
                 .collect(Collectors.toSet());
     }
 
-    private String calculateIndexTab(Project project) {
-        return project.getStatus().equals(Status.ACTIVE) ? "0" : !project.isSubproject() ? "1" : "2";
+    public String calculateIndexTab(Project project) {
+        return project.getStatus().equals(Status.ACTIVE)
+                ? "0"
+                : !project.isSubproject() ? "1" : "2";
     }
 
     private List<Employee> getTeamIncludeSubprojects(Project project) {
@@ -274,30 +287,28 @@ public class ProjectBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getDepartments() {
-        if (departments == null) {
-            if (project == null || (project.getTeamFilter().getFilterType() != TeamFilter.Type.DEPARTMENTS)) {
-                departments = new ArrayList<>();
-            } else {
-                TeamFilter teamFilter = project.getTeamFilter();
-                if (teamFilter != null && teamFilter.getValue() != null) {
-                    departments = Arrays.asList(teamFilter.getValue().split(","));
-                } else {
-                    departments = new ArrayList<>();
-                }
-            }
+    public String[] getDepartments() {
+        if (project == null
+                || (project.getTeamFilter() == null)
+                || (project.getTeamFilter().getFilterType() != TeamFilter.Type.DEPARTMENTS)) {
+            return new String[0];
         }
-        return departments;
+        TeamFilter teamFilter = project.getTeamFilter();
+        if (teamFilter.getValue() != null) {
+            return teamFilter.getValue().split(",");
+        } else {
+            return new String[0];
+        }
     }
 
-    public void setDepartments(List<String> departments) {
+    public void setDepartments(String[] departments) {
         if (project != null && project.getTeamFilter().getFilterType() == TeamFilter.Type.DEPARTMENTS) {
-            project.getTeamFilter().setValue(Strings.join(departments, ","));
+            project.getTeamFilter().setValue(Strings.join(Arrays.asList(departments), ","));
         }
     }
 
-    public void filterTypeChanged(javax.faces.event.AjaxBehaviorEvent ignored) throws javax.faces.event.AbortProcessingException {
-        if (project != null && project.getTeamFilter() != null) {
+    public void teamFilterTypeChanged(AjaxBehaviorEvent event) {
+        if (project != null && project.getTeamFilter().getValue() != null) {
             project.getTeamFilter().setValue(null);
         }
     }

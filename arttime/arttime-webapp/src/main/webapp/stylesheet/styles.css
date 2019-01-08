@@ -3800,20 +3800,20 @@ button.approveAll, button.disapproveAll {
 }
 
 .departments-access ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
-.team-filter-departments ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
+.team-filter__departments-select ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close,
 .project-team ul span.ui-selectcheckboxmenu-token-icon.ui-icon.ui-icon-close {
     background: url(../img/close_autocomplete_token.png) no-repeat 0 0;
 }
 
 .departments-access .ui-selectcheckboxmenu,
-.team-filter-departments.ui-selectcheckboxmenu,
+.team-filter__departments-select.ui-selectcheckboxmenu,
 .project-team .ui-selectcheckboxmenu {
     width: auto;
     height: auto;
 }
 
 .departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
-.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
+.team-filter__departments-select.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active,
 .project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token.ui-state-active {
     background-color: #42a9d9;
     padding: 3px 0 2px 2px;
@@ -3821,44 +3821,66 @@ button.approveAll, button.disapproveAll {
 }
 
 .departments-access .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
-.team-filter-departments.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
+.team-filter__departments-select.ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon,
 .project-team .ui-selectcheckboxmenu-multiple .ui-selectcheckboxmenu-trigger .ui-icon {
     margin-top: -18px;
     text-align: center;
 }
 
 .departments-access .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
-.team-filter-departments.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
+.team-filter__departments-select.ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon,
 .project-team .ui-selectcheckboxmenu .ui-selectcheckboxmenu-token-icon {
     margin-top: -8px;
 }
 
-.session-expired-dlg {
+.team-filter__type-select,
+.team-filter__departments-select {
+    margin-top: 0;
+    vertical-align: top;
+}
+
+.session-expired-dialog {
     background: #fff;
     border: 1px solid #a5a5a5;
     border-radius: 4px;
     padding: 8px;
 }
 
-.session-expired-dlg.ui-dialog .ui-dialog-title {
+.session-expired-dialog .ui-dialog-title {
     font-size: 22px;
     color: #555;
     margin: 0;
 }
 
-.ui-dialog.session-expired-dlg .ui-dialog-titlebar {
+.session-expired-dialog .ui-dialog-titlebar {
     padding-top: 6px;
 }
 
-.session-expired-dlg a {
-    font-size: 14px;
+.session-expired-dialog__refresh-link {
+    font-size: 13px;
+    color: #4e4e4e;
 }
 
-.session-expired-dlg .ui-dialog-actions {
+.session-expired-dialog__refresh-link i {
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.session-expired-dialog__refresh-link:hover {
+    font-size: 13px;
+    background-color: #e9e9e9;
+}
+
+.session-expired-dialog__refresh-link:visited {
+    text-decoration: none;
+    color: #4e4e4e;
+}
+
+.session-expired-dialog__actions {
     margin-top: 20px;
 }
 
-.session-expired-dlg.ui-dialog .ui-dialog-content {
+.session-expired-dialog .ui-dialog-content {
     color: #555;
 }
 
@@ -3927,4 +3949,27 @@ button.approveAll, button.disapproveAll {
 
 .trackingSystemTabs .ui-tabs-nav {
     display: none;
+}
+
+.filter-save-panel__name-group,
+.filter-save-panel__button-group {
+    display: inline-block;
+}
+
+.filter-save-panel__name-errors {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.filter-save-panel__name-input {
+    display: inline-block;
+}
+
+table.calendar-editor > tbody > tr > td {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+table.calendar-editor > tbody > tr > td:first-child {
+    padding-left: 0;
 }
