@@ -66,12 +66,13 @@
 							<goal>unpack-dependencies</goal>
 						</goals>
 						<configuration>
-							<includeArtifactIds>arttime-webapp</includeArtifactIds>
+							<includeArtifactIds>arttime-webapp,commons-lang</includeArtifactIds>
 							<outputDirectory>${project.build.directory}/classes</outputDirectory>
 							<includes>
 								**/com/artezio/arttime/datamodel/**/*.class,
 								**/com/artezio/arttime/utils/ListAdapter.class,
-								**/com/artezio/arttime/report/datasource/pojo/DataSet.class
+								**/com/artezio/arttime/report/datasource/pojo/DataSet.class,
+								**/org/apache/commons/lang/WordUtils.class
 							</includes>
 							<excludes>
 								**/com/artezio/arttime/datamodel/**/*_.class

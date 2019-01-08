@@ -40,12 +40,9 @@
     <parameters>
         <scalar-parameter name="startDate" id="12">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-03-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -55,12 +52,9 @@
         </scalar-parameter>
         <scalar-parameter name="endDate" id="13">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-03-31</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -69,19 +63,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="employeeUserNames" id="14">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Employees</property>
             <expression name="valueExpr" type="javascript">dataSetRow["username"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">user4</value>
-                <value type="constant">user3</value>
-                <value type="constant">user2</value>
-                <value type="constant">user1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -92,17 +80,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="departments" id="15">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Hours</property>
             <expression name="valueExpr" type="javascript">dataSetRow["department"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">Moscow</value>
-                <value type="constant">Minsk</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -113,15 +97,12 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="projectIds" id="16">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
             <property name="dataSetName">Projects</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -132,17 +113,12 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="hourTypeIds" id="17">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
             <property name="dataSetName">HourTypes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -4114,6 +4090,11 @@ return false;]]></method>
         <style name="NoDisplayStyle" id="1380">
             <property name="display">none</property>
         </style>
+        <style name="BottomBorderStyle" id="1964">
+            <property name="borderBottomColor">#AEAEAE</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+        </style>
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
@@ -4202,6 +4183,7 @@ return false;]]></method>
                                                         <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType_MonthDate/monthDate</property>
                                                     </data>
                                                 </property>
+                                                <property name="style">BottomBorderStyle</property>
                                             </extended-item>
                                         </property>
                                         <property name="aggregations">
@@ -4220,6 +4202,7 @@ return false;]]></method>
                                                         <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType</property>
                                                     </data>
                                                 </property>
+                                                <property name="style">BottomBorderStyle</property>
                                             </extended-item>
                                         </property>
                                         <property name="header">
@@ -4283,6 +4266,7 @@ return false;]]></method>
                                                                 </property>
                                                                 <property name="verticalAlign">top</property>
                                                                 <property name="width">64px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
@@ -4307,6 +4291,7 @@ return false;]]></method>
                                                                 </property>
                                                                 <property name="verticalAlign">top</property>
                                                                 <property name="width">47px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
@@ -4341,6 +4326,7 @@ return false;]]></method>
                                                                 </property>
                                                                 <property name="verticalAlign">top</property>
                                                                 <property name="width">37px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
@@ -4556,6 +4542,7 @@ return false;]]></method>
                                                         <property name="resultSetColumn">quantity_Root_Gap_HourType/hourType_MonthDate/monthDate</property>
                                                     </data>
                                                 </property>
+                                                <property name="style">BottomBorderStyle</property>
                                             </extended-item>
                                         </property>
                                         <property name="aggregations">
@@ -4574,6 +4561,7 @@ return false;]]></method>
                                                         <property name="resultSetColumn">quantity_Root_Gap_HourType/hourType</property>
                                                     </data>
                                                 </property>
+                                                <property name="style">BottomBorderStyle</property>
                                             </extended-item>
                                         </property>
                                         <property name="header">
@@ -4629,6 +4617,7 @@ return false;]]></method>
                                                                 </property>
                                                                 <property name="verticalAlign">top</property>
                                                                 <property name="width">64px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
@@ -4637,6 +4626,7 @@ return false;]]></method>
                                                         <property name="member">
                                                             <extended-item extensionName="CrosstabCell" id="1903">
                                                                 <property name="width">47px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
@@ -4671,6 +4661,7 @@ return false;]]></method>
                                                                 </property>
                                                                 <property name="verticalAlign">top</property>
                                                                 <property name="width">37px</property>
+                                                                <property name="style">BottomBorderStyle</property>
                                                             </extended-item>
                                                         </property>
                                                     </extended-item>
