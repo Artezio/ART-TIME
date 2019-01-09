@@ -45,7 +45,6 @@ public class FilterService implements Serializable {
     @Inject
     private Principal principal;
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER, ACCOUNTANT})
     @WebCached(scope = SESSION_SCOPED)
     public Filter getActiveProjectsFilter() {
         List<Project> managedActiveProjects = getActiveManagedProjects();
