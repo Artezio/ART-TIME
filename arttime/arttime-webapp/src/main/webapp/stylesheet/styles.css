@@ -2382,11 +2382,6 @@ td.totalColumn {
     z-index: auto !important;
 }
 
-.ui-datatable-scrollable-body,
-.ui-datatable-scrollable-header {
-    overflow: visible;
-}
-
 .toolBar {
     margin: 0 20px;
     width: auto !important;

@@ -67,38 +67,33 @@
 					<p:inputTextarea id="comment" value="#{timeProblemsNotificationBean.comment}"/>
 				</h:panelGrid>
 			</p:panel>
-			<style type="text/css">
-				.ui-datatable .ui-datatable-scrollable thead th {
-					height: 0px;
-				}
-			</style>
 			<p:dataTable id="problemEmployees"
 						 var="workTime" rowKey="#{workTime}"
 						 selection="#{timeProblemsNotificationBean.selectedRows}"
 						 value="#{timeProblemsNotificationBean.problematicEmployees}"
 						 emptyMessage="#{messages['warning.datatable.empty']}"
-						 scrollable="true" scrollHeight="200" style="width: 800px; overflow: auto;" rowSelectMode="add">
+						 scrollable="true" scrollHeight="200" scrollWidth="1200" rowSelectMode="add">
 
-			   <p:column selectionMode="multiple" style="width:30px;"/>
-			   <p:column headerText="#{messages['notifications.label.employee']}" style="width:150px;">
+			   <p:column selectionMode="multiple" width="30"/>
+			   <p:column headerText="#{messages['notifications.label.employee']}" width="150">
 				   <h:outputText value="#{workTime.employee.fullName}" title="#{workTime.employee.email}"/>
 			   </p:column>
-			   <p:column headerText="#{messages['notifications.label.timeProblem']}" style="width: 90px;" styleClass="numeric">
+			   <p:column headerText="#{messages['notifications.label.timeProblem']}" width="90" styleClass="numeric">
 				   <h:outputText value="#{workTime.timeDeviation}">
 						<f:convertNumber pattern="#0.00"/>
 				   </h:outputText>
 			   </p:column>
-			   <p:column headerText="#{messages['notifications.label.notApprovedHours']}" style="width: 115px;" styleClass="numeric">
+			   <p:column headerText="#{messages['notifications.label.notApprovedHours']}" width="115" styleClass="numeric">
 				   <h:outputText value="#{workTime.unapprovedTime}">
 						<f:convertNumber pattern="#0.00"/>
 				   </h:outputText>
 			   </p:column>
-			   <p:column headerText="#{messages['notifications.label.waitingApprovalBy']}" style="width: 200px" styleClass="wrap">
+			   <p:column headerText="#{messages['notifications.label.waitingApprovalBy']}" width="200" styleClass="wrap">
 				   <ui:repeat value="#{workTime.waitingApprovalBy}" var="manager" varStatus="item">
 						<h:outputText value="#{manager.fullName}#{item.last ? '' : ', '}"/>
 				   </ui:repeat>
 			   </p:column>
-			   <p:column headerText="#{messages['notifications.label.allManagers']}" style="width: 250px" styleClass="wrap">
+			   <p:column headerText="#{messages['notifications.label.allManagers']}" width="250" styleClass="wrap">
 				   <ui:repeat value="#{workTime.allManagers}" var="manager" varStatus="item">
 					   <h:outputText value="#{manager.fullName}#{item.last ? '' : ', '}"/>
 				   </ui:repeat>
