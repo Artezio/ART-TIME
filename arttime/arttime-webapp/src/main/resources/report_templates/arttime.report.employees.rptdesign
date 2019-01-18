@@ -6,6 +6,18 @@
             <property name="name">queryText</property>
             <property name="id">535</property>
         </structure>
+        <structure>
+            <property name="name">pojoDataSetClassPath</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">4</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">4</property>
+        </structure>
     </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
@@ -14,12 +26,9 @@
     <parameters>
         <scalar-parameter name="startDate" id="6">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-03-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -29,12 +38,9 @@
         </scalar-parameter>
         <scalar-parameter name="endDate" id="8">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-03-31</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -50,10 +56,6 @@
             <expression name="valueExpr" type="javascript">dataSetRow["department"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">Moscow</value>
-                <value type="constant">Minsk</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -64,19 +66,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="employeeUserNames" id="10">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Employees</property>
             <expression name="valueExpr" type="javascript">dataSetRow["username"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">user4</value>
-                <value type="constant">user3</value>
-                <value type="constant">user2</value>
-                <value type="constant">user1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -87,18 +83,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="projectIds" id="11">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Projects</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -109,18 +100,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="hourTypeIds" id="12">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">HourTypes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -3728,7 +3714,7 @@
                 <cell id="671">
                     <label id="462">
                         <property name="fontFamily">"Arial"</property>
-                        <property name="fontSize">12pt</property>
+                        <property name="fontSize">11pt</property>
                         <property name="textAlign">left</property>
                         <text-property name="text">Employees had no activity on selected or avalible projects in specified period.</text-property>
                     </label>
@@ -3757,7 +3743,7 @@
                                         <property name="content">
                                             <data id="626">
                                                 <property name="fontFamily">"Arial"</property>
-                                                <property name="fontSize">12pt</property>
+                                                <property name="fontSize">11pt</property>
                                                 <property name="textAlign">right</property>
                                                 <list-property name="visibility">
                                                     <structure>
@@ -3831,7 +3817,7 @@
                                                         <property name="content">
                                                             <data name="employeeUserName1" id="549">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">12pt</property>
+                                                                <property name="fontSize">11pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeUserName</property>
                                                             </data>
@@ -3848,7 +3834,7 @@
                                                         <property name="content">
                                                             <data name="employeeFullName1" id="554">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">12pt</property>
+                                                                <property name="fontSize">11pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeFullName</property>
                                                             </data>
@@ -3865,7 +3851,7 @@
                                                         <property name="content">
                                                             <data name="masterCode" id="559">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">12pt</property>
+                                                                <property name="fontSize">11pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">projectCodeM</property>
                                                             </data>
@@ -3882,7 +3868,7 @@
                                                         <property name="content">
                                                             <data name="projectCode1" id="564">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">12pt</property>
+                                                                <property name="fontSize">11pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="whiteSpace">pre</property>
                                                                 <property name="resultSetColumn">projectCodeS</property>
@@ -3928,7 +3914,7 @@
                                                         <property name="content">
                                                             <data name="Hours::hourType1" id="570">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">12pt</property>
+                                                                <property name="fontSize">11pt</property>
                                                                 <property name="textAlign">right</property>
                                                                 <property name="whiteSpace">pre</property>
                                                                 <property name="resultSetColumn">hourType</property>
@@ -3951,7 +3937,7 @@
                                 <property name="content">
                                     <label id="550">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">12pt</property>
+                                        <property name="fontSize">11pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Username</text-property>
                                     </label>
@@ -3965,7 +3951,7 @@
                                 <property name="content">
                                     <label id="555">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">12pt</property>
+                                        <property name="fontSize">11pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Employee</text-property>
                                     </label>
@@ -3979,7 +3965,7 @@
                                 <property name="content">
                                     <label id="560">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">12pt</property>
+                                        <property name="fontSize">11pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Master project</text-property>
                                     </label>
@@ -3993,7 +3979,7 @@
                                 <property name="content">
                                     <label id="565">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">12pt</property>
+                                        <property name="fontSize">11pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Subproject</text-property>
                                     </label>

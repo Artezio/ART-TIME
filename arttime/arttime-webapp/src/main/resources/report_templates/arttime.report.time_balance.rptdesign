@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">468</property>
-        </structure>
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">142</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -18,12 +8,9 @@
     <parameters>
         <scalar-parameter name="startDate" id="6">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-01-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -33,12 +20,9 @@
         </scalar-parameter>
         <scalar-parameter name="endDate" id="8">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2019-01-31</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -54,10 +38,6 @@
             <expression name="valueExpr" type="javascript">dataSetRow["department"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">Moscow</value>
-                <value type="constant">Minsk</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -68,19 +48,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="employeeUserNames" id="10">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Employees</property>
             <expression name="valueExpr" type="javascript">dataSetRow["username"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">user4</value>
-                <value type="constant">user3</value>
-                <value type="constant">user2</value>
-                <value type="constant">user1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -91,16 +65,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="projectIds" id="11">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Projects</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -111,18 +82,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="hourTypeIds" id="12">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">HourTypes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -138,7 +104,7 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>SynchronizeClassPath</name>
-                    <value>true</value>
+                    <value>false</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
@@ -164,6 +130,11 @@
                     <property name="columnName">actualTime</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">actualTime</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="heading">hourTypeId</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">projectCode_</property>
@@ -286,46 +257,51 @@
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -356,62 +332,69 @@
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">projectCode_</property>
                     <property name="nativeName">projectCode_</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                     <property name="name">quantity</property>
                     <property name="nativeName">quantity</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">3</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                     <property name="name">approved</property>
                     <property name="nativeName">approved</property>
                     <property name="dataType">boolean</property>
                     <property name="nativeDataType">16</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                     <property name="name">employeeUserName</property>
                     <property name="nativeName">employeeUserName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                     <property name="name">employeeFullName</property>
                     <property name="nativeName">employeeFullName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">former</property>
                     <property name="nativeName">former</property>
                     <property name="dataType">boolean</property>
                     <property name="nativeDataType">16</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">projectCode</property>
                     <property name="nativeName">projectCode</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">displayCode</property>
                     <property name="nativeName">displayCode</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">rootCode</property>
                     <property name="nativeName">rootCode</property>
                     <property name="dataType">string</property>
@@ -430,38 +413,41 @@
         <ColumnMapping index="3" name="actualTime" odaDataType="Boolean">
             <Method name="isActualTime"/>
         </ColumnMapping>
+        <ColumnMapping index="4" name="hourTypeId" odaDataType="Integer">
+            <Method name="getId"/>
+        </ColumnMapping>
         <Method name="getType"/>
     </ClassColumnMappings>
-    <ColumnMapping index="4" name="projectCode_" odaDataType="String">
+    <ColumnMapping index="5" name="projectCode_" odaDataType="String">
         <Method name="getProjectCode"/>
     </ColumnMapping>
-    <ColumnMapping index="5" name="quantity" odaDataType="Decimal">
+    <ColumnMapping index="6" name="quantity" odaDataType="Decimal">
         <Method name="getQuantity"/>
     </ColumnMapping>
-    <ColumnMapping index="6" name="approved" odaDataType="Boolean">
+    <ColumnMapping index="7" name="approved" odaDataType="Boolean">
         <Method name="isApproved"/>
     </ColumnMapping>
     <ClassColumnMappings>
-        <ColumnMapping index="7" name="employeeUserName" odaDataType="String">
+        <ColumnMapping index="8" name="employeeUserName" odaDataType="String">
             <Method name="getUserName"/>
         </ColumnMapping>
-        <ColumnMapping index="8" name="employeeFullName" odaDataType="String">
+        <ColumnMapping index="9" name="employeeFullName" odaDataType="String">
             <Method name="getFullName"/>
         </ColumnMapping>
-        <ColumnMapping index="9" name="former" odaDataType="Boolean">
+        <ColumnMapping index="10" name="former" odaDataType="Boolean">
             <Method name="isFormer"/>
         </ColumnMapping>
         <Method name="getEmployee"/>
     </ClassColumnMappings>
-    <ColumnMapping index="10" name="projectCode" odaDataType="String">
+    <ColumnMapping index="11" name="projectCode" odaDataType="String">
         <Method name="getProjectCode"/>
     </ColumnMapping>
     <ClassColumnMappings>
-        <ColumnMapping index="11" name="displayCode" odaDataType="String">
+        <ColumnMapping index="12" name="displayCode" odaDataType="String">
             <Method name="getDisplayCode"/>
         </ColumnMapping>
         <ClassColumnMappings>
-            <ColumnMapping index="12" name="rootCode" odaDataType="String">
+            <ColumnMapping index="13" name="rootCode" odaDataType="String">
                 <Method name="getCode"/>
             </ColumnMapping>
             <Method name="getRootProject"/>
@@ -1939,6 +1925,10 @@ value;</expression>
                     <text-property name="heading">actualTime</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <text-property name="heading">hourTypeId</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">projectCode_</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">projectCode_</text-property>
@@ -2047,51 +2037,56 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">totalQuantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -2125,41 +2120,48 @@ value;</expression>
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">projectCode_</property>
                     <property name="nativeName">projectCode_</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                     <property name="name">quantity</property>
                     <property name="nativeName">quantity</property>
                     <property name="dataType">decimal</property>
                     <property name="nativeDataType">3</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                     <property name="name">approved</property>
                     <property name="nativeName">approved</property>
                     <property name="dataType">boolean</property>
                     <property name="nativeDataType">16</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                     <property name="name">employeeUserName</property>
                     <property name="nativeName">employeeUserName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                     <property name="name">employeeFullName</property>
                     <property name="nativeName">employeeFullName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">former</property>
                     <property name="nativeName">former</property>
                     <property name="dataType">boolean</property>
@@ -2178,25 +2180,28 @@ value;</expression>
         <ColumnMapping index="3" name="actualTime" odaDataType="Boolean">
             <Method name="isActualTime"/>
         </ColumnMapping>
+        <ColumnMapping index="4" name="hourTypeId" odaDataType="Integer">
+            <Method name="getId"/>
+        </ColumnMapping>
         <Method name="getType"/>
     </ClassColumnMappings>
-    <ColumnMapping index="4" name="projectCode_" odaDataType="String">
+    <ColumnMapping index="5" name="projectCode_" odaDataType="String">
         <Method name="getProjectCode"/>
     </ColumnMapping>
-    <ColumnMapping index="5" name="quantity" odaDataType="Decimal">
+    <ColumnMapping index="6" name="quantity" odaDataType="Decimal">
         <Method name="getQuantity"/>
     </ColumnMapping>
-    <ColumnMapping index="6" name="approved" odaDataType="Boolean">
+    <ColumnMapping index="7" name="approved" odaDataType="Boolean">
         <Method name="isApproved"/>
     </ColumnMapping>
     <ClassColumnMappings>
-        <ColumnMapping index="7" name="employeeUserName" odaDataType="String">
+        <ColumnMapping index="8" name="employeeUserName" odaDataType="String">
             <Method name="getUserName"/>
         </ColumnMapping>
-        <ColumnMapping index="8" name="employeeFullName" odaDataType="String">
+        <ColumnMapping index="9" name="employeeFullName" odaDataType="String">
             <Method name="getFullName"/>
         </ColumnMapping>
-        <ColumnMapping index="9" name="former" odaDataType="Boolean">
+        <ColumnMapping index="10" name="former" odaDataType="Boolean">
             <Method name="isFormer"/>
         </ColumnMapping>
         <Method name="getEmployee"/>
@@ -2281,7 +2286,7 @@ value;</expression>
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>methodNameRegx</name>
-                    <value>is*</value>
+                    <value>get*</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClass</name>
@@ -2310,6 +2315,11 @@ value;</expression>
                     <property name="columnName">actualTime</property>
                     <property name="alias">actualTime</property>
                     <property name="analysis">dimension</property>
+                </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <property name="analysis">measure</property>
                 </structure>
                 <structure>
                     <property name="columnName">projectCode_</property>
@@ -2499,51 +2509,56 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">totalQuantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -2603,6 +2618,13 @@ value;</expression>
                     <property name="operator">is-false</property>
                     <expression name="expr" type="javascript">row["former"]</expression>
                 </structure>
+                <structure>
+                    <property name="operator">in</property>
+                    <expression name="expr" type="javascript">row["employeeUserName"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["employeeUserNames"].value</value>
+                    </simple-property-list>
+                </structure>
             </list-property>
             <list-property name="parameters">
                 <structure>
@@ -2610,6 +2632,14 @@ value;</expression>
                     <property name="dataType">javaObject</property>
                     <property name="position">1</property>
                     <expression name="defaultValue" type="javascript">new Array(params["projectIds"].value)</expression>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">employeeUserNames</property>
+                    <property name="dataType">javaObject</property>
+                    <property name="position">2</property>
+                    <expression name="defaultValue" type="javascript">new Array(params["employeeUserNames"].value)</expression>
                     <property name="isInput">true</property>
                     <property name="isOutput">false</property>
                 </structure>
@@ -2789,9 +2819,23 @@ value;</expression>
                     <text-property name="heading">actualTime</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="heading">hourTypeId</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">projectCode</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">projectCode</text-property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">in</property>
+                    <expression name="expr" type="javascript">row["hourTypeId"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["hourTypeIds"].value</value>
+                    </simple-property-list>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -2823,16 +2867,21 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
@@ -2863,6 +2912,13 @@ value;</expression>
                 </structure>
                 <structure>
                     <property name="position">4</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">projectCode</property>
                     <property name="nativeName">projectCode</property>
                     <property name="dataType">string</property>
@@ -2881,9 +2937,12 @@ value;</expression>
         <ColumnMapping index="3" name="actualTime" odaDataType="Boolean">
             <Method name="isActualTime"/>
         </ColumnMapping>
+        <ColumnMapping index="4" name="hourTypeId" odaDataType="Integer">
+            <Method name="getId"/>
+        </ColumnMapping>
         <Method name="getAccountableHours"/>
     </ClassColumnMappings>
-    <ColumnMapping index="4" name="projectCode" odaDataType="String">
+    <ColumnMapping index="5" name="projectCode" odaDataType="String">
         <Method name="getCode"/>
     </ColumnMapping>
 </PojoQuery>
@@ -3020,6 +3079,11 @@ value;</expression>
                     <property name="alias">hourType</property>
                     <property name="analysis">dimension</property>
                 </structure>
+                <structure>
+                    <property name="columnName">Projects_HourTypes::hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                </structure>
             </list-property>
             <list-property name="parameters">
                 <structure>
@@ -3062,46 +3126,51 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -3187,6 +3256,11 @@ value;</expression>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">actualTime</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="heading">hourTypeId</text-property>
+                </structure>
             </list-property>
             <list-property name="parameters">
                 <structure>
@@ -3217,46 +3291,51 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -3285,6 +3364,13 @@ value;</expression>
                     <property name="dataType">boolean</property>
                     <property name="nativeDataType">16</property>
                 </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_HOURTYPESWITHEMPTYHOURS" dataSetClass="com.artezio.arttime.report.datasource.pojo.HourTypeDataSet" version="1.0">
@@ -3296,6 +3382,9 @@ value;</expression>
     </ColumnMapping>
     <ColumnMapping index="3" name="actualTime" odaDataType="Boolean">
         <Method name="isActualTime"/>
+    </ColumnMapping>
+    <ColumnMapping index="4" name="hourTypeId" odaDataType="Integer">
+        <Method name="getId"/>
     </ColumnMapping>
 </PojoQuery>
 ]]></xml-property>
@@ -3377,34 +3466,14 @@ value;</expression>
                     <text-property name="displayName">HourTypesWithEmptyHours::hourTypePriority</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">HourTypesWithEmptyHours::quantity</property>
-                    <property name="alias">quantity</property>
-                    <text-property name="displayName">HourTypesWithEmptyHours::quantity</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">HourTypesWithEmptyHours::employeeFullName</property>
                     <property name="alias">employeeFullName</property>
                     <text-property name="displayName">HourTypesWithEmptyHours::employeeFullName</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">HourTypesWithEmptyHours::displayCode</property>
-                    <property name="alias">displayCode</property>
-                    <text-property name="displayName">HourTypesWithEmptyHours::displayCode</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">HourTypesWithEmptyHours::rootCode</property>
-                    <property name="alias">rootCode</property>
-                    <text-property name="displayName">HourTypesWithEmptyHours::rootCode</text-property>
-                </structure>
-                <structure>
                     <property name="columnName">HourTypesWithEmptyHours::projectCode_</property>
                     <property name="alias">projectCode_</property>
                     <text-property name="displayName">HourTypesWithEmptyHours::projectCode_</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">HourTypesWithEmptyHours::former</property>
-                    <property name="alias">former</property>
-                    <text-property name="displayName">HourTypesWithEmptyHours::former</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">HourTypesWithEmptyHours::actualTime</property>
@@ -3432,6 +3501,31 @@ value;</expression>
                     <text-property name="displayName">HourTypesWithEmptyHours::hourType</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">HourTypesWithEmptyHours::hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <text-property name="displayName">HourTypesWithEmptyHours::hourTypeId</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">HourTypesWithEmptyHours::quantity</property>
+                    <property name="alias">quantity</property>
+                    <text-property name="displayName">HourTypesWithEmptyHours::quantity</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">HourTypesWithEmptyHours::displayCode</property>
+                    <property name="alias">displayCode</property>
+                    <text-property name="displayName">HourTypesWithEmptyHours::displayCode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">HourTypesWithEmptyHours::rootCode</property>
+                    <property name="alias">rootCode</property>
+                    <text-property name="displayName">HourTypesWithEmptyHours::rootCode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">HourTypesWithEmptyHours::former</property>
+                    <property name="alias">former</property>
+                    <text-property name="displayName">HourTypesWithEmptyHours::former</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">hourType</property>
                     <property name="alias">hourType</property>
                     <property name="analysis">dimension</property>
@@ -3445,6 +3539,11 @@ value;</expression>
                     <property name="columnName">actualTime</property>
                     <property name="alias">actualTime</property>
                     <property name="analysis">dimension</property>
+                </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <property name="analysis">measure</property>
                 </structure>
                 <structure>
                     <property name="columnName">projectCode_</property>
@@ -3496,7 +3595,7 @@ value;</expression>
                 <structure>
                     <property name="name">HourTypesWithEmptyHours::hourTypeIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">1</property>
+                    <property name="position">0</property>
                     <expression name="defaultValue">new Array(params["hourTypeIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3506,7 +3605,7 @@ value;</expression>
                 <structure>
                     <property name="name">Projects_HourTypes_Employees::Projects_HourTypes::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">2</property>
+                    <property name="position">1</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3516,7 +3615,7 @@ value;</expression>
                 <structure>
                     <property name="name">Projects_HourTypes_Employees::Projects_Employees::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">3</property>
+                    <property name="position">2</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3543,46 +3642,51 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -3598,7 +3702,7 @@ value;</expression>
                     <property name="joinOperator">eq</property>
                     <property name="leftDataSet">HourTypesWithEmptyHours</property>
                     <property name="rightDataSet">Projects_HourTypes_Employees</property>
-                    <expression name="leftExpression">dataSetRow["rootCode"]</expression>
+                    <expression name="leftExpression">dataSetRow["hourType"]</expression>
                     <expression name="rightExpression">dataSetRow["hourType"]</expression>
                 </structure>
             </list-property>
@@ -3624,6 +3728,11 @@ value;</expression>
                     <property name="columnName">actualTime</property>
                     <property name="alias">actualTime</property>
                     <property name="analysis">dimension</property>
+                </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <property name="analysis">measure</property>
                 </structure>
                 <structure>
                     <property name="columnName">projectCode_</property>
@@ -3680,7 +3789,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::startDate</property>
                     <property name="dataType">date</property>
-                    <property name="position">1</property>
+                    <property name="position">0</property>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
                     <property name="isInput">true</property>
@@ -3689,7 +3798,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::endDate</property>
                     <property name="dataType">date</property>
-                    <property name="position">2</property>
+                    <property name="position">1</property>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
                     <property name="isInput">true</property>
@@ -3698,7 +3807,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::hourTypeIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">3</property>
+                    <property name="position">2</property>
                     <expression name="defaultValue">new Array(params["hourTypeIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3708,7 +3817,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::employeeUserNames</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">4</property>
+                    <property name="position">3</property>
                     <expression name="defaultValue">new Array(params["employeeUserNames"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3718,7 +3827,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">5</property>
+                    <property name="position">4</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3728,7 +3837,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::TotalHours::departments</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">6</property>
+                    <property name="position">5</property>
                     <expression name="defaultValue">new Array(params["departments"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3738,7 +3847,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::startDate</property>
                     <property name="dataType">date</property>
-                    <property name="position">7</property>
+                    <property name="position">6</property>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
                     <property name="isInput">true</property>
@@ -3747,7 +3856,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::endDate</property>
                     <property name="dataType">date</property>
-                    <property name="position">8</property>
+                    <property name="position">7</property>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
                     <property name="isInput">true</property>
@@ -3756,7 +3865,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::departments</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">9</property>
+                    <property name="position">8</property>
                     <expression name="defaultValue">new Array(params["departments"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3766,7 +3875,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::employeeUserNames</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">10</property>
+                    <property name="position">9</property>
                     <expression name="defaultValue">new Array(params["employeeUserNames"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3776,7 +3885,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">11</property>
+                    <property name="position">10</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3786,7 +3895,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union TotalHours_Hours::Hours::hourTypeIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">12</property>
+                    <property name="position">11</property>
                     <expression name="defaultValue">new Array(params["hourTypeIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3796,7 +3905,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union HourTypesWithEmptyHours_Projects::HourTypesWithEmptyHours::hourTypeIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">13</property>
+                    <property name="position">12</property>
                     <expression name="defaultValue">new Array(params["hourTypeIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3806,7 +3915,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union HourTypesWithEmptyHours_Projects::Projects_HourTypes_Employees::Projects_HourTypes::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">14</property>
+                    <property name="position">13</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3816,7 +3925,7 @@ value;</expression>
                 <structure>
                     <property name="name">Union HourTypesWithEmptyHours_Projects::Projects_HourTypes_Employees::Projects_Employees::projectIds</property>
                     <property name="dataType">javaObject</property>
-                    <property name="position">15</property>
+                    <property name="position">14</property>
                     <expression name="defaultValue">new Array(params["projectIds"].value)</expression>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
@@ -3843,51 +3952,56 @@ value;</expression>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">projectCode_</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">5</property>
+                        <property name="position">6</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">7</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">8</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">former</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">displayCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">13</property>
+                        <property name="position">14</property>
                         <property name="name">totalQuantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -3903,8 +4017,8 @@ value;</expression>
                     <property name="joinOperator">eq</property>
                     <property name="leftDataSet">Union TotalHours_Hours</property>
                     <property name="rightDataSet">Union HourTypesWithEmptyHours_Projects</property>
-                    <expression name="leftExpression">dataSetRow["rootCode"]</expression>
-                    <expression name="rightExpression">dataSetRow["hourType"]</expression>
+                    <expression name="leftExpression">dataSetRow["hourTypeId"]</expression>
+                    <expression name="rightExpression">dataSetRow["hourTypeId"]</expression>
                 </structure>
             </list-property>
         </joint-data-set>

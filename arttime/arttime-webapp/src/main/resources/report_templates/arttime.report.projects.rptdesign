@@ -28,12 +28,9 @@
     <parameters>
         <scalar-parameter name="startDate" id="6">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2018-01-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -43,12 +40,9 @@
         </scalar-parameter>
         <scalar-parameter name="endDate" id="8">
             <property name="valueType">static</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataType">date</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">2018-05-01</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
@@ -64,10 +58,6 @@
             <expression name="valueExpr" type="javascript">dataSetRow["department"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">Moscow</value>
-                <value type="constant">Minsk</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -78,19 +68,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="employeeUserNames" id="10">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Employees</property>
             <expression name="valueExpr" type="javascript">dataSetRow["username"]</expression>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">user4</value>
-                <value type="constant">user3</value>
-                <value type="constant">user2</value>
-                <value type="constant">user1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -101,18 +85,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="projectIds" id="11">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
-            <property name="isRequired">false</property>
+            <property name="isRequired">true</property>
             <property name="dataSetName">Projects</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -123,18 +102,13 @@
             </structure>
         </scalar-parameter>
         <scalar-parameter name="hourTypeIds" id="12">
-            <property name="hidden">true</property>
+            <property name="hidden">false</property>
             <property name="valueType">dynamic</property>
             <property name="isRequired">true</property>
             <property name="dataSetName">HourTypes</property>
             <expression name="valueExpr" type="javascript">dataSetRow["id"]</expression>
             <property name="dataType">decimal</property>
             <property name="distinct">true</property>
-            <simple-property-list name="defaultValue">
-                <value type="constant">3</value>
-                <value type="constant">2</value>
-                <value type="constant">1</value>
-            </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">multi-value</property>
             <property name="controlType">list-box</property>
@@ -150,10 +124,11 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>SynchronizeClassPath</name>
-                    <value>true</value>
+                    <value>false</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
+                    <value>D:\Workspace\ART-TIME\ART-TIME\arttime\birt-datasource-sample\target\birt-datasource-sample-3.77.jar;</value>
                 </ex-property>
             </list-property>
         </oda-data-source>
@@ -191,6 +166,11 @@
                     <property name="columnName">actualTime</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">actualTime</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="heading">hourTypeId</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">approved</property>
@@ -313,31 +293,36 @@
                     </structure>
                     <structure>
                         <property name="position">7</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">projectCode_2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">department</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -389,41 +374,48 @@
                 </structure>
                 <structure>
                     <property name="position">7</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
                     <property name="name">approved</property>
                     <property name="nativeName">approved</property>
                     <property name="dataType">boolean</property>
                     <property name="nativeDataType">16</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                     <property name="name">projectCode_2</property>
                     <property name="nativeName">projectCode_2</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                     <property name="name">employeeUserName</property>
                     <property name="nativeName">employeeUserName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
+                    <property name="position">11</property>
                     <property name="name">employeeFullName</property>
                     <property name="nativeName">employeeFullName</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">11</property>
+                    <property name="position">12</property>
                     <property name="name">department</property>
                     <property name="nativeName">department</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
                 <structure>
-                    <property name="position">12</property>
+                    <property name="position">13</property>
                     <property name="name">quantity</property>
                     <property name="nativeName">quantity</property>
                     <property name="dataType">decimal</property>
@@ -445,7 +437,7 @@
             </ColumnMapping>
             <Method name="getRootProject"/>
         </ClassColumnMappings>
-        <ColumnMapping index="8" name="projectCode_2" odaDataType="String">
+        <ColumnMapping index="9" name="projectCode_2" odaDataType="String">
             <Method name="getCode"/>
         </ColumnMapping>
         <Method name="getProject"/>
@@ -460,24 +452,27 @@
         <ColumnMapping index="6" name="actualTime" odaDataType="Boolean">
             <Method name="isActualTime"/>
         </ColumnMapping>
+        <ColumnMapping index="7" name="hourTypeId" odaDataType="Integer">
+            <Method name="getId"/>
+        </ColumnMapping>
         <Method name="getType"/>
     </ClassColumnMappings>
-    <ColumnMapping index="7" name="approved" odaDataType="Boolean">
+    <ColumnMapping index="8" name="approved" odaDataType="Boolean">
         <Method name="isApproved"/>
     </ColumnMapping>
     <ClassColumnMappings>
-        <ColumnMapping index="9" name="employeeUserName" odaDataType="String">
+        <ColumnMapping index="10" name="employeeUserName" odaDataType="String">
             <Method name="getUserName"/>
         </ColumnMapping>
-        <ColumnMapping index="10" name="employeeFullName" odaDataType="String">
+        <ColumnMapping index="11" name="employeeFullName" odaDataType="String">
             <Method name="getFullName"/>
         </ColumnMapping>
-        <ColumnMapping index="11" name="department" odaDataType="String">
+        <ColumnMapping index="12" name="department" odaDataType="String">
             <Method name="getDepartment"/>
         </ColumnMapping>
         <Method name="getEmployee"/>
     </ClassColumnMappings>
-    <ColumnMapping index="12" name="quantity" odaDataType="Decimal">
+    <ColumnMapping index="13" name="quantity" odaDataType="Decimal">
         <Method name="getQuantity"/>
     </ColumnMapping>
 </PojoQuery>
@@ -704,7 +699,6 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>methodNameRegx</name>
-                    <value>is*</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClass</name>
@@ -1945,6 +1939,20 @@
                     <property name="analysis">dimension</property>
                     <text-property name="heading">actualTime</text-property>
                 </structure>
+                <structure>
+                    <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="heading">hourTypeId</text-property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">in</property>
+                    <expression name="expr" type="javascript">row["hourTypeId"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["hourTypeIds"].value</value>
+                    </simple-property-list>
+                </structure>
             </list-property>
             <list-property name="parameters">
                 <structure>
@@ -2030,6 +2038,11 @@
                     </structure>
                     <structure>
                         <property name="position">7</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
@@ -2079,6 +2092,13 @@
                     <property name="dataType">integer</property>
                     <property name="nativeDataType">16</property>
                 </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">hourTypeId</property>
+                    <property name="nativeName">hourTypeId</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_PROJECTSWITHEMPTYHOURS DATA SET" dataSetClass="com.artezio.arttime.report.datasource.pojo.ProjectDataSet" version="1.0">
@@ -2103,6 +2123,9 @@
         </ColumnMapping>
         <ColumnMapping index="6" name="actualTime" odaDataType="Boolean">
             <Method name="isActualTime"/>
+        </ColumnMapping>
+        <ColumnMapping index="7" name="hourTypeId" odaDataType="Integer">
+            <Method name="getId"/>
         </ColumnMapping>
         <Method name="getAccountableHours"/>
     </ClassColumnMappings>
@@ -2167,6 +2190,15 @@
                     <property name="columnName">department</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">department</text-property>
+                </structure>
+            </list-property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">in</property>
+                    <expression name="expr" type="javascript">row["employeeUserName"]</expression>
+                    <simple-property-list name="value1">
+                        <value>params["employeeUserNames"].value</value>
+                    </simple-property-list>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -2773,6 +2805,11 @@
                     <property name="alias">approved</property>
                     <property name="analysis">dimension</property>
                 </structure>
+                <structure>
+                    <property name="columnName">Projects With HourTypes::hourTypeId</property>
+                    <property name="alias">hourTypeId</property>
+                    <property name="analysis">measure</property>
+                </structure>
             </list-property>
             <list-property name="parameters">
                 <structure>
@@ -2885,7 +2922,7 @@
                 <structure>
                     <property name="name">Projects With HourTypes::startDate</property>
                     <property name="dataType">date</property>
-                    <property name="position">0</property>
+                    <property name="position">12</property>
                     <property name="isOptional">false</property>
                     <property name="allowNull">false</property>
                     <property name="isInput">true</property>
@@ -2926,31 +2963,36 @@
                     </structure>
                     <structure>
                         <property name="position">7</property>
+                        <property name="name">hourTypeId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
                         <property name="name">approved</property>
                         <property name="dataType">boolean</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">9</property>
                         <property name="name">projectCode_2</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
+                        <property name="position">10</property>
                         <property name="name">employeeUserName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">10</property>
+                        <property name="position">11</property>
                         <property name="name">employeeFullName</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">11</property>
+                        <property name="position">12</property>
                         <property name="name">department</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">12</property>
+                        <property name="position">13</property>
                         <property name="name">quantity</property>
                         <property name="dataType">decimal</property>
                     </structure>
@@ -3491,6 +3533,13 @@
                         <filter-condition-element>
                             <expression name="expr" type="javascript">dimension["Project_Employee"]["employeeUserName"]["employeeFullName"]</expression>
                             <property name="operator">is-not-null</property>
+                        </filter-condition-element>
+                        <filter-condition-element>
+                            <expression name="expr" type="javascript">dimension["Project_Employee"]["employeeUserName"]["employeeFullName"]</expression>
+                            <property name="operator">ne</property>
+                            <simple-property-list name="value1">
+                                <value type="javascript">''</value>
+                            </simple-property-list>
                         </filter-condition-element>
                     </property>
                     <list-property name="boundDataColumns">

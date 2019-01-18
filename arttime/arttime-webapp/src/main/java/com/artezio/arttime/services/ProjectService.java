@@ -12,12 +12,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import static com.artezio.arttime.admin_tool.cache.WebCached.Scope.REQUEST_SCOPED;
-import static com.artezio.arttime.admin_tool.cache.WebCached.Scope.SESSION_SCOPED;
 import static com.artezio.arttime.admin_tool.cache.WebCached.Scope.VIEW_SCOPED;
 import static com.artezio.arttime.security.AbacContexts.MANAGE_PROJECTS;
 import static com.artezio.arttime.security.AbacContexts.VIEW_TIMESHEET;
@@ -115,9 +114,11 @@ public class ProjectService implements Serializable {
     @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER, ACCOUNTANT})
     @WebCached(scope = VIEW_SCOPED)
     public List<Project> getProjects(List<Long> ids) {
-        return projectRepository.query()
-                .projectIds(ids)
-                .list();
+        return ids.isEmpty()
+                ? new ArrayList<>()
+                : projectRepository.query()
+                    .projectIds(ids)
+                    .list();
     }
 
     @RolesAllowed({EXEC_ROLE, PM_ROLE})
