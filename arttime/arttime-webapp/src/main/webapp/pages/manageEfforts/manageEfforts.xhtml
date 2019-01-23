@@ -192,7 +192,7 @@
                    value="#{(grouping == 'BY_PROJECTS' and headRow) ? row.project.id : (grouping == 'BY_EMPLOYEES' and hoursRow) ? row.project.id : null}"/>
             <c:set var="projectLink"
                    value="#{
-                       (request.isUserInRole('exec') or (employeeService.loggedEmployee.present and row.project.canBeManaged(employeeService.loggedEmployee)))
+                       (request.isUserInRole('exec') or (employeeService.loggedEmployee.present and row.project.canBeManaged(employeeService.loggedEmployee.get())))
                             ? of:format2('{0}/pages/project/editProject.xhtml?project={1}', request.contextPath, projectId)
                             : null
                        }"/>
