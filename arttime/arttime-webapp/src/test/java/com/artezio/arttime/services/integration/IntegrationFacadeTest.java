@@ -40,8 +40,7 @@ public class IntegrationFacadeTest {
     private WorkdaysCalendarService workdaysCalendarService;
 
     @Test
-    public void testGetProjects() throws NoSuchFieldException {
-        setField(facade, "projectService", projectService);
+    public void testGetProjects() {
         List<Project> expecteds = new ArrayList<>();
 
         expect(projectService.getAll()).andReturn(expecteds);
@@ -55,8 +54,7 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetHourTypes() throws NoSuchFieldException {
-        setField(facade, "hourTypeService", hourTypeService);
+    public void testGetHourTypes() {
         List<HourType> expecteds = new ArrayList<>();
         expect(hourTypeService.getAll()).andReturn(expecteds);
         replay(hourTypeService);
@@ -68,7 +66,7 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetHours_approvedOnly() throws NoSuchFieldException {
+    public void testGetHours_approvedOnly() {
         List<Hours> expecteds = new ArrayList<>();
         Project project = new Project();
         project.setCode("TEST-PROJECT");
@@ -98,7 +96,7 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetHours() throws NoSuchFieldException {
+    public void testGetHours() {
         List<Hours> expecteds = new ArrayList<>();
         Project project = new Project();
         project.setCode("TEST-PROJECT");
@@ -202,8 +200,50 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetCalendars() throws NoSuchFieldException {
-        setField(facade, "workdaysCalendarService", workdaysCalendarService);
+    public void testGetHours_emptyProjectsList_expectAllProjects() {
+        List<Hours> expectedHours = new ArrayList<>();
+        HourType type = new HourType("Type");
+        Project project = new Project();
+        project.setCode("TEST-PROJECT");
+        Project subproject = new Project(project);
+        subproject.setCode("TEST_SUBPROJECT");
+        Project subproject2 = new Project(project);
+        subproject2.setCode("TEST_SUBPROJECT_2");
+        Employee employee = new Employee("employee");
+        Date from = new GregorianCalendar(2011, 1, 5).getTime();
+        Date to = new GregorianCalendar(2011, 1, 15).getTime();
+        Period period = new Period(from, to);
+        List<Project> allProjects = asList(project, subproject, subproject2);
+        Filter filter = new Filter();
+        filter.setProjects(allProjects);
+        filter.setApproved(null);
+        Hours h1 = new Hours(project, from, employee, type);
+        Hours h2 = new Hours(subproject, from, employee, type);
+        Hours h3 = new Hours(subproject2, from, employee, type);
+        expectedHours.add(h1);
+        expectedHours.add(h2);
+        expectedHours.add(h3);
+        RangePeriodSelector rangePeriodSelector = new RangePeriodSelector(period);
+        filter.setRangePeriodSelector(rangePeriodSelector);
+        HoursSearchCriteria criteria = new HoursSearchCriteria(from, to, false, Collections.emptyList());
+        criteria.setIncludeSubprojects(true);
+        Project anotherProject = new Project();
+        Project anotherSubproject = new Project();
+        anotherProject.setCode("ANOTHER-PROJECT");
+        anotherSubproject.setCode("ANOTHER-SUBPROJECT");
+        List<Project> allStoredProjects = Arrays.asList(project, subproject, subproject2, anotherProject, anotherSubproject);
+        expect(projectService.getAll()).andReturn(allStoredProjects).anyTimes();
+        EasyMock.expect(hoursService.getHours(filter)).andReturn(expectedHours);
+        EasyMock.replay(projectService, hoursService);
+
+        List<Hours> actualHours = facade.getHours(criteria);
+
+        EasyMock.verify(projectService, hoursService);
+        assertSame(expectedHours, actualHours);
+    }
+
+    @Test
+    public void testGetCalendars() {
         List<WorkdaysCalendar> calendars = new ArrayList<WorkdaysCalendar>();
         expect(workdaysCalendarService.getAll()).andReturn(calendars);
         replay(workdaysCalendarService);
@@ -214,8 +254,7 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetCalendarDays() throws NoSuchFieldException {
-        setField(facade, "workdaysCalendarService", workdaysCalendarService);
+    public void testGetCalendarDays() {
         List<Day> days = new ArrayList<Day>();
         Period period = new Period(new Date(), new Date());
         WorkdaysCalendar calendar = new WorkdaysCalendar();
@@ -250,7 +289,6 @@ public class IntegrationFacadeTest {
 
     @Test(expected = ProjectNotFoundException.class)
     public void testGetProjectTeamWhenProjectCodeIsNull() throws Exception {
-        setField(facade, "projectService", projectService);
         ProjectRepository.ProjectQuery projectQuery = Mockito.mock(ProjectRepository.ProjectQuery.class, Mockito.RETURNS_DEEP_STUBS);
 
         EasyMock.expect(projectRepository.query()).andReturn(projectQuery);
@@ -285,9 +323,7 @@ public class IntegrationFacadeTest {
     }
 
     @Test
-    public void testGetAllSubprojects() throws Exception {
-        setField(facade, "projectService", projectService);
-        setField(facade, "projectRepository", projectRepository);
+    public void testGetAllSubprojects() {
         Project project = new Project();
         project.setCode("MasterProject");
         Project subProject = new Project(project);
@@ -314,7 +350,6 @@ public class IntegrationFacadeTest {
 
     @Test
     public void testModifyHours() throws Exception {
-        setField(facade, "hoursService", hoursService);
         HoursChange change = new HoursChange();
         hoursService.apply(asList(change));
         expectLastCall().times(1);

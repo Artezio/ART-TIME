@@ -1,13 +1,11 @@
 package com.artezio.arttime.services.integration;
 
-import static com.artezio.arttime.security.auth.UserRoles.INTEGRATION_CLIENT_ROLE;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import com.artezio.arttime.admin_tool.log.Log;
+import com.artezio.arttime.datamodel.*;
+import com.artezio.arttime.filter.Filter;
+import com.artezio.arttime.repositories.ProjectRepository;
+import com.artezio.arttime.services.*;
+import com.artezio.arttime.web.criteria.RangePeriodSelector;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
@@ -18,20 +16,14 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.persistence.NoResultException;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import com.artezio.arttime.admin_tool.log.Log;
-import com.artezio.arttime.datamodel.Day;
-import com.artezio.arttime.datamodel.Employee;
-import com.artezio.arttime.datamodel.HourType;
-import com.artezio.arttime.datamodel.Hours;
-import com.artezio.arttime.datamodel.Period;
-import com.artezio.arttime.datamodel.Project;
-import com.artezio.arttime.datamodel.WorkdaysCalendar;
-import com.artezio.arttime.filter.Filter;
-import com.artezio.arttime.repositories.HourTypeRepository;
-import com.artezio.arttime.repositories.ProjectRepository;
-import com.artezio.arttime.services.*;
-import com.artezio.arttime.web.criteria.RangePeriodSelector;
+import static com.artezio.arttime.security.auth.UserRoles.INTEGRATION_CLIENT_ROLE;
 
 @RolesAllowed(INTEGRATION_CLIENT_ROLE)
 @Stateless
@@ -44,8 +36,6 @@ public class IntegrationFacade {
     private ProjectService projectService;
     @Inject
     private ProjectRepository projectRepository;
-    @Inject
-    private HourTypeRepository hourTypeRepository;
     @Inject
     private HourTypeService hourTypeService;
     @Inject
@@ -98,8 +88,8 @@ public class IntegrationFacade {
     @WebMethod
     @WebResult(name = "hours")
     public List<Hours> getHours(@WebParam(name = "hoursSearchCriteria") @XmlElement(required = true) HoursSearchCriteria criteria) {
-        Predicate<Project> projectContainedInCriteria = (project) -> criteria.getProjectCodes().contains(project.getCode());
-        Predicate<Project> projectMasterContainedInCriteria = (project) -> project.getMaster() != null && criteria.isIncludeSubprojects() && criteria.getProjectCodes().contains(project.getMaster().getCode());
+        Predicate<Project> projectContainedInCriteria = (project) -> criteria.getProjectCodes().isEmpty() || criteria.getProjectCodes().contains(project.getCode());
+        Predicate<Project> projectMasterContainedInCriteria = (project) -> project.getMaster() != null && criteria.isIncludeSubprojects() && (projectContainedInCriteria.test(project.getMaster()));
         List<Project> projects = projectService.getAll().stream()
                 .filter(project -> projectContainedInCriteria.test(project) || projectMasterContainedInCriteria.test(project))
                 .collect(Collectors.toList());
