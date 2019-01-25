@@ -22,11 +22,23 @@
             <property name="type">integer</property>
             <property name="isVisible">false</property>
         </structure>
+        <structure>
+            <property name="name">DaysReport Data Cube.Union Hours - JoinDaysUnionPrjEmpWithHoursPrjNotFormerEmp.x</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
+        <structure>
+            <property name="name">DaysReport Data Cube.Union Hours - JoinDaysUnionPrjEmpWithHoursPrjNotFormerEmp.y</property>
+            <property name="type">integer</property>
+            <property name="isVisible">false</property>
+        </structure>
     </list-property>
     <property name="DaysReport Data Cube.Hours.x">135</property>
     <property name="DaysReport Data Cube.Hours.y">80</property>
     <property name="DaysReport Data Cube.Data Set.x">135</property>
     <property name="DaysReport Data Cube.Data Set.y">80</property>
+    <property name="DaysReport Data Cube.Union Hours - JoinDaysUnionPrjEmpWithHoursPrjNotFormerEmp.x">135</property>
+    <property name="DaysReport Data Cube.Union Hours - JoinDaysUnionPrjEmpWithHoursPrjNotFormerEmp.y">80</property>
     <list-property name="propertyBindings">
         <structure>
             <property name="name">queryText</property>
@@ -4056,6 +4068,34 @@ return false;]]></method>
                         </tabular-hierarchy>
                     </property>
                 </tabular-dimension>
+                <tabular-dimension name="Const1" id="2155">
+                    <property name="defaultHierarchy">NewTabularHierarchy</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy" id="2156">
+                            <property name="levels">
+                                <tabular-level name="h1" id="2157">
+                                    <property name="dataType">integer</property>
+                                    <property name="levelType">mirrored</property>
+                                    <expression name="defaultValue">1</expression>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
+                <tabular-dimension name="Const 2" id="2205">
+                    <property name="defaultHierarchy">NewTabularHierarchy1</property>
+                    <property name="hierarchies">
+                        <tabular-hierarchy name="NewTabularHierarchy1" id="2206">
+                            <property name="levels">
+                                <tabular-level name="h2" id="2207">
+                                    <property name="dataType">integer</property>
+                                    <property name="levelType">mirrored</property>
+                                    <expression name="defaultValue">2</expression>
+                                </tabular-level>
+                            </property>
+                        </tabular-hierarchy>
+                    </property>
+                </tabular-dimension>
             </property>
             <property name="measureGroups">
                 <tabular-measure-group name="Quantity Sum" id="1849">
@@ -4076,6 +4116,17 @@ return false;]]></method>
                             <property name="isCalculated">false</property>
                             <expression name="measureExpression" type="javascript">dataSetRow["comment"]</expression>
                             <property name="dataType">string</property>
+                            <property name="isVisible">true</property>
+                        </tabular-measure>
+                    </property>
+                </tabular-measure-group>
+                <tabular-measure-group name="Const1" id="2153">
+                    <property name="measures">
+                        <tabular-measure name="Constant 1" id="2154">
+                            <property name="function">first</property>
+                            <property name="isCalculated">false</property>
+                            <expression name="measureExpression" type="javascript">1</expression>
+                            <property name="dataType">integer</property>
                             <property name="isVisible">true</property>
                         </tabular-measure>
                     </property>
@@ -4106,6 +4157,7 @@ return false;]]></method>
     </page-setup>
     <body>
         <grid id="1965">
+            <property name="height">3.3125in</property>
             <property name="dataSet">Union Hours - JoinDaysUnionPrjEmpWithHoursPrjNotFormerEmp</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -4133,6 +4185,7 @@ return false;]]></method>
             </list-property>
             <column id="1966"/>
             <row id="1967">
+                <property name="height">3.3125in</property>
                 <cell id="1968">
                     <list id="535">
                         <property name="fontFamily">"Arial"</property>
@@ -4201,7 +4254,7 @@ return false;]]></method>
                                                             <property name="aggregationOnColumn">MonthDate/monthDate</property>
                                                             <property name="verticalAlign">top</property>
                                                             <property name="height">0.3229166666666667in</property>
-                                                            <property name="width">25px</property>
+                                                            <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1876">
                                                                     <list-property name="userProperties">
@@ -4227,7 +4280,7 @@ return false;]]></method>
                                                         <extended-item extensionName="AggregationCell" id="1888">
                                                             <property name="aggregationOnRow">Project_Employee_HourType/hourType</property>
                                                             <property name="verticalAlign">top</property>
-                                                            <property name="width">21px</property>
+                                                            <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1889">
                                                                     <property name="fontFamily">"Arial"</property>
@@ -4414,13 +4467,15 @@ return false;]]></method>
                                                                                         <property name="pattern">d MMM</property>
                                                                                     </structure>
                                                                                     <property name="textAlign">right</property>
+                                                                                    <property name="whiteSpace">normal</property>
+                                                                                    <property name="display">block</property>
                                                                                     <property name="resultSetColumn">monthDate</property>
                                                                                 </data>
                                                                             </property>
                                                                             <property name="borderBottomStyle">solid</property>
                                                                             <property name="borderBottomWidth">medium</property>
                                                                             <property name="borderBottomColor">#808080</property>
-                                                                            <property name="height">0.28125in</property>
+                                                                            <property name="height">0.5in</property>
                                                                         </extended-item>
                                                                     </property>
                                                                 </extended-item>
@@ -4550,6 +4605,11 @@ return false;]]></method>
                                                     <expression name="expression" type="javascript">measure["comment"]</expression>
                                                     <property name="dataType">string</property>
                                                 </structure>
+                                                <structure>
+                                                    <property name="name">Column Binding</property>
+                                                    <expression name="expression" type="javascript">data["monthDate"]</expression>
+                                                    <property name="dataType">blob</property>
+                                                </structure>
                                             </list-property>
                                         </extended-item>
                                     </cell>
@@ -4567,7 +4627,7 @@ return false;]]></method>
                                                             <property name="aggregationOnColumn">MonthDate/monthDate</property>
                                                             <property name="verticalAlign">top</property>
                                                             <property name="height">0.2916666666666667in</property>
-                                                            <property name="width">25px</property>
+                                                            <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1919">
                                                                     <property name="fontSize">11pt</property>
@@ -4586,7 +4646,7 @@ return false;]]></method>
                                                         <extended-item extensionName="AggregationCell" id="1927">
                                                             <property name="aggregationOnRow">Root_Gap_HourType/hourType</property>
                                                             <property name="verticalAlign">top</property>
-                                                            <property name="width">21px</property>
+                                                            <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1928">
                                                                     <property name="fontSize">11pt</property>
@@ -4814,6 +4874,21 @@ return false;]]></method>
                                                     <expression name="expression" type="javascript">dimension["Root_Gap_HourType"]["hourType"]["hourTypePriority"]</expression>
                                                     <property name="dataType">integer</property>
                                                 </structure>
+                                                <structure>
+                                                    <property name="name">quantity</property>
+                                                    <expression name="expression">measure["quantity"]</expression>
+                                                    <property name="dataType">float</property>
+                                                    <property name="aggregateFunction">sum</property>
+                                                </structure>
+                                                <structure>
+                                                    <property name="name">quantity_MonthDate/monthDate</property>
+                                                    <expression name="expression">measure["quantity"]</expression>
+                                                    <property name="dataType">float</property>
+                                                    <simple-property-list name="aggregateOn">
+                                                        <value>MonthDate/monthDate</value>
+                                                    </simple-property-list>
+                                                    <property name="aggregateFunction">sum</property>
+                                                </structure>
                                             </list-property>
                                         </extended-item>
                                     </cell>
@@ -4824,5 +4899,288 @@ return false;]]></method>
                 </cell>
             </row>
         </grid>
+        <text id="2224">
+            <property name="contentType">auto</property>
+            <text-property name="content"><![CDATA[ ]]></text-property>
+        </text>
+        <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="2057">
+            <property name="cube">DaysReport Data Cube</property>
+            <property name="measures">
+                <extended-item extensionName="MeasureView" id="2065">
+                    <property name="measure">quantity</property>
+                    <property name="detail">
+                        <extended-item extensionName="AggregationCell" id="2066">
+                            <property name="aggregationOnRow">Project_Employee_HourType/hourType</property>
+                            <property name="aggregationOnColumn">MonthDate/monthDate</property>
+                            <property name="content">
+                                <data id="2067">
+                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
+	this.setDisplayValue(0);
+}]]></method>
+                                    <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType_MonthDate/monthDate</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="aggregations">
+                        <extended-item extensionName="AggregationCell" id="2219">
+                            <property name="aggregationOnRow">Project_Employee_HourType/hourType</property>
+                            <property name="content">
+                                <data id="2220">
+                                    <property name="textAlign">right</property>
+                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
+	this.setDisplayValue(0);
+}]]></method>
+                                    <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType</property>
+                                </data>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="header">
+                        <extended-item extensionName="CrosstabCell" id="2068">
+                            <property name="content">
+                                <label id="2069">
+                                    <text-property name="text">quantity</text-property>
+                                </label>
+                            </property>
+                        </extended-item>
+                        <extended-item extensionName="CrosstabCell" id="2080">
+                            <property name="content">
+                                <label id="2081">
+                                    <text-property name="text">quantity</text-property>
+                                </label>
+                            </property>
+                        </extended-item>
+                    </property>
+                </extended-item>
+            </property>
+            <property name="rows">
+                <extended-item extensionName="CrosstabView" id="2059">
+                    <property name="views">
+                        <extended-item extensionName="DimensionView" id="2184">
+                            <property name="dimension">Const1</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View4" id="2185">
+                                    <property name="level">Const1/h1</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="2186">
+                                            <property name="content">
+                                                <text id="2229">
+                                                    <property name="contentType">auto</property>
+                                                    <text-property name="content"><![CDATA[Grand Total]]></text-property>
+                                                </text>
+                                            </property>
+                                            <property name="verticalAlign">top</property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                        <extended-item extensionName="DimensionView" id="2208">
+                            <property name="dimension">Const 2</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View6" id="2209">
+                                    <property name="level">Const 2/h2</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="2210"/>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                        <extended-item extensionName="DimensionView" id="2216">
+                            <property name="dimension">Project_Employee_HourType</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View7" id="2217">
+                                    <property name="level">Project_Employee_HourType/hourType</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="2218">
+                                            <property name="content">
+                                                <data name="hourType1" id="2222">
+                                                    <property name="resultSetColumn">hourType</property>
+                                                </data>
+                                            </property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="grandTotalLocation">after</property>
+                </extended-item>
+            </property>
+            <property name="columns">
+                <extended-item extensionName="CrosstabView" id="2070">
+                    <property name="grandTotal">
+                        <extended-item extensionName="CrosstabCell" id="2077">
+                            <property name="content">
+                                <label id="2082">
+                                    <property name="color">#000000</property>
+                                    <property name="textAlign">right</property>
+                                    <text-property name="text">Total</text-property>
+                                </label>
+                            </property>
+                            <property name="borderBottomStyle">solid</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderBottomColor">#808080</property>
+                            <property name="style">BottomBorderStyle</property>
+                        </extended-item>
+                    </property>
+                    <property name="views">
+                        <extended-item extensionName="DimensionView" id="2071">
+                            <property name="dimension">MonthDate</property>
+                            <property name="levels">
+                                <extended-item extensionName="LevelView" name="NewLevel View5" id="2072">
+                                    <property name="level">MonthDate/monthDate</property>
+                                    <property name="member">
+                                        <extended-item extensionName="CrosstabCell" id="2073">
+                                            <property name="content">
+                                                <data name="monthDate" id="2075">
+                                                    <property name="color">#000000</property>
+                                                    <structure name="dateTimeFormat">
+                                                        <property name="category">Custom</property>
+                                                        <property name="pattern">dd MMM</property>
+                                                    </structure>
+                                                    <property name="resultSetColumn">monthDate</property>
+                                                </data>
+                                            </property>
+                                            <property name="borderBottomStyle">solid</property>
+                                            <property name="borderBottomWidth">medium</property>
+                                            <property name="borderBottomColor">#808080</property>
+                                            <property name="height">0.5in</property>
+                                            <property name="style">BottomBorderStyle</property>
+                                        </extended-item>
+                                    </property>
+                                </extended-item>
+                            </property>
+                        </extended-item>
+                    </property>
+                    <property name="grandTotalLocation">before</property>
+                </extended-item>
+            </property>
+            <property name="header">
+                <extended-item extensionName="CrosstabCell" id="2058">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderBottomColor">#808080</property>
+                    <property name="style">BottomBorderStyle</property>
+                </extended-item>
+                <extended-item extensionName="CrosstabCell" id="2225">
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderBottomColor">#808080</property>
+                </extended-item>
+                <extended-item extensionName="CrosstabCell" id="2226">
+                    <property name="content">
+                        <label id="2228">
+                            <property name="color">black</property>
+                            <text-property name="text">Hour Type</text-property>
+                        </label>
+                    </property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="borderBottomColor">#808080</property>
+                </extended-item>
+            </property>
+            <property name="hideMeasureHeader">true</property>
+            <property name="fontFamily">"Arial"</property>
+            <property name="fontSize">11pt</property>
+            <property name="color">#FF0000</property>
+            <property name="display">block</property>
+            <property name="marginLeft">0px</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">monthDate</property>
+                    <expression name="expression">dimension["MonthDate"]["monthDate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="aggregateFunction">sum</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_MonthDate/monthDate</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>MonthDate/monthDate</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">h1</property>
+                    <expression name="expression">dimension["Const1"]["h1"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Const1/h1</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Const1/h1</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">sum</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Const1/h1_MonthDate/monthDate</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Const1/h1</value>
+                        <value>MonthDate/monthDate</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">h2</property>
+                    <expression name="expression">dimension["Const 2"]["h2"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Const 2/h2</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Const 2/h2</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">sum</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Const 2/h2_MonthDate/monthDate</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Const 2/h2</value>
+                        <value>MonthDate/monthDate</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+                <structure>
+                    <property name="name">hourType</property>
+                    <expression name="expression">dimension["Project_Employee_HourType"]["hourType"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Project_Employee_HourType/hourType</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Project_Employee_HourType/hourType</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">sum</property>
+                </structure>
+                <structure>
+                    <property name="name">quantity_Project_Employee_HourType/hourType_MonthDate/monthDate</property>
+                    <expression name="expression">measure["quantity"]</expression>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>Project_Employee_HourType/hourType</value>
+                        <value>MonthDate/monthDate</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">SUM</property>
+                </structure>
+            </list-property>
+        </extended-item>
     </body>
 </report>

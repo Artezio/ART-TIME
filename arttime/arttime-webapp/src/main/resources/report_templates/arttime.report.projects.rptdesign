@@ -3310,7 +3310,7 @@
                                 <extended-item extensionName="AggregationCell" id="402">
                                     <property name="aggregationOnRow">Project_Employee/employeeUserName</property>
                                     <property name="aggregationOnColumn">HourType/hourType</property>
-                                    <property name="width">1.7916666666666667in</property>
+                                    <property name="width">1.22in</property>
                                     <property name="content">
                                         <data id="403">
                                             <property name="fontFamily">"Arial"</property>
@@ -3478,12 +3478,16 @@
                                                                 <property name="pattern">d MMM</property>
                                                             </structure>
                                                             <property name="textAlign">right</property>
+                                                            <property name="whiteSpace">pre</property>
+                                                            <property name="display">block</property>
                                                             <property name="resultSetColumn">hourType</property>
                                                         </data>
                                                     </property>
                                                     <property name="borderBottomStyle">solid</property>
                                                     <property name="borderBottomWidth">medium</property>
                                                     <property name="borderBottomColor">#808080</property>
+                                                    <property name="paddingLeft">0.1in</property>
+                                                    <property name="paddingRight">0.1in</property>
                                                 </extended-item>
                                             </property>
                                         </extended-item>
