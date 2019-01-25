@@ -1,0 +1,71 @@
+version: "3"
+services:
+  #arttime:
+  #  container_name: arttime
+  #  image: arttime-demo/webapp:latest
+  #  ports:
+  #    - "${port_web}:8080"
+  #    - "${port_web_management}:9990"
+  #  networks:
+  #    - arttime-public
+  #    - arttime-internal
+    
+  keycloak:
+    container_name: keycloak
+    #image: arttime-demo/keycloak:latest
+    image: jboss/keycloak
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=${keycloak_db_vendor}
+      - DB_ADDR=${keycloak_db_host}
+      - DB_PORT=${keycloak_db_port}
+      - DB_USER=${keycloak_db_username}
+      - DB_PASSWORD=${keycloak_db_password}
+    ports:
+      - 9080:8080
+      - 9443:8443
+      - 10990:9990
+    networks:
+      - arttime-internal
+      - arttime-public
+    depends_on:
+      - keycloakdb
+
+  keycloakdb:
+    image: postgres
+    container_name: keycloakdb
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: arttime
+      POSTGRES_PASSWORD: arttime
+    volumes:
+      - "./database/data/keycloak:/var/lib/postgresql/data"
+    ports:
+      - ${keycloak_db_port}:5432
+    networks:
+      - arttime-internal
+      - arttime-public
+
+  arttimedb:
+    image: postgres
+    container_name: arttimedb
+    restart: always
+    environment:
+      POSTGRES_DB: arttime
+      POSTGRES_USER: arttime
+      POSTGRES_PASSWORD: arttime
+    volumes:
+      - "./database/data/arttime:/var/lib/postgresql/data"
+    ports:
+      - ${arttime_db_port}:5432
+    networks:
+      - arttime-internal
+      - arttime-public
+
+networks:
+  arttime-public:
+  arttime-internal:
+    internal: true
+
