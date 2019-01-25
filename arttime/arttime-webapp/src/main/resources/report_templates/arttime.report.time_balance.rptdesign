@@ -1900,9 +1900,12 @@
                     <property name="name">totalQuantity</property>
                     <expression name="expression">var key = "_" + row["employeeUserName"] + "_" + row["hourType"];&#13;
 var value = vars["TotalHours"].get(key);&#13;
-value = value == null&#13;
-	? row["quantity"]&#13;
-	: new Number(value) + row["quantity"];&#13;
+var rowValue = row["approved"] ? row["quantity"] : 0;&#13;
+if (value == null) {&#13;
+	value = rowValue;&#13;
+} else {&#13;
+	value = new Number(value) + rowValue;&#13;
+}&#13;
 vars["TotalHours"].put(key, value);&#13;
 value;</expression>
                     <property name="dataType">decimal</property>
@@ -1926,6 +1929,7 @@ value;</expression>
                 </structure>
                 <structure>
                     <property name="columnName">hourTypeId</property>
+                    <property name="analysis">measure</property>
                     <text-property name="heading">hourTypeId</text-property>
                 </structure>
                 <structure>
@@ -4201,7 +4205,9 @@ value;</expression>
                                     <list-property name="visibility">
                                         <structure>
                                             <property name="format">all</property>
-                                            <expression name="valueExpr" type="javascript">data["displayCode"] != "Total"</expression>
+                                            <expression name="valueExpr" type="javascript">(data["displayCode"] != "Total")&#13;
+  || (vars["TotalHours"].get("_" + row["employeeUserName"] + "_" + row["hourType"]) == null) &#13;
+  || (vars["TotalHours"].get("_" + row["employeeUserName"] + "_" + row["hourType"]) == 0)</expression>
                                         </structure>
                                     </list-property>
                                     <property name="resultSetColumn">totalQuantity</property>
