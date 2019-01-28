@@ -19,11 +19,6 @@
             });
 
         });
-
-        function clickLink(linkId) {
-            document.getElementById(linkId).click();
-        }
-
         //]]>
     </script>
 
@@ -31,26 +26,19 @@
         <rich:toolbar id="mainMenu" itemSeparator="none">
             <rich:toolbarGroup location="left" itemClass="selectedItem" id="mainMenuGroup">
                 <rich:menuItem onclick="return false;"/>
-                <rich:menuItem onclick="clickLink('mainMenuForm:timesheetLink'); return false"
+                <rich:menuItem label="#{messages['mainMenu.timesheet']}" action="timesheet"
                                styleClass="#{fn:startsWith(view.viewId, '/pages/timesheet') ? 'activeMenuItem' : ''}
-                                            main-menu-toolbar-item">
-                    <h:link id="timesheetLink" value="#{messages['mainMenu.timesheet']}" outcome="timesheet"/>
-                </rich:menuItem>
-                <rich:menuItem onclick="clickLink('mainMenuForm:manageEffortsLink'); return false"
-                               rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')
+                                            main-menu-toolbar-item"/>
+                <rich:menuItem rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')
                                            or request.isUserInRole('officeManager')}"
                                styleClass="#{fn:startsWith(view.viewId, '/pages/manageEfforts') ? 'activeMenuItem' : ''}
-                                            main-menu-toolbar-item">
-                    <h:link id="manageEffortsLink" value="#{messages['mainMenu.manageEfforts']}"
-                            outcome="manageEfforts"/>
-                </rich:menuItem>
-                <rich:menuItem onclick="clickLink('mainMenuForm:reportsLink'); return false"
-                               rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')
+                                            main-menu-toolbar-item" action="manageEfforts"
+                               label="#{messages['mainMenu.manageEfforts']}"/>
+                <rich:menuItem rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')
                                          or request.isUserInRole('officeManager') or request.isUserInRole('accountant')}"
                                styleClass="#{fn:startsWith(view.viewId, '/pages/reports') ? 'activeMenuItem' : ''}
-                                            main-menu-toolbar-item">
-                    <h:link id="reportsLink" value="#{messages['mainMenu.reports']}" outcome="reports"/>
-                </rich:menuItem>
+                                            main-menu-toolbar-item"
+                               action="reports" label="#{messages['mainMenu.reports']}"/>
                 <rich:dropDownMenu label="#{messages['mainMenu.dictionaries']}"
                                    rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')
                                              or request.isUserInRole('officeManager')}"
@@ -59,67 +47,41 @@
                                                 or fn:startsWith(view.viewId, '/pages/calendar')
                                                 or fn:startsWith(view.viewId, '/pages/access')
                                                 or fn:startsWith(view.viewId, '/pages/hourType')) ? 'activeMenuItem' : ''}">
-                    <rich:menuItem onclick="clickLink('mainMenuForm:projectsLink'); return false"
-                                   rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')}"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="projectsLink" value="#{messages['mainMenu.projects']}" outcome="projects"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:employeesLink'); return false"
-                                   styleClass="main-menu-toolbar-item"
-                                   rendered="#{request.isUserInRole('exec') or request.isUserInRole('officeManager')}">
-                        <h:link id="employeesLink" value="#{messages['mainMenu.employees']}" outcome="employees"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:calendarsLink'); return false"
-                                   styleClass="main-menu-toolbar-item"
-                                   rendered="#{request.isUserInRole('exec') or request.isUserInRole('officeManager')}">
-                        <h:link id="calendarsLink" value="#{messages['mainMenu.calendars']}" outcome="calendars"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:hourTypesLink'); return false"
-                                   styleClass="main-menu-toolbar-item"
-                                   rendered="#{request.isUserInRole('exec')}">
-                        <h:link id="hourTypesLink" value="#{messages['mainMenu.hourTypes']}" outcome="hourTypes"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:synchronizationLink'); return false"
-                                   rendered="#{request.isUserInRole('exec')}"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="accessToDepartmentsLink" value="#{messages['mainMenu.accessToDepartments']}"
-                                outcome="accessToDepartments"/>
-                    </rich:menuItem>
+                    <rich:menuItem rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')}"
+                                   styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.projects']}"
+                                   action="projects"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.employees']}"
+                                   rendered="#{request.isUserInRole('exec') or request.isUserInRole('officeManager')}"
+                                   action="employees"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.calendars']}"
+                                   rendered="#{request.isUserInRole('exec') or request.isUserInRole('officeManager')}"
+                                   action="calendars"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item" action="hourTypes"
+                                   label="#{messages['mainMenu.hourTypes']}"
+                                   rendered="#{request.isUserInRole('exec')}"/>
+                    <rich:menuItem rendered="#{request.isUserInRole('exec')}" action="accessToDepartments"
+                                   label="#{messages['mainMenu.accessToDepartments']}"
+                                   styleClass="main-menu-toolbar-item"/>
                 </rich:dropDownMenu>
-                <rich:menuItem onclick="clickLink('mainMenuForm:notificationsLink'); return false"
+                <rich:menuItem action="actualTimeProblemsNotification" label="#{messages['mainMenu.workTimeProblems']}"
                                rendered="#{request.isUserInRole('exec') or request.isUserInRole('officeManager')}"
                                styleClass="#{fn:startsWith(view.viewId, '/pages/notifications') ? 'activeMenuItem' : ''}
-                                           main-menu-toolbar-item">
-                    <h:link id="notificationsLink" value="#{messages['mainMenu.workTimeProblems']}"
-                            outcome="actualTimeProblemsNotification"/>
-                </rich:menuItem>
+                                           main-menu-toolbar-item"/>
                 <rich:dropDownMenu label="#{messages['mainMenu.settings']}"
                                    rendered="#{request.isUserInRole('admin')}"
                                    styleClass="#{fn:startsWith(view.viewId, '/pages/settings') ? 'activeMenuItem' : ''}">
-                    <rich:menuItem onclick="clickLink('mainMenuForm:externalDataProvidersLink'); return false"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="externalDataProvidersLink"
-                                value="#{messages['mainMenu.settings.externalDataProviders']}"
-                                outcome="externalDataProviders"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:synchronizationLink'); return false"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="synchronizationLink" value="#{messages['mainMenu.settings.synchronization']}"
-                                outcome="synchronization"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:smtpLink'); return false"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="smtpLink" value="#{messages['mainMenu.settings.smtp']}" outcome="smtp"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:notificationLink'); return false"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="notificationLink" value="#{messages['mainMenu.settings.notification']}"
-                                outcome="notification"/>
-                    </rich:menuItem>
-                    <rich:menuItem onclick="clickLink('mainMenuForm:linksLink'); return false"
-                                   styleClass="main-menu-toolbar-item">
-                        <h:link id="linksLink" value="#{messages['mainMenu.settings.links']}" outcome="links"/>
-                    </rich:menuItem>
+                    <rich:menuItem styleClass="main-menu-toolbar-item"
+                                   label="#{messages['mainMenu.settings.externalDataProviders']}"
+                                   action="externalDataProviders"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item"
+                                   label="#{messages['mainMenu.settings.synchronization']}"
+                                   action="synchronization"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.settings.smtp']}"
+                                   action="smtp"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item"
+                                   label="#{messages['mainMenu.settings.notification']}" action="notification"/>
+                    <rich:menuItem styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.settings.links']}"
+                                   action="links"/>
                 </rich:dropDownMenu>
             </rich:toolbarGroup>
             <rich:toolbarGroup location="right" itemClass="selectedItem"
