@@ -21,7 +21,7 @@
 
     <ui:define name="content">
 
-        <h:outputText value="#{messages['accessToDepartments.warning']}" styleClass="warning fa fa-warning" />
+        <h:outputText value="#{messages['accessToDepartments.warning']}" styleClass="warning fa fa-warning"/>
 
         <p:dataTable id="accesses"
                      var="department"
@@ -52,7 +52,7 @@
                                 itemValue="#{employee}"
                                 converter="employeeConverter"
                                 forceSelection="false">
-                        <h:outputText value="#{employee.fullName}"/>
+                    <h:outputText value="#{employee.fullName}"/>
                 </p:autoComplete>
             </p:column>
         </p:dataTable>

@@ -10,7 +10,6 @@ import junitx.framework.ListAssert;
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -144,12 +143,11 @@ public class FilterBeanTest {
 
         EasyMock.expect(projectService.getAll()).andReturn(projects);
         EasyMock.expect(projectService.fetchComplete(projects)).andReturn(projects);
-        expect(employeeService.getLoggedEmployee()).andReturn(Optional.of(loggedEmployee));
-        EasyMock.replay(projectService, employeeService);
+        EasyMock.replay(projectService);
 
         List<Project> actual = filterBean.getProjects();
 
-        EasyMock.verify(projectService, employeeService);
+        EasyMock.verify(projectService);
         ListAssert.assertEquals(expected, actual);
     }
 

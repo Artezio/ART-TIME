@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
@@ -67,10 +68,10 @@ public class FilterBean implements Serializable {
     public List<Project> getSelectedProjects() {
         return currentFilter.containsAtLeastOneProject()
                 ? projectService.fetchComplete(currentFilter.getProjects()).stream()
-                    .filter(project -> project.isMasterProject()
+                .filter(project -> project.isMasterProject()
                         || project.isSubproject() && project.canBeManaged(employeeService.getLoggedEmployee().orElse(null))
                         && !currentFilter.getProjects().contains(project.getMaster()))
-                    .collect(Collectors.toList())
+                .collect(Collectors.toList())
                 : currentFilter.getProjects();
     }
 
@@ -114,14 +115,11 @@ public class FilterBean implements Serializable {
     public List<Project> getProjects() {
         List<Project> availableProjects = projectService.fetchComplete(projectService.getAll());
         Set<Project> projects = availableProjects.stream()
-                .filter(project -> project.getStatus() == ACTIVE
-                        && (project.isMasterProject()
-                        || project.isSubproject() && project.canBeManaged(employeeService.getLoggedEmployee().orElse(null))
-                        && !availableProjects.contains(project.getMaster())))
+                .filter(project -> project.getStatus() == ACTIVE)
+                .filter(project -> project.isMasterProject() || !availableProjects.contains(project.getMaster()))
                 .collect(Collectors.toSet());
         List<Project> projectsFromFilter = currentFilter.getProjects().stream()
-                .filter(project -> project.isMasterProject()
-                        || project.isSubproject() && !currentFilter.getProjects().contains(project.getMaster()))
+                .filter(project -> project.isMasterProject() || !currentFilter.getProjects().contains(project.getMaster()))
                 .collect(Collectors.toList());
         projects.addAll(projectsFromFilter);
         return projects.stream()

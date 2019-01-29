@@ -360,7 +360,7 @@ public class Project implements Serializable {
     }
 
     public boolean isMasterProject() {
-        return master == null;
+        return !isSubproject();
     }
 
 }
