@@ -19,7 +19,7 @@ SET row_security = off;
 -- Name: db_art_time_demo; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE db_art_time_demo WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Russian_Russia.UTF8' LC_CTYPE = 'Russian_Russia.UTF8';
+CREATE DATABASE db_art_time_demo WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
 
 
 ALTER DATABASE db_art_time_demo OWNER TO postgres;
