@@ -1,6 +1,6 @@
 FROM jboss/wildfly:14.0.1.Final
 
-COPY ../../arttime-webapp/target/arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/
+COPY arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/
 COPY configuration /opt/configuration/
 
 #install keycloak adapter

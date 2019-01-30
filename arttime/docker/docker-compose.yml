@@ -33,11 +33,8 @@ services:
       POSTGRES_PASSWORD: arttime
     #volumes:
     #  - "./database/data/arttime:/var/lib/postgresql/data"
-    ports:
-      - ${arttime_db_port}:5432
     networks:
       - arttime-internal
-      - arttime-public
 
 networks:
   arttime-public:
