@@ -1,6 +1,6 @@
 FROM jboss/wildfly:14.0.1.Final
 
-COPY arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/
+COPY ../../arttime-webapp/target/arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/
 COPY configuration /opt/configuration/
 
 #install keycloak adapter
@@ -12,7 +12,8 @@ RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/adapter-el
 #configure wildfly
 RUN sed -i -e "s/<resolve-parameter-values>false/<resolve-parameter-values>true/" /opt/jboss/wildfly/bin/jboss-cli.xml
 RUN /opt/jboss/wildfly/bin/add-user.sh --user admin --password admin --silent --enable
-RUN /opt/jboss/wildfly/bin/jboss-cli.sh --properties=/opt/configuration/wildfly/app.h2.properties --file=/opt/configuration/wildfly/configure-wildfly.cli
+WORKDIR /opt/configuration/wildfly/
+RUN /opt/jboss/wildfly/bin/jboss-cli.sh --properties=app.postgres.properties --file=configure-wildfly.cli
 
 #EXPOSE port_web_external
 #EXPOSE port_management_external

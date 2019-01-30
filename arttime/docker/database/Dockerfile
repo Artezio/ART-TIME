@@ -1,21 +1,7 @@
-FROM openjdk:jre-alpine
+FROM postgres:10.5
 
-ENV H2_DOWNLOAD_URL http://www.h2database.com/h2-2018-03-18.zip
-ENV DATA_DIR /opt/h2/data
+ADD init_arttime_db.sql /docker-entrypoint-initdb.d/
 
-RUN apk add --no-cache curl
+EXPOSE 5432
 
-RUN mkdir -p ${DATA_DIR} \
-    && curl ${H2_DOWNLOAD_URL} -o h2.zip \
-    && unzip h2.zip -d /opt/ \
-    && rm h2.zip \
-    && ls -al /opt \
-    && ls -al /opt/h2 \
-    && ls -al /opt/h2/bin
-
-COPY h2.server.properties /root/.h2.server.properties
-
-EXPOSE 9092
-EXPOSE 9999
-
-CMD sh /opt/h2/bin/h2.sh -tcp -tcpAllowOthers -tcpPort 9092 -web -webAllowOthers -webPort 9999 -baseDir ${DATA_DIR}
+CMD ["postgres"]

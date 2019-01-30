@@ -1,0 +1,70 @@
+embed-server --server-config=${server.config:standalone-full.xml}
+
+try 
+  echo Installing module ${db.driver-module-name}
+  module add --name=${db.driver-module-name} --resources=${db.driver-resources} --dependencies=javax.api,javax.transaction.api 
+catch
+  echo [SKIP] Module ${db.driver-module-name} already installed
+end-try
+
+echo Creating jdbc-driver
+if (outcome != success) of /subsystem=datasources/jdbc-driver=${db.driver-name}:read-resource
+  /subsystem=datasources/jdbc-driver=${db.driver-name}:add(driver-name=${db.driver-name}, driver-module-name=${db.driver-module-name}, driver-class-name=${db.driver-class-name})
+else 
+  echo [SKIP] Driver ${db.driver-name} already exists
+end-if
+
+echo Creating datasource
+if (outcome != success) of  /subsystem=datasources/data-source=arttime-datasource:read-resource
+data-source add --name=arttime-datasource --jndi-name="java:jboss/datasources/com.artezio.arttime" \
+  --allocation-retry=5 --allocation-retry-wait-millis=1000 \
+  --use-ccm=true --jta=true \
+  --driver-class=${db.driver-class-name} \ 
+  --driver-name=${db.driver-name} \
+  --connection-url=${db.connection-url} --new-connection-sql="SELECT 1" \
+  --transaction-isolation=TRANSACTION_READ_COMMITTED \
+  --max-pool-size=50 --initial-pool-size=10 \
+  --idle-timeout-minutes=5 \
+  --password=${db.password} --user-name=${db.user-name} \
+  --valid-connection-checker-class-name=${db.valid-connection-checker-class-name} --validate-on-match=true --background-validation=true \
+  --exception-sorter-class-name=${db.exception-sorter}
+
+  data-source enable --name=arttime-datasource
+else 
+  echo [SKIP] arttime-datasource already exists.
+end-if 
+
+echo Creating mail-session
+if (outcome != success) of /subsystem=mail/mail-session=com.artezio.arttime:read-resource 
+  /subsystem=mail/mail-session=com.artezio.arttime:add(jndi-name="java:jboss/mail/com.artezio.arttime")
+else 
+  echo [SKIP] Mail session com.artezio.arttime already configured
+end-if
+
+echo Creating jms queue
+if (outcome != success) of /subsystem=messaging-activemq/server=default/jms-queue=arttime:read-resource
+  /subsystem=messaging-activemq/server=default/jms-queue=arttime:add(entries=[java:/jms/queue/arttime] )
+  /subsystem=messaging-activemq/server=default/address-setting=jms.queue.arttime:add(dead-letter-address=jms.queue.DLQ, expiry-address=jms.queue.ExpiryQueue, \
+    max-delivery-attempts=3, max-redelivery-delay=3000, max-size-bytes=10485760, message-counter-history-day-limit=10, page-size-bytes=2097152)
+else 
+  echo [SKIP] Jms-queue arttime already configured
+end-if
+
+echo Setting max parameters size for request
+/subsystem=undertow/server=default-server/http-listener=default:write-attribute(name=max-parameters, value=5000)
+if (result != []) of /subsystem=undertow/server=default-server/:read-children-names(child-type=ajp-listener)
+  /subsystem=undertow/server=default-server/ajp-listener=default:write-attribute(name=max-parameters, value=5000)
+else 
+  echo [SKIP] Default ajp-listener not configured
+end-if
+
+echo Configure keycloak adapter
+if (outcome != success) of /subsystem=keycloak/secure-deployment=${keycloak.app-name}:read-resource
+  /subsystem=keycloak/secure-deployment=${keycloak.app-name}:add(realm=${keycloak.realm}, resource=${keycloak.client}, \
+    enable-basic-auth=true,public-client=true,auth-server-url=${keycloak.auth-server-url},ssl-required=EXTERNAL,principal-attribute=preferred_username)
+else   
+  echo [SKIP] Secure deployment ${keycloak.app-name} already configured
+end-if
+
+stop-embedded-server
+
