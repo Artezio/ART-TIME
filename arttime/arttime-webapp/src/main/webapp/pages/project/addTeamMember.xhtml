@@ -3,6 +3,8 @@
                 xmlns:t="http://myfaces.apache.org/tomahawk"
                 xmlns:p="http://primefaces.org/ui">
 
+    <h:outputScript library="js" name="editProject.js?v=#{buildInfo['application.version']}" />
+
     <t:subform id="newTeamMemberSubform">
 
         <h:outputText value="#{messages['project.label.addTeamMember.warning']}"
@@ -18,9 +20,7 @@
                                 value="#{projectBean.employee}"
                                 completeMethod="#{employeeTrackingSystem.findEmployeesByFullName}"
                                 var="employee" itemValue="#{employee}" itemLabel="#{employee.fullName}"
-                                dropdown="true" forceSelection="true"
-                                cache="true" scrollHeight="350" required="true"
-                                effect="fade" queryDelay="500"
+                                dropdown="true" scrollHeight="350" forceSelection="true"
                                 converter="employeeConverter">
                     <p:column>
                         <h:outputText value="#{employee.fullName}" title="#{employee.email}"/>
