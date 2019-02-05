@@ -16,15 +16,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: db_art_time_demo; Type: DATABASE; Schema: -; Owner: postgres
+-- Name: arttime; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE db_art_time_demo WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
+CREATE DATABASE arttime WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8';
 
+ALTER DATABASE arttime OWNER TO postgres;
 
-ALTER DATABASE db_art_time_demo OWNER TO postgres;
-
-\connect db_art_time_demo
+\connect arttime
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -655,10 +654,10 @@ TIMER_HOURS_INTERVAL	1
 EMPLOYEE_SYNCHRONIZATION_ENABLED	true
 HELP_PAGE_URL	https://github.com/Artezio/ART-TIME
 APPLICATION_BASE_URL	http://localhost:8080/arttime
-KEYCLOAK_SERVER_URL	http://127.0.0.1:9080/auth
-KEYCLOAK_CLIENT_ID	arttime-demo
+KEYCLOAK_SERVER_URL	http://keycloak:8081/auth
+KEYCLOAK_CLIENT_ID	arttime
 KEYCLOAK_USERNAME	admin
-KEYCLOAK_PASSWORD	admin
+KEYCLOAK_PASSWORD	1
 TEAM_SYNCHRONIZATION_ENABLED	true
 \.
 

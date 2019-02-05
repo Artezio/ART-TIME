@@ -1,0 +1,1 @@
+sh /opt/jboss/wildfly/bin/standalone.sh -c standalone-full.xml -b 0.0.0.0 -bmanagement 0.0.0.0 -Dkeycloak.auth-server-url=$keycloak_url
