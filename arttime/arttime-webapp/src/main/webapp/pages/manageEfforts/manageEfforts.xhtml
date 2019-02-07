@@ -65,6 +65,7 @@
             <p:commandButton value="#{messages['button.saveData']}"
                              onclick="return waitForHoursSubmit(this);"
                              action="#{manageEffortsBean.saveHours()}"
+                             widgetVar="saveEffortsButton"
                              styleClass="avoidChangeTracking cancelTrackedChanges ui-fa"
                              ajax="false"
                              icon="fa fa-save"/>
@@ -170,7 +171,11 @@
                    showRowHeaders="false" binding="#{manageEffortsBean.spreadSheet.sheet}"
                    emptyMessage="#{messages['warning.datatable.empty']}" height='2000'>
 
-            <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}" async="false"/>
+            <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}" async="false"
+                    onstart="PF('effortsSheet').cfg.delta={};"
+                    oncomplete="PF('saveEffortsButton').enable();"
+                    delay="550"/>
+
             <c:set var="firstColValue" value="#{row.getFirstColValue(grouping)}"/>
             <c:set var="rowIndex" value="#{manageEffortsBean.spreadSheet.sheet.rowIndex}"/>
             <c:set var="previousFirstColValue"
@@ -249,6 +254,16 @@
                 </lcg:column>
             </c:forEach>
         </lcg:sheet>
+
+        <script>
+            $(document).ready(function () {
+                PF('effortsSheet').ht.addHook('afterChange',
+                    function () {
+                        PF('saveEffortsButton').disable();
+                    });
+            });
+        </script>
+
     </ui:define>
 
 </ui:composition>

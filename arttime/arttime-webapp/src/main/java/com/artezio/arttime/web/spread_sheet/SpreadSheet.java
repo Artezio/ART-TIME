@@ -5,7 +5,6 @@ import com.artezio.arttime.datamodel.HourType;
 import com.artezio.arttime.datamodel.Hours;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.filter.Filter;
-import com.artezio.arttime.security.auth.UserRoles;
 import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.HoursService;
 import com.artezio.arttime.services.ProjectService;
@@ -13,9 +12,6 @@ import com.lassitercg.faces.components.event.SheetUpdate;
 import com.lassitercg.faces.components.sheet.Sheet;
 import org.apache.commons.lang3.SerializationUtils;
 
-import javax.ejb.SessionContext;
-import javax.enterprise.inject.spi.CDI;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,6 +55,7 @@ public abstract class SpreadSheet implements Serializable {
                 .map(SheetUpdate::getRowIndex)
                 .distinct()
                 .forEach(update -> rowKeys.addAll(calculateKeysOfTotalsRows(rows.get(update))));
+        sheet.getAccumulatedUpdates().addAll(sheet.getUpdates());
         sheet.updateDirtyRows(rowKeys);
     }
 
@@ -111,7 +108,7 @@ public abstract class SpreadSheet implements Serializable {
     }
 
     public Set<Hours> getUpdatedHours() {
-        List<SheetUpdate> updates = sheet.getUpdates();
+        List<SheetUpdate> updates = sheet.getAccumulatedUpdates();
         List<Date> days = filter.getPeriod().getDays();
         return updates.stream()
                 .filter(update -> update.getRowData() instanceof HoursSpreadSheetRow)

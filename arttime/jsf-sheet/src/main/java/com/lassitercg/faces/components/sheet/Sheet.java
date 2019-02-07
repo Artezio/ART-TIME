@@ -23,17 +23,8 @@
 package com.lassitercg.faces.components.sheet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.el.ELContext;
 import javax.el.ValueExpression;
@@ -80,6 +71,10 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 	public static final String COMPONENTTYPE = "com.lassitercg.faces.components.sheet";
 	public static final String PARTIAL_SOURCE_PARAM = "javax.faces.source";
 	public static final String PARTIAL_BEHAVIOR_EVENT_PARAM = "javax.faces.behavior.event";
+
+	public List<SheetUpdate> getAccumulatedUpdates() {
+		return accumulatedUpdates;
+	}
 
 	/**
 	 * Properties that are tracked by state saving.
@@ -269,6 +264,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 	 * model update.
 	 */
 	private final List<SheetUpdate> updates = new ArrayList<SheetUpdate>();
+	private List<SheetUpdate> accumulatedUpdates = new LinkedList<>();
 
 	/**
 	 * Maps a visible, rendered column index to the actual column based on
@@ -1344,7 +1340,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 	 */
 	@Override
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[7];
+		Object values[] = new Object[8];
 		values[0] = super.saveState(context);
 		values[1] = submittedValues;
 		values[2] = localValues;
@@ -1352,6 +1348,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 		values[4] = columnMapping;
 		values[5] = sortedList;
 		values[6] = rowMap;
+		values[7] = accumulatedUpdates;
 
 		return values;
 	}
@@ -1373,6 +1370,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 		Object restoredColMappings = values[4];
 		Object restoredSortedList = values[5];
 		Object restoredRowMap = values[6];
+		Object restoredAccumulatedUpdates = values[7];
 
 		if (restoredSubmittedValues == null)
 			submittedValues.clear();
@@ -1404,6 +1402,12 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 			rowMap = null;
 		else
 			rowMap = (Map<Object, RowMap>) restoredRowMap;
+
+		if (restoredAccumulatedUpdates == null) {
+			accumulatedUpdates.clear();
+		} else {
+			accumulatedUpdates = (List<SheetUpdate>) restoredAccumulatedUpdates;
+		}
 	}
 
 	/**
@@ -1653,7 +1657,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 					eval.append("_c");
 					eval.append(col);
 					eval.append("']='");
-					eval.append(styleClass);
+					eval.append(styleClass.trim());
 					eval.append("';");
 				}				
 			}
