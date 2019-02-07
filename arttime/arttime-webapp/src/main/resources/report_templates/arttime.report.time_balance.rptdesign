@@ -4218,11 +4218,14 @@ value;</expression>
                     <property name="aggregations">
                         <extended-item extensionName="AggregationCell" id="453">
                             <property name="aggregationOnColumn">Project_HourType/hourType</property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="borderTopColor">#000000</property>
                             <property name="content">
                                 <data id="454">
                                     <property name="fontFamily">"Arial"</property>
                                     <property name="fontSize">11pt</property>
-                                    <property name="color">#FF0000</property>
+                                    <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null) {
 	this.setDisplayValue(0);
@@ -4251,10 +4254,13 @@ value;</expression>
                                 <label id="455">
                                     <property name="fontFamily">"Arial"</property>
                                     <property name="fontSize">11pt</property>
-                                    <property name="color">#FF0000</property>
+                                    <property name="color">#000000</property>
                                     <text-property name="text">Total</text-property>
                                 </label>
                             </property>
+                            <property name="borderTopStyle">solid</property>
+                            <property name="borderTopWidth">medium</property>
+                            <property name="borderTopColor">#000000</property>
                         </extended-item>
                     </property>
                     <property name="views">

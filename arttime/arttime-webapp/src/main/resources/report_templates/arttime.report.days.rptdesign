@@ -52,6 +52,10 @@
             <property name="name">queryText</property>
             <property name="id">1962</property>
         </structure>
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">797</property>
+        </structure>
     </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
@@ -154,7 +158,7 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>SynchronizeClassPath</name>
-                    <value>false</value>
+                    <value>true</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
@@ -1607,18 +1611,8 @@
                     <property name="analysis">dimension</property>
                     <text-property name="heading">projectCode</text-property>
                 </structure>
-                <structure>
-                    <property name="columnName">masterProject</property>
-                    <property name="analysis">dimension</property>
-                    <text-property name="heading">masterProject</text-property>
-                </structure>
             </list-property>
-            <list-property name="filter">
-                <structure>
-                    <property name="operator">is-true</property>
-                    <expression name="expr" type="javascript">row["masterProject"]</expression>
-                </structure>
-            </list-property>
+            <list-property name="filter"/>
             <list-property name="parameters">
                 <structure>
                     <property name="name">projectIds</property>
@@ -1636,11 +1630,6 @@
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">masterProject</property>
-                        <property name="dataType">boolean</property>
-                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
@@ -1652,22 +1641,15 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">masterProject</property>
-                    <property name="nativeName">masterProject</property>
-                    <property name="dataType">boolean</property>
-                    <property name="nativeDataType">16</property>
-                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_PROJECTS" dataSetClass="com.artezio.arttime.report.datasource.pojo.ProjectDataSet" version="1.0">
-    <ColumnMapping index="1" name="projectCode" odaDataType="String">
-        <Method name="getCode"/>
-    </ColumnMapping>
-    <ColumnMapping index="2" name="masterProject" odaDataType="Boolean">
-        <Method name="isMasterProject"/>
-    </ColumnMapping>
+    <ClassColumnMappings>
+        <ColumnMapping index="1" name="projectCode" odaDataType="String">
+            <Method name="getCode"/>
+        </ColumnMapping>
+        <Method name="getRootProject"/>
+    </ClassColumnMappings>
 </PojoQuery>
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -4242,7 +4224,10 @@ return false;]]></method>
                                     <property name="width">2.09375in</property>
                                 </column>
                                 <row id="1955">
+                                    <property name="borderBottomStyle">none</property>
+                                    <property name="borderBottomWidth">medium</property>
                                     <cell id="1956">
+                                        <property name="borderBottomStyle">none</property>
                                         <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="1851">
                                             <property name="cube">DaysReport Data Cube</property>
                                             <property name="measures">
@@ -4615,7 +4600,9 @@ return false;]]></method>
                                     </cell>
                                 </row>
                                 <row id="1957">
+                                    <property name="borderTopStyle">none</property>
                                     <cell id="1958">
+                                        <property name="borderTopStyle">none</property>
                                         <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="1894">
                                             <property name="cube">DaysReport Data Cube</property>
                                             <property name="measures">
@@ -4631,7 +4618,7 @@ return false;]]></method>
                                                             <property name="content">
                                                                 <data id="1919">
                                                                     <property name="fontSize">11pt</property>
-                                                                    <property name="color">#FF0000</property>
+                                                                    <property name="color">#000000</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
@@ -4650,7 +4637,7 @@ return false;]]></method>
                                                             <property name="content">
                                                                 <data id="1928">
                                                                     <property name="fontSize">11pt</property>
-                                                                    <property name="color">#FF0000</property>
+                                                                    <property name="color">#000000</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
@@ -4707,7 +4694,7 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <text id="1932">
                                                                                     <property name="fontSize">11pt</property>
-                                                                                    <property name="color">#FF0000</property>
+                                                                                    <property name="color">#000000</property>
                                                                                     <property name="contentType">auto</property>
                                                                                     <text-property name="content"><![CDATA[Total]]></text-property>
                                                                                 </text>
@@ -4751,7 +4738,7 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <data name="hourType" id="1910">
                                                                                     <property name="fontSize">11pt</property>
-                                                                                    <property name="color">#FF0000</property>
+                                                                                    <property name="color">#000000</property>
                                                                                     <property name="textAlign">left</property>
                                                                                     <property name="resultSetColumn">hourType</property>
                                                                                 </data>
@@ -4772,6 +4759,9 @@ return false;]]></method>
                                                 <extended-item extensionName="CrosstabView" id="1912">
                                                     <property name="grandTotal">
                                                         <extended-item extensionName="CrosstabCell" id="1926">
+                                                            <property name="borderBottomStyle">solid</property>
+                                                            <property name="borderBottomWidth">medium</property>
+                                                            <property name="borderBottomColor">#000000</property>
                                                             <property name="style">NoDisplayStyle</property>
                                                         </extended-item>
                                                     </property>
@@ -4790,7 +4780,10 @@ return false;]]></method>
                                                                     </property>
                                                                     <property name="member">
                                                                         <extended-item extensionName="CrosstabCell" id="1915">
-                                                                            <property name="height">0in</property>
+                                                                            <property name="borderBottomStyle">solid</property>
+                                                                            <property name="borderBottomWidth">medium</property>
+                                                                            <property name="borderBottomColor">#000000</property>
+                                                                            <property name="height">0.0099in</property>
                                                                             <property name="style">NoDisplayStyle</property>
                                                                         </extended-item>
                                                                     </property>
@@ -4803,12 +4796,18 @@ return false;]]></method>
                                             </property>
                                             <property name="header">
                                                 <extended-item extensionName="CrosstabCell" id="1895">
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1904">
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1909">
+                                                    <property name="borderBottomStyle">solid</property>
+                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                             </property>
@@ -4824,6 +4823,7 @@ return false;]]></method>
                                             </property>
                                             <property name="display">inline</property>
                                             <property name="pageBreakBefore">avoid</property>
+                                            <property name="borderTopStyle">solid</property>
                                             <list-property name="boundDataColumns">
                                                 <structure>
                                                     <property name="name">rootCode</property>
@@ -4914,6 +4914,7 @@ return false;]]></method>
                             <property name="aggregationOnColumn">MonthDate/monthDate</property>
                             <property name="content">
                                 <data id="2067">
+                                    <property name="color">#000000</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
 }]]></method>
@@ -4927,6 +4928,7 @@ return false;]]></method>
                             <property name="aggregationOnRow">Project_Employee_HourType/hourType</property>
                             <property name="content">
                                 <data id="2220">
+                                    <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
@@ -4966,6 +4968,7 @@ return false;]]></method>
                                         <extended-item extensionName="CrosstabCell" id="2186">
                                             <property name="content">
                                                 <text id="2229">
+                                                    <property name="color">#000000</property>
                                                     <property name="contentType">auto</property>
                                                     <text-property name="content"><![CDATA[Grand Total]]></text-property>
                                                 </text>
@@ -4996,6 +4999,7 @@ return false;]]></method>
                                         <extended-item extensionName="CrosstabCell" id="2218">
                                             <property name="content">
                                                 <data name="hourType1" id="2222">
+                                                    <property name="color">#000000</property>
                                                     <property name="resultSetColumn">hourType</property>
                                                 </data>
                                             </property>
