@@ -1,0 +1,8 @@
+keycloak_server_url=http://127.0.0.1:8081/auth
+keycloak_realm=master
+keycloak_client_id=arttime-demo
+arttime_db_host=database
+arttime_db_port=5432
+arttime_db_name=arttime
+arttime_db_login=postgres
+arttime_db_password=postgres

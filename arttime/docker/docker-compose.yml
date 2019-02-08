@@ -3,8 +3,6 @@ services:
   arttime:
     container_name: arttime
     image: arttime-demo/webapp:latest
-    environment:
-      keycloak_url: "${keycloak_url}"
     ports:
       - "${http_port_web}:8080"
       - "${http_port_web_management}:9990"
@@ -16,6 +14,15 @@ services:
     networks:
       - arttime-public
       - arttime-internal
+    environment:
+      - keycloak_server_url
+      - keycloak_client_id
+      - keycloak_realm
+      - arttime_db_host
+      - arttime_db_port
+      - arttime_db_name
+      - arttime_db_login
+      - arttime_db_password
     
   keycloak:
     container_name: keycloak
@@ -23,6 +30,7 @@ services:
     ports:
       - "${http_port_keycloak}:8081"
       - "${https_port_keycloak}:8444"
+      - "9991:9991"
     networks:
       - arttime-internal
       - arttime-public
@@ -32,7 +40,8 @@ services:
     container_name: arttimedb
     restart: always
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${arttime_db_login}
+      POSTGRES_PASSWORD: ${arttime_db_password}
     networks:
       - arttime-internal
 
