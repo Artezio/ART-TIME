@@ -158,7 +158,7 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>SynchronizeClassPath</name>
-                    <value>true</value>
+                    <value>false</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
@@ -1603,8 +1603,22 @@
                 </ex-property>
             </list-property>
         </oda-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="MasterProjects" id="797">
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="RootProjects" id="797">
             <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">exists</property>
+                    <expression name="expression">var value = row["projectCode"];&#13;
+var rootProjectCodes = vars["rootProjectCodes"];&#13;
+if (rootProjectCodes.contains(value)) {&#13;
+	true;&#13;
+} else {&#13;
+	rootProjectCodes.add(value);&#13;
+	false;&#13;
+}</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">projectCode</property>
@@ -1612,7 +1626,12 @@
                     <text-property name="heading">projectCode</text-property>
                 </structure>
             </list-property>
-            <list-property name="filter"/>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">is-false</property>
+                    <expression name="expr" type="javascript">row["exists"]</expression>
+                </structure>
+            </list-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">projectIds</property>
@@ -1629,6 +1648,11 @@
                         <property name="position">1</property>
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">exists</property>
+                        <property name="dataType">boolean</property>
                     </structure>
                 </list-property>
             </structure>
@@ -4174,7 +4198,7 @@ return false;]]></method>
                         <property name="pageBreakAfter">avoid</property>
                         <property name="pageBreakBefore">avoid</property>
                         <property name="pageBreakInside">avoid</property>
-                        <property name="dataSet">MasterProjects</property>
+                        <property name="dataSet">RootProjects</property>
                         <list-property name="boundDataColumns">
                             <structure>
                                 <property name="name">projectCode</property>
@@ -4995,6 +5019,23 @@ return false;]]></method>
                             <property name="levels">
                                 <extended-item extensionName="LevelView" name="NewLevel View7" id="2217">
                                     <property name="level">Project_Employee_HourType/hourType</property>
+                                    <property name="sort">
+                                        <sort-element>
+                                            <expression name="key" type="javascript">data["actualTime"]</expression>
+                                            <property name="direction">desc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                        <sort-element>
+                                            <expression name="key" type="javascript">data["priority"]</expression>
+                                            <property name="direction">desc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                        <sort-element>
+                                            <expression name="key" type="javascript">BirtStr.toLower(data["hourType"])</expression>
+                                            <property name="direction">asc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="2218">
                                             <property name="content">
@@ -5035,6 +5076,13 @@ return false;]]></method>
                             <property name="levels">
                                 <extended-item extensionName="LevelView" name="NewLevel View5" id="2072">
                                     <property name="level">MonthDate/monthDate</property>
+                                    <property name="sort">
+                                        <sort-element>
+                                            <expression name="key" type="javascript">data["monthDate"]</expression>
+                                            <property name="direction">asc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="2073">
                                             <property name="content">
@@ -5042,7 +5090,7 @@ return false;]]></method>
                                                     <property name="color">#000000</property>
                                                     <structure name="dateTimeFormat">
                                                         <property name="category">Custom</property>
-                                                        <property name="pattern">dd MMM</property>
+                                                        <property name="pattern">d MMM</property>
                                                     </structure>
                                                     <property name="resultSetColumn">monthDate</property>
                                                 </data>
@@ -5184,7 +5232,23 @@ return false;]]></method>
                     </simple-property-list>
                     <property name="aggregateFunction">SUM</property>
                 </structure>
+                <structure>
+                    <property name="name">actualTime</property>
+                    <expression name="expression" type="javascript">dimension["Project_Employee_HourType"]["hourType"]["actualTime"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">priority</property>
+                    <expression name="expression" type="javascript">dimension["Project_Employee_HourType"]["hourType"]["hourTypePriority"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
             </list-property>
         </extended-item>
     </body>
+    <property name="pageVariables">
+        <variable-element name="rootProjectCodes">
+            <expression name="value" type="javascript">new Packages.java.util.HashSet()</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
 </report>

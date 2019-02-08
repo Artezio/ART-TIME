@@ -4525,13 +4525,5 @@ vars["TotalHours"].get(key);</expression>
             <expression name="value" type="javascript">new Packages.java.util.HashMap()</expression>
             <property name="type">report</property>
         </variable-element>
-        <variable-element name="debug">
-            <expression name="value" type="javascript">new Packages.java.util.LinkedList()</expression>
-            <property name="type">report</property>
-        </variable-element>
-        <variable-element name="debug2">
-            <expression name="value" type="javascript">new Packages.java.util.LinkedList()</expression>
-            <property name="type">report</property>
-        </variable-element>
     </property>
 </report>

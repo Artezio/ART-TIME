@@ -132,7 +132,6 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
-                    <value>D:\Workspace\ART-TIME\ART-TIME\arttime\birt-datasource-sample\target\birt-datasource-sample-3.81.jar;</value>
                 </ex-property>
             </list-property>
         </oda-data-source>
@@ -3017,8 +3016,22 @@
                 </structure>
             </list-property>
         </joint-data-set>
-        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="Master Projects" id="208">
+        <oda-data-set extensionID="org.eclipse.birt.data.oda.pojo.dataSet" name="RootProjects" id="208">
             <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="computedColumns">
+                <structure>
+                    <property name="name">exists</property>
+                    <expression name="expression">var value = row["projectCode"];&#13;
+var rootProjectCodes = vars["rootProjectCodes"];&#13;
+if (rootProjectCodes.contains(value)) {&#13;
+	true;&#13;
+} else {&#13;
+	rootProjectCodes.add(value);&#13;
+	false;&#13;
+}</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+            </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">projectCode</property>
@@ -3026,7 +3039,12 @@
                     <text-property name="heading">projectCode</text-property>
                 </structure>
             </list-property>
-            <list-property name="filter"/>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">is-false</property>
+                    <expression name="expr" type="javascript">row["exists"]</expression>
+                </structure>
+            </list-property>
             <list-property name="parameters">
                 <structure>
                     <property name="name">projectIds</property>
@@ -3044,8 +3062,15 @@
                         <property name="name">projectCode</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">exists</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
                 </list-property>
             </structure>
+            <method name="onFetch"><![CDATA[
+]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -3240,10 +3265,10 @@
 	.join(", ");</value-of>]]></text-property>
         </text>
         <list id="528">
-            <property name="dataSet">Master Projects</property>
+            <property name="dataSet">RootProjects</property>
             <list-property name="boundDataColumns">
                 <structure>
-                    <property name="name">code</property>
+                    <property name="name">projectCode</property>
                     <text-property name="displayName">code</text-property>
                     <expression name="expression" type="javascript">dataSetRow["projectCode"]</expression>
                     <property name="dataType">string</property>
@@ -3252,7 +3277,7 @@
             </list-property>
             <list-property name="sort">
                 <structure>
-                    <expression name="key" type="javascript">row["code"]</expression>
+                    <expression name="key" type="javascript">row["projectCode"]</expression>
                     <property name="direction">asc</property>
                     <property name="strength">-1</property>
                 </structure>
@@ -3344,7 +3369,7 @@
                                             <property name="level">Project_Employee/projectCode</property>
                                             <property name="sort">
                                                 <sort-element>
-                                                    <expression name="key" type="javascript">BirtStr.toLower(data["projectCode"])</expression>
+                                                    <expression name="key" type="javascript">BirtStr.toLower(data["displayCode"])</expression>
                                                     <property name="direction">asc</property>
                                                     <property name="strength">-1</property>
                                                 </sort-element>
@@ -3491,13 +3516,6 @@
                     <property name="hideMeasureHeader">true</property>
                     <property name="filter">
                         <filter-condition-element>
-                            <expression name="expr" type="javascript">data["rootCode"]</expression>
-                            <property name="operator">eq</property>
-                            <simple-property-list name="value1">
-                                <value type="javascript">row._outer["code"]</value>
-                            </simple-property-list>
-                        </filter-condition-element>
-                        <filter-condition-element>
                             <expression name="expr" type="javascript">dimension["Project_Employee"]["employeeUserName"]["employeeFullName"]</expression>
                             <property name="operator">is-not-null</property>
                         </filter-condition-element>
@@ -3506,6 +3524,13 @@
                             <property name="operator">ne</property>
                             <simple-property-list name="value1">
                                 <value type="javascript">''</value>
+                            </simple-property-list>
+                        </filter-condition-element>
+                        <filter-condition-element>
+                            <expression name="expr" type="javascript">data["rootCode"]</expression>
+                            <property name="operator">eq</property>
+                            <simple-property-list name="value1">
+                                <value type="javascript">row._outer["projectCode"]</value>
                             </simple-property-list>
                         </filter-condition-element>
                     </property>
@@ -3579,4 +3604,10 @@
             </detail>
         </list>
     </body>
+    <property name="pageVariables">
+        <variable-element name="rootProjectCodes">
+            <expression name="value" type="javascript">new Packages.java.util.HashSet()</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
 </report>
