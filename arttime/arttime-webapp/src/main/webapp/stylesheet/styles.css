@@ -2740,6 +2740,14 @@ a.requestReportAction, a.requestReportAction:hover {
     width: 1340px;
 }
 
+.dictionaryTable .ui-datatable-scrollable-body {
+    overflow: visible;
+}
+
+.dictionaryTable .ui-datatable-scrollable-header {
+    overflow: visible;
+}
+
 .pfDataTable  .ui-datatable-scrollable-body .ui-datatable-scrollable-theadclone {
     display: none;
 }
