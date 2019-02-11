@@ -129,4 +129,14 @@ public class EmployeesBeanTest {
         assertFalse(actual);
     }
 
+    @Test
+    public void testFilterByCalendar_valueIsNull() throws NoSuchFieldException {
+        WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
+        setField(calendar, "id", 1L);
+
+        boolean actual = bean.filterByCalendar(null, null, null);
+
+        assertFalse(actual);
+    }
+
 }

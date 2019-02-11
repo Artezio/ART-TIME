@@ -77,10 +77,12 @@ public class EmployeesBean implements Serializable {
 	}
 
     public boolean filterByCalendar(Object value, Object filter, Locale locale) {
+        if (value == null) {
+            return false;
+        }
         if (filter == null) {
             return true;
         }
-
         WorkdaysCalendar currentCalendarElement = (WorkdaysCalendar) value;
         Collection<WorkdaysCalendar> filterCalendars = (Collection<WorkdaysCalendar>) filter;
 
