@@ -130,13 +130,23 @@ public class EmployeesBeanTest {
     }
 
     @Test
-    public void testFilterByCalendar_valueIsNull() throws NoSuchFieldException {
+    public void testFilterByCalendar_valueNull_filterNotNull() throws NoSuchFieldException {
+        WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
+        setField(calendar, "id", 1L);
+
+        boolean actual = bean.filterByCalendar(null, Collections.emptyList(), null);
+
+        assertFalse(actual);
+    }
+
+    @Test
+    public void testFilterByCalendar_valueNull_filterNull() throws NoSuchFieldException {
         WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
         setField(calendar, "id", 1L);
 
         boolean actual = bean.filterByCalendar(null, null, null);
 
-        assertFalse(actual);
+        assertTrue(actual);
     }
 
 }
