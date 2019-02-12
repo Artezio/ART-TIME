@@ -2,7 +2,7 @@ version: "3"
 services:
   arttime:
     container_name: arttime
-    image: arttime-demo/webapp:latest
+    image: artezio/arttime:latest
     ports:
       - "${http_port_web}:8080"
       - "${http_port_web_management}:9990"
@@ -26,7 +26,7 @@ services:
     
   keycloak:
     container_name: keycloak
-    image: arttime-demo/keycloak:latest
+    image: artezio/arttime-demo-keycloak:latest
     ports:
       - "${http_port_keycloak}:8081"
       - "${https_port_keycloak}:8444"
@@ -36,7 +36,7 @@ services:
       - arttime-public
 
   arttimedb:
-    image: arttime-demo/database:latest
+    image: artezio/arttime-demo-database:latest
     container_name: arttimedb
     restart: always
     environment:

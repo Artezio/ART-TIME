@@ -1,1 +1,0 @@
-add-user.bat --user admin --password admin --enable

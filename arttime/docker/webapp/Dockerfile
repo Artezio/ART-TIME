@@ -1,3 +1,13 @@
+# Input environment variables are:
+# keycloak_server_url - keycloak auth url with schema and port, e.g. http://example.com:2244/auth
+# keycloak_client_id - keycloak client id
+# keycloak_realm - keycloak realm
+# arttime_db_host - database host or IP
+# arttime_db_port - database port
+# arttime_db_name - database name
+# arttime_db_login - database login
+# arttime_db_password - database password
+
 FROM jboss/wildfly:14.0.1.Final
 
 ADD arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/
