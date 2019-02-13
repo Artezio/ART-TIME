@@ -23,7 +23,7 @@ services:
       - arttime_db_name
       - arttime_db_login
       - arttime_db_password
-    
+
   keycloak:
     container_name: keycloak
     image: artezio/arttime-demo-keycloak:latest
