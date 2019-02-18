@@ -5,17 +5,6 @@ ARG KEYCLOAK_ADAPTER_VERSION=4.8.3.Final
 ARG MAX_HEAP_SIZE_MB=1536
 ARG MAX_METASPACE_SIZE_MB=384
 
-ENV keycloak_server_url http://keycloak:8081/auth
-ENV keycloak_client_id arttime-demo
-ENV keycloak_realm master
-ENV keycloak_login admin
-ENV keycloak_password admin
-ENV arttime_db_host arttimedb
-ENV arttime_db_port 5432
-ENV arttime_db_name arttime
-ENV arttime_db_login postgres
-ENV arttime_db_password postgres
-
 USER root
 
 RUN mkdir -p /opt/configuration
@@ -23,6 +12,12 @@ RUN chown jboss /opt/configuration -R
 
 USER jboss
 
+# Install keycloak adapter for arttime-webapp.war
+
+RUN curl -SL "https://downloads.jboss.org/keycloak/${KEYCLOAK_ADAPTER_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_ADAPTER_VERSION}.tar.gz" \
+	| tar xvz -C /opt/jboss/wildfly/
+RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/adapter-install-offline.cli -Dserver.config=standalone-full.xml
+RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/adapter-elytron-install-offline.cli -Dserver.config=standalone-full.xml
 
 # Download war file and configuration script from Github
 
@@ -36,26 +31,29 @@ RUN export RELEASE_INFO=$(curl -L -s -H 'Accept: application/json' https://githu
 	rm -r /tmp/arttime-repo && rm /tmp/arttime.tar.gz
 
 
-# Install keycloak adapter for arttime-webapp.war
-
-RUN curl -SL "https://downloads.jboss.org/keycloak/${KEYCLOAK_ADAPTER_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_ADAPTER_VERSION}.tar.gz" \
-	| tar xvz -C /opt/jboss/wildfly/
-RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/adapter-install-offline.cli -Dserver.config=standalone-full.xml
-RUN /opt/jboss/wildfly/bin/jboss-cli.sh --file=/opt/jboss/wildfly/bin/adapter-elytron-install-offline.cli -Dserver.config=standalone-full.xml
-
-
 # Configure wildfly automatically
 
 RUN sed -i -e "s/<resolve-parameter-values>false/<resolve-parameter-values>true/" /opt/jboss/wildfly/bin/jboss-cli.xml
 RUN /opt/jboss/wildfly/bin/add-user.sh --user admin --password admin --silent --enable
 WORKDIR /opt/configuration/wildfly/
-
 RUN /opt/jboss/wildfly/bin/jboss-cli.sh --properties=app.subsystems.properties --file=configure-wildfly.cli
 
+ENV keycloak_server_url http://keycloak:8081/auth
+ENV keycloak_client_id arttime-demo
+ENV keycloak_realm master
+ENV keycloak_login admin
+ENV keycloak_password admin
+ENV arttime_db_host arttimedb
+ENV arttime_db_port 5432
+ENV arttime_db_name arttime
+ENV arttime_db_login postgres
+ENV arttime_db_password postgres
 
 # Override JBOSS java params to use specified memory limits and extended server-stabilization timeout
 
 ENV JAVA_OPTS "-server -Xms256m -Xmx${MAX_HEAP_SIZE_MB}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=${MAX_METASPACE_SIZE_MB}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
 
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+EXPOSE 8080
+EXPOSE 9990
 
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-c", "standalone-full.xml", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
