@@ -17,7 +17,7 @@ end-if
 echo Creating datasource
 if (outcome != success) of  /subsystem=datasources/data-source=arttime-datasource:read-resource
 data-source add --name=arttime-datasource --jndi-name="java:jboss/datasources/com.artezio.arttime" \
-  --allocation-retry=5 --allocation-retry-wait-millis=1000 \
+  --allocation-retry=100 --allocation-retry-wait-millis=20000 \
   --use-ccm=true --jta=true \
   --driver-class=${db.driver-class-name} \ 
   --driver-name=${db.driver-name} \
