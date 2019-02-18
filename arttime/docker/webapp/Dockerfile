@@ -2,8 +2,6 @@ FROM jboss/wildfly:14.0.1.Final
 
 ARG ARTTIME_VERSION=latest
 ARG KEYCLOAK_ADAPTER_VERSION=4.8.3.Final
-ARG MAX_HEAP_SIZE_MB=1536
-ARG MAX_METASPACE_SIZE_MB=384
 
 USER root
 
@@ -49,9 +47,12 @@ ENV arttime_db_name arttime
 ENV arttime_db_login postgres
 ENV arttime_db_password postgres
 
-# Override JBOSS java params to use specified memory limits and extended server-stabilization timeout
+# Override JBOSS java params to use specified memory limits and extended server-stabilization timeout. 
+# Memory limits are evaluated in run-time to allow per-container settings changes
 
-ENV JAVA_OPTS "-server -Xms256m -Xmx${MAX_HEAP_SIZE_MB}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=${MAX_METASPACE_SIZE_MB}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
+ENV JAVA_OPTS "-server -Xms256m -Xmx\${max_heap_size_mb}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=\${max_metaspace_size_mb}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
+ENV max_heap_size_mb 2048
+ENV max_metaspace_size_mb 384
 
 EXPOSE 8080
 EXPOSE 9990
