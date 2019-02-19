@@ -2,6 +2,8 @@ FROM jboss/wildfly:14.0.1.Final
 
 ARG ARTTIME_VERSION=latest
 ARG KEYCLOAK_ADAPTER_VERSION=4.8.3.Final
+ARG arttime_cli_admin_login=admin
+ARG arttime_cli_admin_password=admin
 
 USER root
 
@@ -28,11 +30,10 @@ RUN export RELEASE_INFO=$(curl -L -s -H 'Accept: application/json' https://githu
 	cp /tmp/arttime-repo/arttime/docker/webapp/configuration/* /opt/configuration/ -R --verbose && \
 	rm -r /tmp/arttime-repo && rm /tmp/arttime.tar.gz
 
-
 # Configure wildfly automatically
 
 RUN sed -i -e "s/<resolve-parameter-values>false/<resolve-parameter-values>true/" /opt/jboss/wildfly/bin/jboss-cli.xml
-RUN /opt/jboss/wildfly/bin/add-user.sh --user admin --password admin --silent --enable
+RUN /opt/jboss/wildfly/bin/add-user.sh --user ${arttime_cli_admin_login} --password ${arttime_cli_admin_password} --silent --enable
 WORKDIR /opt/configuration/wildfly/
 RUN /opt/jboss/wildfly/bin/jboss-cli.sh --properties=app.subsystems.properties --file=configure-wildfly.cli
 
