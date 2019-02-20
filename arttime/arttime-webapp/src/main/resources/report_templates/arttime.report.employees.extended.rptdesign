@@ -3735,7 +3735,7 @@
                                 <property name="measure">quantity</property>
                                 <property name="detail">
                                     <extended-item extensionName="AggregationCell" id="621">
-                                        <property name="aggregationOnRow">Employee_Project/projectCodeM</property>
+                                        <property name="aggregationOnRow">Employee_Project/projectCodeS</property>
                                         <property name="aggregationOnColumn">HourTypes/hourType</property>
                                         <property name="textAlign">right</property>
                                         <property name="verticalAlign">top</property>
@@ -3751,7 +3751,7 @@
                                                         <expression name="valueExpr" type="javascript">data["projectCodeS"] != ""</expression>
                                                     </structure>
                                                 </list-property>
-                                                <property name="resultSetColumn">quantity_Employee_Project/projectCode_HourTypes/Hours::hourType</property>
+                                                <property name="resultSetColumn">quantity_Employee_Project/projectCodeM_HourType/hourType</property>
                                             </data>
                                             <data id="622">
                                                 <property name="fontFamily">"Arial"</property>
@@ -3861,6 +3861,23 @@
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
+                                            <extended-item extensionName="LevelView" name="NewLevel View7" id="561">
+                                                <property name="level">Employee_Project/projectCodeS</property>
+                                                <property name="member">
+                                                    <extended-item extensionName="CrosstabCell" id="562">
+                                                        <property name="content">
+                                                            <data name="projectCode1" id="564">
+                                                                <property name="fontFamily">"Arial"</property>
+                                                                <property name="fontSize">10pt</property>
+                                                                <property name="textAlign">left</property>
+                                                                <property name="resultSetColumn">projectCodeS</property>
+                                                            </data>
+                                                        </property>
+                                                        <property name="verticalAlign">top</property>
+                                                        <property name="width">1.34375in</property>
+                                                    </extended-item>
+                                                </property>
+                                            </extended-item>
                                         </property>
                                     </extended-item>
                                 </property>
@@ -3957,6 +3974,20 @@
                                 <property name="borderBottomWidth">thin</property>
                                 <property name="borderBottomColor">#000000</property>
                             </extended-item>
+                            <extended-item extensionName="CrosstabCell" id="563">
+                                <property name="content">
+                                    <label id="565">
+                                        <property name="fontFamily">"Arial"</property>
+                                        <property name="fontSize">10pt</property>
+                                        <property name="textAlign">left</property>
+                                        <text-property name="text">Subproject</text-property>
+                                    </label>
+                                </property>
+                                <property name="verticalAlign">top</property>
+                                <property name="borderBottomStyle">solid</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
+                            </extended-item>
                         </property>
                         <property name="hideMeasureHeader">true</property>
                         <list-property name="boundDataColumns">
@@ -4010,10 +4041,34 @@
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
+                                <property name="name">projectCodeS</property>
+                                <expression name="expression" type="javascript">if (dimension["Employee_Project"]["projectCodeS"]["masterCode"] != null) {&#13;
+	dimension["Employee_Project"]["projectCodeS"];&#13;
+} else {&#13;
+	"";&#13;
+}</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
                                 <property name="name">quantity_Employee_Project/projectCodeM_HourType/hourType</property>
                                 <property name="dataType">decimal</property>
                                 <simple-property-list name="aggregateOn">
                                     <value>Employee_Project/projectCodeM</value>
+                                    <value>HourTypes/hourType</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">measure["quantity"]</expression>
+                                    </structure>
+                                </list-property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_Employee_Project/projectCodeS_HourType/hourType</property>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Employee_Project/projectCodeS</value>
                                     <value>HourTypes/hourType</value>
                                 </simple-property-list>
                                 <property name="aggregateFunction">SUM</property>
