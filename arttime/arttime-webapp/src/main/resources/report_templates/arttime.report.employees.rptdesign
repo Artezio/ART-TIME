@@ -3743,7 +3743,7 @@
                                         <property name="content">
                                             <data id="626">
                                                 <property name="fontFamily">"Arial"</property>
-                                                <property name="fontSize">11pt</property>
+                                                <property name="fontSize">10pt</property>
                                                 <property name="textAlign">right</property>
                                                 <list-property name="visibility">
                                                     <structure>
@@ -3755,7 +3755,7 @@
                                             </data>
                                             <data id="622">
                                                 <property name="fontFamily">"Arial"</property>
-                                                <property name="fontSize">11pt</property>
+                                                <property name="fontSize">10pt</property>
                                                 <property name="textAlign">right</property>
                                                 <list-property name="visibility">
                                                     <structure>
@@ -3817,7 +3817,7 @@
                                                         <property name="content">
                                                             <data name="employeeUserName1" id="549">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">11pt</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeUserName</property>
                                                             </data>
@@ -3834,7 +3834,7 @@
                                                         <property name="content">
                                                             <data name="employeeFullName1" id="554">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">11pt</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeFullName</property>
                                                             </data>
@@ -3851,7 +3851,7 @@
                                                         <property name="content">
                                                             <data name="masterCode" id="559">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">11pt</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">projectCodeM</property>
                                                             </data>
@@ -3868,7 +3868,7 @@
                                                         <property name="content">
                                                             <data name="projectCode1" id="564">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">11pt</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <property name="whiteSpace">pre</property>
                                                                 <property name="resultSetColumn">projectCodeS</property>
@@ -3914,7 +3914,7 @@
                                                         <property name="content">
                                                             <data name="Hours::hourType1" id="570">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="fontSize">11pt</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="textAlign">right</property>
                                                                 <property name="whiteSpace">pre</property>
                                                                 <property name="resultSetColumn">hourType</property>
@@ -3922,8 +3922,8 @@
                                                         </property>
                                                         <property name="verticalAlign">top</property>
                                                         <property name="borderBottomStyle">solid</property>
-                                                        <property name="borderBottomWidth">medium</property>
-                                                        <property name="borderBottomColor">#808080</property>
+                                                        <property name="borderBottomWidth">thin</property>
+                                                        <property name="borderBottomColor">#000000</property>
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
@@ -3937,57 +3937,57 @@
                                 <property name="content">
                                     <label id="550">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">11pt</property>
+                                        <property name="fontSize">10pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Username</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">medium</property>
-                                <property name="borderBottomColor">#808080</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
                             <extended-item extensionName="CrosstabCell" id="553">
                                 <property name="content">
                                     <label id="555">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">11pt</property>
+                                        <property name="fontSize">10pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Employee</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">medium</property>
-                                <property name="borderBottomColor">#808080</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
                             <extended-item extensionName="CrosstabCell" id="558">
                                 <property name="content">
                                     <label id="560">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">11pt</property>
+                                        <property name="fontSize">10pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Master project</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">medium</property>
-                                <property name="borderBottomColor">#808080</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
                             <extended-item extensionName="CrosstabCell" id="563">
                                 <property name="content">
                                     <label id="565">
                                         <property name="fontFamily">"Arial"</property>
-                                        <property name="fontSize">11pt</property>
+                                        <property name="fontSize">10pt</property>
                                         <property name="textAlign">left</property>
                                         <text-property name="text">Subproject</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
-                                <property name="borderBottomWidth">medium</property>
-                                <property name="borderBottomColor">#808080</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
                         </property>
                         <property name="hideMeasureHeader">true</property>

@@ -3297,7 +3297,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                     <property name="content">
                                         <data id="403">
                                             <property name="fontFamily">"Arial"</property>
-                                            <property name="fontSize">11pt</property>
+                                            <property name="fontSize">10pt</property>
                                             <property name="textAlign">right</property>
                                             <property name="resultSetColumn">quantity_Project_Employee/employeeUserName_HourType/hourType</property>
                                         </data>
@@ -3311,7 +3311,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                     <property name="content">
                                         <data id="519">
                                             <property name="fontFamily">"Arial"</property>
-                                            <property name="fontSize">11pt</property>
+                                            <property name="fontSize">10pt</property>
                                             <property name="color">black</property>
                                             <property name="textAlign">right</property>
                                             <property name="resultSetColumn">quantity_Project_Employee/projectCode_HourType/hourType</property>
@@ -3321,12 +3321,12 @@ if (rootProjectCodes.contains(value)) {&#13;
                                 <extended-item extensionName="AggregationCell" id="522">
                                     <property name="aggregationOnColumn">HourType/hourType</property>
                                     <property name="borderTopStyle">solid</property>
-                                    <property name="borderTopWidth">medium</property>
+                                    <property name="borderTopWidth">thin</property>
                                     <property name="borderTopColor">#000000</property>
                                     <property name="content">
                                         <data id="523">
                                             <property name="fontFamily">"Arial"</property>
-                                            <property name="fontSize">11pt</property>
+                                            <property name="fontSize">10pt</property>
                                             <property name="color">black</property>
                                             <property name="textAlign">right</property>
                                             <property name="resultSetColumn">quantity_HourType/hourType</property>
@@ -3352,13 +3352,14 @@ if (rootProjectCodes.contains(value)) {&#13;
                                     <property name="content">
                                         <label id="524">
                                             <property name="fontFamily">"Arial"</property>
-                                            <property name="fontSize">11pt</property>
+                                            <property name="fontSize">10pt</property>
                                             <property name="color">#000000</property>
                                             <text-property name="text">Total</text-property>
                                         </label>
                                     </property>
                                     <property name="borderTopStyle">solid</property>
-                                    <property name="borderTopWidth">medium</property>
+                                    <property name="borderTopWidth">thin</property>
+                                    <property name="borderTopColor">#000000</property>
                                 </extended-item>
                             </property>
                             <property name="views">
@@ -3379,7 +3380,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                     <property name="content">
                                                         <data name="projectCode" id="389">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
+                                                            <property name="fontSize">10pt</property>
                                                             <property name="textAlign">left</property>
                                                             <property name="resultSetColumn">displayCode</property>
                                                         </data>
@@ -3393,7 +3394,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                     <property name="content">
                                                         <data id="520">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
+                                                            <property name="fontSize">10pt</property>
                                                             <property name="color">#000000</property>
                                                             <property name="textAlign">left</property>
                                                             <property name="resultSetColumn">projectCode_TOTAL</property>
@@ -3416,7 +3417,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                     <property name="content">
                                                         <data name="employeeUserName" id="394">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
+                                                            <property name="fontSize">10pt</property>
                                                             <property name="resultSetColumn">employeeFullName</property>
                                                         </data>
                                                     </property>
@@ -3460,7 +3461,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                     <property name="content">
                                                         <data name="hourType" id="400">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
+                                                            <property name="fontSize">10pt</property>
                                                             <structure name="dateTimeFormat">
                                                                 <property name="category">Custom</property>
                                                                 <property name="pattern">d MMM</property>
@@ -3472,8 +3473,8 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                         </data>
                                                     </property>
                                                     <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
-                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#000000</property>
                                                     <property name="paddingLeft">0.1in</property>
                                                     <property name="paddingRight">0.1in</property>
                                                 </extended-item>
@@ -3490,27 +3491,27 @@ if (rootProjectCodes.contains(value)) {&#13;
                             <property name="content">
                                 <label id="390">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
+                                    <property name="fontSize">10pt</property>
                                     <property name="textAlign">left</property>
                                     <text-property name="text">Project</text-property>
                                 </label>
                             </property>
                             <property name="borderBottomStyle">solid</property>
-                            <property name="borderBottomWidth">medium</property>
-                            <property name="borderBottomColor">#808080</property>
+                            <property name="borderBottomWidth">thin</property>
+                            <property name="borderBottomColor">#000000</property>
                         </extended-item>
                         <extended-item extensionName="CrosstabCell" id="393">
                             <property name="content">
                                 <label id="395">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
+                                    <property name="fontSize">10pt</property>
                                     <property name="textAlign">left</property>
                                     <text-property name="text">Employee</text-property>
                                 </label>
                             </property>
                             <property name="borderBottomStyle">solid</property>
-                            <property name="borderBottomWidth">medium</property>
-                            <property name="borderBottomColor">#808080</property>
+                            <property name="borderBottomWidth">thin</property>
+                            <property name="borderBottomColor">#000000</property>
                         </extended-item>
                     </property>
                     <property name="hideMeasureHeader">true</property>
