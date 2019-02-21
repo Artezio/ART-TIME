@@ -100,8 +100,9 @@
                    rowKey="#{row.getKey()}"
                    emptyMessage="#{messages['warning.datatable.empty']}">
 
-            <p:ajax listener="#{timesheetBean.spreadSheet.cellEditEvent()}" async="false" delay="550"
-                    onstart="PF('effortsSheet').cfg.delta={};"
+            <p:ajax listener="#{timesheetBean.spreadSheet.cellEditEvent()}"
+                    async="false" delay="550"
+                    onstart="PF('effortsSheet').cfg.delta={}; PF('saveTimesheetButton').disable();"
                     oncomplete="PF('saveTimesheetButton').enable();"/>
 
             <c:set var="firstColValue" value="#{row.getFirstColValue('BY_EMPLOYEES')}"/>
@@ -158,9 +159,10 @@
 
         <script>
             $(document).ready(function () {
-                PF('effortsSheet').ht.addHook('afterChange',
-                    function () {
-                        PF('saveTimesheetButton').disable();
+                PF('effortsSheet').ht.addHook('afterChange', function () {
+                        var selectedCellsRange = this.getSelected();
+                        this.deselectCell();
+                        this.selectCell.apply(null, selectedCellsRange);
                     });
             });
         </script>

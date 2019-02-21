@@ -171,10 +171,10 @@
                    showRowHeaders="false" binding="#{manageEffortsBean.spreadSheet.sheet}"
                    emptyMessage="#{messages['warning.datatable.empty']}" height='2000'>
 
-            <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}" async="false"
-                    onstart="PF('effortsSheet').cfg.delta={};"
-                    oncomplete="PF('saveEffortsButton').enable();"
-                    delay="550"/>
+            <p:ajax listener="#{manageEffortsBean.spreadSheet.cellEditEvent()}"
+                    async="false" delay="550"
+                    onstart="PF('effortsSheet').cfg.delta={}; PF('saveEffortsButton').disable();"
+                    oncomplete="PF('saveEffortsButton').enable();"/>
 
             <c:set var="firstColValue" value="#{row.getFirstColValue(grouping)}"/>
             <c:set var="rowIndex" value="#{manageEffortsBean.spreadSheet.sheet.rowIndex}"/>
@@ -225,14 +225,14 @@
                         value="#{row.getHourType().type}"
                         readonly="true" colWidth="120"
                         styleClass="#{headRow ? 'groupHeader' : ''} tdLongTextContainer hiddenRightBorder
-                                        #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}"/>
+                                    #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}"/>
 
             <lcg:column headerText="#{messages['manageEfforts.table.total']}"
                         value="#{row.rowTotal}"
                         readonly="true" colWidth="80"
                         headerStyleClass="totalColumn"
                         styleClass="#{headRow ? 'groupHeader' : ''} totalColumn
-                                        #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}">
+                                    #{totalRow ? (highLevelRow ? 'totalsRow' : 'subtotalsRow') : ''}">
                 <f:convertNumber pattern="#0.##" locale="en"/>
             </lcg:column>
 
@@ -257,10 +257,11 @@
 
         <script>
             $(document).ready(function () {
-                PF('effortsSheet').ht.addHook('afterChange',
-                    function () {
-                        PF('saveEffortsButton').disable();
-                    });
+                PF('effortsSheet').ht.addHook('afterChange', function () {
+                    var selectedCellsRange = this.getSelected();
+                    this.deselectCell();
+                    this.selectCell.apply(null, selectedCellsRange);
+                });
             });
         </script>
 
