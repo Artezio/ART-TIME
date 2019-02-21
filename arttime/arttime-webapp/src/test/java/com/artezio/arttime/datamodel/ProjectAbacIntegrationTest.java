@@ -64,7 +64,7 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        runInNewTx.run(()-> {
+        runInNewTx.run(() -> {
             unsecuredEntityManager.joinTransaction();
             exec = new Employee("exec_username", "exec_firstname", "exec_lastname", "exec_email", "exec_dept");
             managerOfAllProjects = new Employee("superman", "super", "manager", "xm", "deptxx");
@@ -101,7 +101,7 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
             unsecuredEntityManager.persist(projectWithEmployeeInTeam);
         });
     }
-    
+
     @After
     public void tearDown() throws Exception {
         runInNewTx.run(() -> {
@@ -154,7 +154,7 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
             projectWithEmployeeInTeam = unsecuredEntityManager.merge(projectWithEmployeeInTeam);
         });
         List<Project> actualList = runInNewTx.call(() ->
-                        abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList());
+                abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList());
         assertTrue(actualList.isEmpty());
     }
 
@@ -162,7 +162,7 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
     public void testGet_callerIsExec() throws Exception {
         Employee caller = createAnonymousEmployee(department, new String[]{department});
         List<Project> actualList = runAsExec.call(() -> runInNewTx.call(() ->
-                        abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
+                abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
         assertContainsAllProjects(actualList);
     }
 
@@ -198,7 +198,7 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
             unsecuredEntityManager.persist(unmanagedProject);
         });
         List<Project> actualList = runAsProjectManager.call(() -> runInNewTx.call(() ->
-                        abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
+                abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
         assertTrue(actualList.contains(masterManagedProject));
         assertTrue(actualList.contains(masterProjectSubproject));
         assertFalse(actualList.contains(masterUnManagedProject));
@@ -217,15 +217,20 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
         Project projectWithUnmanagedEmployee = createProject("WithUnmanaged", hourType);
         projectWithUnmanagedEmployee.addTeamMember(unmanagedEmployee);
         projectWithUnmanagedEmployee.addManager(managerOfAllProjects);
+        Project managedProject = createProject("ManagedProject", hourType);
+        managedProject.addTeamMember(unmanagedEmployee);
+        managedProject.addManager(caller);
         runInNewTx.run(() -> {
             unsecuredEntityManager.joinTransaction();
             unsecuredEntityManager.persist(projectWithManagedEmployee);
             unsecuredEntityManager.persist(projectWithUnmanagedEmployee);
+            unsecuredEntityManager.persist(managedProject);
         });
         List<Project> actualList = runAsOfficeManager.call(() -> runInNewTx.call(() ->
-                        abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
+                abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList()));
         assertFalse(actualList.isEmpty());
         assertTrue(actualList.contains(projectWithManagedEmployee));
+        assertTrue(actualList.contains(managedProject));
         assertFalse(actualList.contains(projectWithUnmanagedEmployee));
     }
 
@@ -314,6 +319,39 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
         assertFalse(actualList.contains(unmanagedProject));
     }
 
+    @Test
+    public void testGet_manageProjectsContext_callerIsOfficeManager() throws Exception {
+        Employee caller = createAnonymousEmployee(department, new String[]{department});
+        Project masterManagedProject = createProject("MasterManaged", hourType);
+        masterManagedProject.addManager(caller);
+        Project masterProjectSubproject = createProject("MasterManagedSub", hourType);
+        masterProjectSubproject.setMaster(masterManagedProject);
+        masterProjectSubproject.addManager(managerOfAllProjects);
+        Project masterUnManagedProject = createProject("MasterUnmanaged", hourType);
+        masterUnManagedProject.addManager(managerOfAllProjects);
+        Project managedSubProject = createProject("ManagedSub", hourType);
+        managedSubProject.setMaster(masterUnManagedProject);
+        managedSubProject.addManager(caller);
+        Project unmanagedProject = createProject("Unmanaged", hourType);
+        unmanagedProject.addManager(managerOfAllProjects);
+        runInNewTx.run(() -> {
+            unsecuredEntityManager.joinTransaction();
+            unsecuredEntityManager.persist(masterManagedProject);
+            unsecuredEntityManager.persist(masterProjectSubproject);
+            unsecuredEntityManager.persist(masterUnManagedProject);
+            unsecuredEntityManager.persist(managedSubProject);
+            unsecuredEntityManager.persist(unmanagedProject);
+        });
+        List<Project> actualList = runAsOfficeManager.call(() -> runInNewTx.call(() ->
+                callUsingAbacContext.callInManageProjectsContext(() ->
+                        abacEntityManager.createQuery("SELECT p FROM Project p", Project.class).getResultList())));
+        assertTrue(actualList.contains(masterManagedProject));
+        assertTrue(actualList.contains(masterProjectSubproject));
+        assertFalse(actualList.contains(masterUnManagedProject));
+        assertTrue(actualList.contains(managedSubProject));
+        assertFalse(actualList.contains(unmanagedProject));
+    }
+
     protected void assertContainsAllProjects(Collection<Project> projects) {
         assertFalse(projects.isEmpty());
         assertTrue(projects.contains(projectManagedByPm));
@@ -330,5 +368,5 @@ public class ProjectAbacIntegrationTest extends AbacIntegrationTest {
         project.setStatus(Project.Status.ACTIVE);
         return project;
     }
-    
+
 }

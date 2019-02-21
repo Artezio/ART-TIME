@@ -31,13 +31,13 @@ public class ProjectService implements Serializable {
     @Inject
     private ProjectRepository projectRepository;
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     public Project create(Project project) {
         return projectRepository.create(project);
     }
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     public void update(List<Project> projects) {
         projectRepository.update(projects);
@@ -75,7 +75,7 @@ public class ProjectService implements Serializable {
                 .list();
     }
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     @WebCached(scope = REQUEST_SCOPED)
     public List<Project> getManagedProjects() {
@@ -99,7 +99,7 @@ public class ProjectService implements Serializable {
                 .list();
     }
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     @WebCached(scope = VIEW_SCOPED)
     public Project loadProject(Long id) {
@@ -121,7 +121,7 @@ public class ProjectService implements Serializable {
                     .list();
     }
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     public List<Project> getManagedProjectHierarchy(Project master) {
         return getProjectHierarchy(master);
