@@ -95,7 +95,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test
-    public void testSetInterval_userIsAdmin_allowInvocation() throws Exception {
+    public void testSetInterval_userIsAdmin() throws Exception {
         runAsAdmin.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -103,7 +103,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testSetInterval_userIsExec_disallowInvocation() throws Exception {
+    public void testSetInterval_userIsExec() throws Exception {
         runAsExec.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -111,7 +111,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testSetInterval_userIsPM_disallowInvocation() throws Exception {
+    public void testSetInterval_userIsPM() throws Exception {
         runAsProjectManager.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -119,7 +119,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testSetInterval_userIsIntegrationClient_disallowInvocation() throws Exception {
+    public void testSetInterval_userIsIntegrationClient() throws Exception {
         runAsIntegrationClient.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -127,7 +127,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testSetInterval_userIsAccountant_disallowInvocation() throws Exception {
+    public void testSetInterval_userIsAccountant() throws Exception {
         runAsAccountant.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -135,7 +135,7 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testSetInterval_userIsOfficeManager_disallowInvocation() throws Exception {
+    public void testSetInterval_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> {
             scheduler.setInterval(Duration.ZERO);
             return true;
@@ -148,32 +148,32 @@ public class SchedulerRbacIntegrationTest {
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testGetTimeRemaining_userIsAdmin_disallowInvocation() throws Exception {
+    public void testGetTimeRemaining_userIsAdmin() throws Exception {
         runAsAdmin.call(() -> scheduler.getTimeRemaining());
     }
 
     @Test
-    public void testGetTimeRemaining_userIsExec_allowInvocation() throws Exception {
+    public void testGetTimeRemaining_userIsExec() throws Exception {
         runAsExec.call(() -> scheduler.getTimeRemaining());
     }
 
     @Test
-    public void testGetTimeRemaining_userIsPM_allowInvocation() throws Exception {
+    public void testGetTimeRemaining_userIsPM() throws Exception {
         runAsProjectManager.call(() -> scheduler.getTimeRemaining());
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testGetTimeRemaining_userIsIntegrationClient_disallowInvocation() throws Exception {
+    public void testGetTimeRemaining_userIsIntegrationClient() throws Exception {
         runAsIntegrationClient.call(() -> scheduler.getTimeRemaining());
     }
 
     @Test(expected = EJBAccessException.class)
-    public void testGetTimeRemaining_userIsAccountant_disallowInvocation() throws Exception {
+    public void testGetTimeRemaining_userIsAccountant() throws Exception {
         runAsAccountant.call(() -> scheduler.getTimeRemaining());
     }
 
-    @Test(expected = EJBAccessException.class)
-    public void testGetTimeRemaining_userIsOfficeManager_disallowInvocation() throws Exception {
+    @Test
+    public void testGetTimeRemaining_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> scheduler.getTimeRemaining());
     }
 

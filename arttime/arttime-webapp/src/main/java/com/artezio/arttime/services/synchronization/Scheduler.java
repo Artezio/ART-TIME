@@ -51,7 +51,7 @@ public class Scheduler {
         createIntervalTimer(interval.toMillis());
     }
 
-    @RolesAllowed({EXEC_ROLE, PM_ROLE})
+    @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     public Duration getTimeRemaining() {
         return findActiveTimers().stream().findFirst()
                 .map(timer -> Duration.ofMillis(timer.getTimeRemaining()))

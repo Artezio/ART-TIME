@@ -137,6 +137,7 @@
 		<auth-constraint>
 			<role-name>pm</role-name>
 			<role-name>exec</role-name>
+			<role-name>officeManager</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<security-constraint>

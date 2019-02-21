@@ -47,7 +47,9 @@
                                                 or fn:startsWith(view.viewId, '/pages/calendar')
                                                 or fn:startsWith(view.viewId, '/pages/access')
                                                 or fn:startsWith(view.viewId, '/pages/hourType')) ? 'activeMenuItem' : ''}">
-                    <rich:menuItem rendered="#{request.isUserInRole('exec') or request.isUserInRole('pm')}"
+                    <rich:menuItem rendered="#{request.isUserInRole('exec')
+                                              or request.isUserInRole('pm')
+                                              or request.isUserInRole('officeManager')}"
                                    styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.projects']}"
                                    action="projects"/>
                     <rich:menuItem styleClass="main-menu-toolbar-item" label="#{messages['mainMenu.employees']}"

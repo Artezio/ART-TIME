@@ -43,11 +43,12 @@ import static com.artezio.arttime.security.AbacContexts.*;
                 @ParamDef(name = "callerUsername", type = "string"),
                 @ParamDef(name = "isSystem", type = "boolean"),
                 @ParamDef(name = "isExec", type = "boolean"),
-                @ParamDef(name = "isProjectManager", type = "boolean")})
+                @ParamDef(name = "isProjectManager", type = "boolean"),
+                @ParamDef(name = "isOfficeManager", type = "boolean")})
 @Filter(name = "Project.visibleInTimesheet", condition = "(status = 'ACTIVE' AND EXISTS(SELECT 1 FROM Project_Employee pe WHERE pe.project_id=id AND pe.team_userName=:callerUsername))")
 @Filter(name = "Project.defaultFilter",
         condition = "(:isExec OR :isIntegrationClient OR :isSystem " +
-                "OR (:isProjectManager AND EXISTS(" +
+                "OR ((:isProjectManager OR :isOfficeManager) AND EXISTS(" +
                 "  SELECT 1 FROM Project_Manager pm INNER JOIN Project prj ON prj.id=pm.project_id LEFT JOIN Project subproject ON subproject.master_id=prj.id " +
                 "  WHERE (prj.id=id OR subproject.id=id) AND pm.manager_username = :callerUsername))" +
                 "OR ((:isOfficeManager OR :isAccountant) AND EXISTS(" +
@@ -55,7 +56,7 @@ import static com.artezio.arttime.security.AbacContexts.*;
                 "  INNER JOIN employee_accessibledepartments ead ON emp.department=ead.accessibledepartments WHERE prjemp.project_id = id AND ead.employee_username = :callerUsername)))")
 @Filter(name = "Project.canBeManaged",
         condition = "(:isExec OR :isSystem " +
-                "OR (:isProjectManager AND EXISTS(" +
+                "OR ((:isProjectManager OR :isOfficeManager) AND EXISTS(" +
                 "  SELECT 1 FROM Project_Manager pm INNER JOIN Project prj ON prj.id=pm.project_id LEFT JOIN Project subproject ON subproject.master_id=prj.id " +
                 "  WHERE (prj.id=id OR subproject.id=id) AND pm.manager_username = :callerUsername)))")
 @AbacRule(
@@ -69,7 +70,8 @@ import static com.artezio.arttime.security.AbacContexts.*;
                 @ParamValue(paramName = "callerUsername", elExpression = "#{sessionContext.getCallerPrincipal().getName()}"),
                 @ParamValue(paramName = "isExec", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.EXEC_ROLE + "')}"),
                 @ParamValue(paramName = "isSystem", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.SYSTEM_ROLE + "')}"),
-                @ParamValue(paramName = "isProjectManager", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.PM_ROLE + "')}")
+                @ParamValue(paramName = "isProjectManager", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.PM_ROLE + "')}"),
+                @ParamValue(paramName = "isOfficeManager", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.OFFICE_MANAGER + "')}")
         })
 @AbacRule(
         filtersUsed = {"Project.defaultFilter"},

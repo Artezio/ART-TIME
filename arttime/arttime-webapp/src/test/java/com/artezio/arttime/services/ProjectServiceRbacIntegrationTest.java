@@ -166,7 +166,7 @@ public class ProjectServiceRbacIntegrationTest {
         runAsAccountant.call(() -> projectService.create(projectForCreationByEmployee));
     }
 
-    @Test(expected = EJBAccessException.class)
+    @Test
     public void testCreate_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> projectService.create(projectForCreationByEmployee));
     }
@@ -221,7 +221,7 @@ public class ProjectServiceRbacIntegrationTest {
         });
     }
 
-    @Test(expected = EJBAccessException.class)
+    @Test
     public void testUpdateCollection_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> {
             projectService.update(asList(project));
@@ -400,7 +400,7 @@ public class ProjectServiceRbacIntegrationTest {
         runAsAccountant.call(projectService::getManagedProjects);
     }
 
-    @Test(expected = EJBAccessException.class)
+    @Test
     public void testGetManagedProjects_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(projectService::getManagedProjects);
     }
@@ -541,7 +541,7 @@ public class ProjectServiceRbacIntegrationTest {
         runAsAccountant.call(() -> projectService.loadProject(project.getId()));
     }
 
-    @Test(expected = EJBAccessException.class)
+    @Test
     public void testLoadProject_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> projectService.loadProject(project.getId()));
     }
@@ -661,7 +661,7 @@ public class ProjectServiceRbacIntegrationTest {
         runAsAccountant.call(() -> projectService.getManagedProjectHierarchy(project));
     }
 
-    @Test(expected = EJBAccessException.class)
+    @Test
     public void testGetManagedProjectHierarchy_userIsOfficeManager() throws Exception {
         runAsOfficeManager.call(() -> projectService.getManagedProjectHierarchy(project));
     }
