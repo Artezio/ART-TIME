@@ -108,6 +108,7 @@
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
+                    <value>D:\Workspace\ART-TIME\ART-TIME\arttime\birt-datasource-sample\target\birt-datasource-sample-3.82.jar;</value>
                 </ex-property>
             </list-property>
         </oda-data-source>
@@ -4187,7 +4188,6 @@ value;</expression>
                             <property name="content">
                                 <data id="447">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
                                     <property name="textAlign">right</property>
                                     <list-property name="visibility">
                                         <structure>
@@ -4199,7 +4199,6 @@ value;</expression>
                                 </data>
                                 <data id="460">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <list-property name="visibility">
@@ -4219,12 +4218,11 @@ value;</expression>
                         <extended-item extensionName="AggregationCell" id="453">
                             <property name="aggregationOnColumn">Project_HourType/hourType</property>
                             <property name="borderTopStyle">solid</property>
-                            <property name="borderTopWidth">medium</property>
+                            <property name="borderTopWidth">thin</property>
                             <property name="borderTopColor">#000000</property>
                             <property name="content">
                                 <data id="454">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null) {
@@ -4253,13 +4251,12 @@ value;</expression>
                             <property name="content">
                                 <label id="455">
                                     <property name="fontFamily">"Arial"</property>
-                                    <property name="fontSize">11pt</property>
                                     <property name="color">#000000</property>
                                     <text-property name="text">Total</text-property>
                                 </label>
                             </property>
                             <property name="borderTopStyle">solid</property>
-                            <property name="borderTopWidth">medium</property>
+                            <property name="borderTopWidth">thin</property>
                             <property name="borderTopColor">#000000</property>
                         </extended-item>
                     </property>
@@ -4281,7 +4278,7 @@ value;</expression>
                                     </property>
                                     <property name="sort">
                                         <sort-element>
-                                            <expression name="key" type="javascript">BirtStr.toLower(data["employeeUserName"])</expression>
+                                            <expression name="key" type="javascript">dimension["Employee"]["employeeUserName"]["employeeFullName"]</expression>
                                             <property name="direction">asc</property>
                                             <property name="strength">-1</property>
                                         </sort-element>
@@ -4291,7 +4288,6 @@ value;</expression>
                                             <property name="content">
                                                 <data id="433">
                                                     <property name="fontFamily">"Arial"</property>
-                                                    <property name="fontSize">11pt</property>
                                                     <property name="textAlign">left</property>
                                                     <property name="resultSetColumn">employeeUserName</property>
                                                 </data>
@@ -4307,7 +4303,6 @@ value;</expression>
                                             <property name="content">
                                                 <data name="employeeFullName" id="466">
                                                     <property name="fontFamily">"Arial"</property>
-                                                    <property name="fontSize">11pt</property>
                                                     <property name="resultSetColumn">employeeFullName</property>
                                                 </data>
                                             </property>
@@ -4330,19 +4325,11 @@ value;</expression>
                             <property name="levels">
                                 <extended-item extensionName="LevelView" name="NewLevel View4" id="437">
                                     <property name="level">Project_HourType/projectCode</property>
-                                    <property name="sort">
-                                        <sort-element>
-                                            <expression name="key" type="javascript">BirtStr.toLower(data["projectCode"])</expression>
-                                            <property name="direction">asc</property>
-                                            <property name="strength">-1</property>
-                                        </sort-element>
-                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="438">
                                             <property name="content">
                                                 <data id="439">
                                                     <property name="fontFamily">"Arial"</property>
-                                                    <property name="fontSize">11pt</property>
                                                     <property name="textAlign">center</property>
                                                     <property name="whiteSpace">pre</property>
                                                     <property name="overflow">hidden</property>
@@ -4356,29 +4343,11 @@ value;</expression>
                                 </extended-item>
                                 <extended-item extensionName="LevelView" name="NewLevel View5" id="440">
                                     <property name="level">Project_HourType/hourType</property>
-                                    <property name="sort">
-                                        <sort-element>
-                                            <expression name="key" type="javascript">data["actualTime"]</expression>
-                                            <property name="direction">desc</property>
-                                            <property name="strength">-1</property>
-                                        </sort-element>
-                                        <sort-element>
-                                            <expression name="key" type="javascript">data["priority"]</expression>
-                                            <property name="direction">desc</property>
-                                            <property name="strength">-1</property>
-                                        </sort-element>
-                                        <sort-element>
-                                            <expression name="key" type="javascript">BirtStr.toLower(data["hourType"])</expression>
-                                            <property name="direction">asc</property>
-                                            <property name="strength">-1</property>
-                                        </sort-element>
-                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="441">
                                             <property name="content">
                                                 <data id="443">
                                                     <property name="fontFamily">"Arial"</property>
-                                                    <property name="fontSize">11pt</property>
                                                     <property name="textAlign">right</property>
                                                     <property name="whiteSpace">pre</property>
                                                     <property name="resultSetColumn">hourType</property>
@@ -4386,8 +4355,12 @@ value;</expression>
                                             </property>
                                             <property name="verticalAlign">top</property>
                                             <property name="borderBottomStyle">solid</property>
-                                            <property name="borderBottomWidth">medium</property>
-                                            <property name="borderBottomColor">#808080</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderBottomColor">#000000</property>
+                                            <method name="onRender"><![CDATA[//vars["code"] = code;
+//if (code === null || code !== this.getRowData().getColumnValue("displayCode")) {
+	//code = this.getRowData().getColumnValue("displayCode");
+//}]]></method>
                                         </extended-item>
                                     </property>
                                 </extended-item>
@@ -4402,7 +4375,6 @@ value;</expression>
                     <property name="content">
                         <label id="444">
                             <property name="fontFamily">"Arial"</property>
-                            <property name="fontSize">11pt</property>
                             <property name="textAlign">center</property>
                             <text-property name="text">Projects</text-property>
                         </label>
@@ -4417,31 +4389,51 @@ value;</expression>
                     <property name="content">
                         <label id="434">
                             <property name="fontFamily">"Arial"</property>
-                            <property name="fontSize">11pt</property>
                             <property name="textAlign">left</property>
                             <text-property name="text">Usernames</text-property>
                         </label>
                     </property>
                     <property name="verticalAlign">top</property>
                     <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderBottomColor">#808080</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderBottomColor">#000000</property>
                 </extended-item>
                 <extended-item extensionName="CrosstabCell" id="464">
                     <property name="content">
                         <label id="467">
                             <property name="fontFamily">"Arial"</property>
-                            <property name="fontSize">11pt</property>
                             <text-property name="text">Employees</text-property>
                         </label>
                     </property>
                     <property name="verticalAlign">top</property>
                     <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderBottomColor">#808080</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderBottomColor">#000000</property>
                 </extended-item>
             </property>
             <property name="hideMeasureHeader">true</property>
+            <method name="onCreate"><![CDATA[
+/**
+ * Called when crosstab cell is being created.
+ *
+ * @param cellInst
+ *            ICrosstabCellInstance
+ * @param reportContext
+ *            IReportContext
+ */
+
+function onCreateCell( cellInst, reportContext ) {
+	var hourType = cellInst.getDataValue("hourType");
+	var projectCode = cellInst.getDataValue("displayCode");
+	var projectCodeGlobal = reportContext.getGlobalVariable("code");
+	if(hourType !== "" &amp;&amp; hourType !== null &amp;&amp; projectCodeGlobal !== projectCode) {
+		reportContext.setGlobalVariable("code", projectCode);
+		cellInst.getStyle().setBorderLeftColor("Black");
+		cellInst.getStyle().setBorderLeftStyle("Solid");
+		cellInst.getStyle().setBorderLeftWidth("Thin");
+	}
+}
+]]></method>
             <list-property name="boundDataColumns">
                 <structure>
                     <property name="name">employeeUserName</property>

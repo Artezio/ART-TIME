@@ -4273,7 +4273,7 @@ return false;]]></method>
                                                                         </structure>
                                                                     </list-property>
                                                                     <property name="fontFamily">"Arial"</property>
-                                                                    <property name="fontSize">11pt</property>
+                                                                    <property name="fontSize">10pt</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onCreate"><![CDATA[if (data["comment"] != null) {
 	this.setUserPropertyValue("excel_comment", data["comment"].replace(/\\n/g, "\n"));
@@ -4293,7 +4293,6 @@ return false;]]></method>
                                                             <property name="content">
                                                                 <data id="1889">
                                                                     <property name="fontFamily">"Arial"</property>
-                                                                    <property name="fontSize">11pt</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
@@ -4357,7 +4356,6 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <data id="1857">
                                                                                     <property name="fontFamily">"Arial"</property>
-                                                                                    <property name="fontSize">11pt</property>
                                                                                     <property name="textAlign">left</property>
                                                                                     <property name="whiteSpace">pre</property>
                                                                                     <property name="resultSetColumn">displayCode</property>
@@ -4383,7 +4381,6 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <data id="1862">
                                                                                     <property name="fontFamily">"Arial"</property>
-                                                                                    <property name="fontSize">11pt</property>
                                                                                     <property name="textAlign">left</property>
                                                                                     <property name="resultSetColumn">employeeFullName</property>
                                                                                 </data>
@@ -4418,7 +4415,6 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <data name="1" id="1867">
                                                                                     <property name="fontFamily">"Arial"</property>
-                                                                                    <property name="fontSize">11pt</property>
                                                                                     <property name="textAlign">left</property>
                                                                                     <property name="resultSetColumn">hourType</property>
                                                                                 </data>
@@ -4442,14 +4438,13 @@ return false;]]></method>
                                                             <property name="content">
                                                                 <label id="1892">
                                                                     <property name="fontFamily">"Arial"</property>
-                                                                    <property name="fontSize">11pt</property>
                                                                     <property name="textAlign">right</property>
                                                                     <text-property name="text">Total</text-property>
                                                                 </label>
                                                             </property>
                                                             <property name="borderBottomStyle">solid</property>
-                                                            <property name="borderBottomWidth">medium</property>
-                                                            <property name="borderBottomColor">#808080</property>
+                                                            <property name="borderBottomWidth">thin</property>
+                                                            <property name="borderBottomColor">#000000</property>
                                                         </extended-item>
                                                     </property>
                                                     <property name="views">
@@ -4470,7 +4465,7 @@ return false;]]></method>
                                                                             <property name="content">
                                                                                 <data id="1886">
                                                                                     <property name="fontFamily">"Arial"</property>
-                                                                                    <property name="fontSize">11pt</property>
+                                                                                    <property name="fontSize">10pt</property>
                                                                                     <structure name="dateTimeFormat">
                                                                                         <property name="category">Custom</property>
                                                                                         <property name="pattern">d MMM</property>
@@ -4482,8 +4477,8 @@ return false;]]></method>
                                                                                 </data>
                                                                             </property>
                                                                             <property name="borderBottomStyle">solid</property>
-                                                                            <property name="borderBottomWidth">medium</property>
-                                                                            <property name="borderBottomColor">#808080</property>
+                                                                            <property name="borderBottomWidth">thin</property>
+                                                                            <property name="borderBottomColor">#000000</property>
                                                                             <property name="height">0.5in</property>
                                                                         </extended-item>
                                                                     </property>
@@ -4499,38 +4494,35 @@ return false;]]></method>
                                                     <property name="content">
                                                         <label id="1858">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
                                                             <property name="textAlign">left</property>
                                                             <text-property name="text">Project</text-property>
                                                         </label>
                                                     </property>
                                                     <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
-                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#000000</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1861">
                                                     <property name="content">
                                                         <label id="1863">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
                                                             <text-property name="text">Employee</text-property>
                                                         </label>
                                                     </property>
                                                     <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
-                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#000000</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1866">
                                                     <property name="content">
                                                         <label id="1868">
                                                             <property name="fontFamily">"Arial"</property>
-                                                            <property name="fontSize">11pt</property>
                                                             <text-property name="text">HourType</text-property>
                                                         </label>
                                                     </property>
                                                     <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
-                                                    <property name="borderBottomColor">#808080</property>
+                                                    <property name="borderBottomWidth">thin</property>
+                                                    <property name="borderBottomColor">#000000</property>
                                                 </extended-item>
                                             </property>
                                             <property name="hideMeasureHeader">true</property>
@@ -4641,7 +4633,7 @@ return false;]]></method>
                                                             <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1919">
-                                                                    <property name="fontSize">11pt</property>
+                                                                    <property name="fontSize">10pt</property>
                                                                     <property name="color">#000000</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
@@ -4660,7 +4652,6 @@ return false;]]></method>
                                                             <property name="width">16px</property>
                                                             <property name="content">
                                                                 <data id="1928">
-                                                                    <property name="fontSize">11pt</property>
                                                                     <property name="color">#000000</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
@@ -4717,7 +4708,6 @@ return false;]]></method>
                                                                         <extended-item extensionName="CrosstabCell" id="1899">
                                                                             <property name="content">
                                                                                 <text id="1932">
-                                                                                    <property name="fontSize">11pt</property>
                                                                                     <property name="color">#000000</property>
                                                                                     <property name="contentType">auto</property>
                                                                                     <text-property name="content"><![CDATA[Total]]></text-property>
@@ -4761,7 +4751,6 @@ return false;]]></method>
                                                                         <extended-item extensionName="CrosstabCell" id="1908">
                                                                             <property name="content">
                                                                                 <data name="hourType" id="1910">
-                                                                                    <property name="fontSize">11pt</property>
                                                                                     <property name="color">#000000</property>
                                                                                     <property name="textAlign">left</property>
                                                                                     <property name="resultSetColumn">hourType</property>
@@ -4783,9 +4772,6 @@ return false;]]></method>
                                                 <extended-item extensionName="CrosstabView" id="1912">
                                                     <property name="grandTotal">
                                                         <extended-item extensionName="CrosstabCell" id="1926">
-                                                            <property name="borderBottomStyle">solid</property>
-                                                            <property name="borderBottomWidth">medium</property>
-                                                            <property name="borderBottomColor">#000000</property>
                                                             <property name="style">NoDisplayStyle</property>
                                                         </extended-item>
                                                     </property>
@@ -4804,9 +4790,6 @@ return false;]]></method>
                                                                     </property>
                                                                     <property name="member">
                                                                         <extended-item extensionName="CrosstabCell" id="1915">
-                                                                            <property name="borderBottomStyle">solid</property>
-                                                                            <property name="borderBottomWidth">medium</property>
-                                                                            <property name="borderBottomColor">#000000</property>
                                                                             <property name="height">0.0099in</property>
                                                                             <property name="style">NoDisplayStyle</property>
                                                                         </extended-item>
@@ -4820,18 +4803,12 @@ return false;]]></method>
                                             </property>
                                             <property name="header">
                                                 <extended-item extensionName="CrosstabCell" id="1895">
-                                                    <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1904">
-                                                    <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                                 <extended-item extensionName="CrosstabCell" id="1909">
-                                                    <property name="borderBottomStyle">solid</property>
-                                                    <property name="borderBottomWidth">medium</property>
                                                     <property name="style">NoDisplayStyle</property>
                                                 </extended-item>
                                             </property>
@@ -4848,6 +4825,8 @@ return false;]]></method>
                                             <property name="display">inline</property>
                                             <property name="pageBreakBefore">avoid</property>
                                             <property name="borderTopStyle">solid</property>
+                                            <property name="borderTopWidth">thin</property>
+                                            <property name="borderTopColor">#000000</property>
                                             <list-property name="boundDataColumns">
                                                 <structure>
                                                     <property name="name">rootCode</property>
@@ -4938,6 +4917,7 @@ return false;]]></method>
                             <property name="aggregationOnColumn">MonthDate/monthDate</property>
                             <property name="content">
                                 <data id="2067">
+                                    <property name="fontSize">10pt</property>
                                     <property name="color">#000000</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
 	this.setDisplayValue(0);
@@ -4952,6 +4932,7 @@ return false;]]></method>
                             <property name="aggregationOnRow">Project_Employee_HourType/hourType</property>
                             <property name="content">
                                 <data id="2220">
+                                    <property name="fontSize">10pt</property>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
@@ -4992,6 +4973,7 @@ return false;]]></method>
                                         <extended-item extensionName="CrosstabCell" id="2186">
                                             <property name="content">
                                                 <text id="2229">
+                                                    <property name="fontSize">10pt</property>
                                                     <property name="color">#000000</property>
                                                     <property name="contentType">auto</property>
                                                     <text-property name="content"><![CDATA[Grand Total]]></text-property>
@@ -5040,6 +5022,7 @@ return false;]]></method>
                                         <extended-item extensionName="CrosstabCell" id="2218">
                                             <property name="content">
                                                 <data name="hourType1" id="2222">
+                                                    <property name="fontSize">10pt</property>
                                                     <property name="color">#000000</property>
                                                     <property name="resultSetColumn">hourType</property>
                                                 </data>
@@ -5059,14 +5042,15 @@ return false;]]></method>
                         <extended-item extensionName="CrosstabCell" id="2077">
                             <property name="content">
                                 <label id="2082">
+                                    <property name="fontSize">10pt</property>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <text-property name="text">Total</text-property>
                                 </label>
                             </property>
                             <property name="borderBottomStyle">solid</property>
-                            <property name="borderBottomWidth">medium</property>
-                            <property name="borderBottomColor">#808080</property>
+                            <property name="borderBottomWidth">thin</property>
+                            <property name="borderBottomColor">#000000</property>
                             <property name="style">BottomBorderStyle</property>
                         </extended-item>
                     </property>
@@ -5087,6 +5071,7 @@ return false;]]></method>
                                         <extended-item extensionName="CrosstabCell" id="2073">
                                             <property name="content">
                                                 <data name="monthDate" id="2075">
+                                                    <property name="fontSize">10pt</property>
                                                     <property name="color">#000000</property>
                                                     <structure name="dateTimeFormat">
                                                         <property name="category">Custom</property>
@@ -5096,8 +5081,8 @@ return false;]]></method>
                                                 </data>
                                             </property>
                                             <property name="borderBottomStyle">solid</property>
-                                            <property name="borderBottomWidth">medium</property>
-                                            <property name="borderBottomColor">#808080</property>
+                                            <property name="borderBottomWidth">thin</property>
+                                            <property name="borderBottomColor">#000000</property>
                                             <property name="height">0.5in</property>
                                             <property name="style">BottomBorderStyle</property>
                                         </extended-item>
@@ -5112,25 +5097,26 @@ return false;]]></method>
             <property name="header">
                 <extended-item extensionName="CrosstabCell" id="2058">
                     <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderBottomColor">#808080</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderBottomColor">#000000</property>
                     <property name="style">BottomBorderStyle</property>
                 </extended-item>
                 <extended-item extensionName="CrosstabCell" id="2225">
                     <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderBottomColor">#808080</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderBottomColor">#000000</property>
                 </extended-item>
                 <extended-item extensionName="CrosstabCell" id="2226">
                     <property name="content">
                         <label id="2228">
+                            <property name="fontSize">10pt</property>
                             <property name="color">black</property>
                             <text-property name="text">Hour Type</text-property>
                         </label>
                     </property>
                     <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderBottomColor">#808080</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderBottomColor">#000000</property>
                 </extended-item>
             </property>
             <property name="hideMeasureHeader">true</property>
