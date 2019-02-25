@@ -657,7 +657,7 @@ APPLICATION_BASE_URL	http://localhost:8080/arttime
 KEYCLOAK_SERVER_URL	http://arttime-demo-keycloak:8081/auth
 KEYCLOAK_CLIENT_ID	arttime-demo
 KEYCLOAK_USERNAME	admin
-KEYCLOAK_PASSWORD	admin
+KEYCLOAK_PASSWORD	password
 TEAM_SYNCHRONIZATION_ENABLED	true
 \.
 
