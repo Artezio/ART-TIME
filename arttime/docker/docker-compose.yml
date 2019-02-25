@@ -4,7 +4,7 @@ services:
     build:
       context: ./webapp
       args:
-        ARTTIME_VERSION: latest
+        ARTTIME_VERSION: demo
         KEYCLOAK_ADAPTER_VERSION: 4.8.3.Final
     container_name: arttime
     image: artezio/arttime:latest
@@ -20,18 +20,25 @@ services:
       - arttime-public
       - arttime-internal
     environment:
-      - keycloak_server_url
-      - keycloak_client_id
-      - keycloak_realm
-      - arttime_db_host
-      - arttime_db_port
-      - arttime_db_name
-      - arttime_db_login
-      - arttime_db_password
+      - KEYCLOAK_SERVER_URL
+      - KEYCLOAK_CLIENT_ID
+      - KEYCLOAK_REALM
+      - KEYCLOAK_LOGIN
+      - KEYCLOAK_PASSWORD
+      - ARTTIME_DB_HOST
+      - ARTTIME_DB_PORT
+      - ARTTIME_DB_NAME
+      - ARTTIME_DB_LOGIN
+      - ARTTIME_DB_PASSWORD
+      - MAX_HEAP_SIZE_MB
 
   arttime-demo-keycloak:
     build:
       context: ./keycloak
+      args:
+        ARTTIME_VERSION: demo
+    environment:
+      - KEYCLOAK_HOSTNAME
     container_name: arttime-demo-keycloak
     image: artezio/arttime-demo-keycloak:latest
     ports:
@@ -45,6 +52,8 @@ services:
   arttime-demo-database:
     build:
       context: ./database
+      args:
+        ARTTIME_VERSION: demo
     container_name: arttime-demo-database
     image: artezio/arttime-demo-database:latest
     restart: always
