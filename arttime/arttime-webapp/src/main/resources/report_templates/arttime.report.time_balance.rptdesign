@@ -4325,6 +4325,13 @@ value;</expression>
                             <property name="levels">
                                 <extended-item extensionName="LevelView" name="NewLevel View4" id="437">
                                     <property name="level">Project_HourType/projectCode</property>
+                                    <property name="sort">
+                                        <sort-element>
+                                            <expression name="key" type="javascript">BirtStr.toLower(data["displayCode"])</expression>
+                                            <property name="direction">asc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="438">
                                             <property name="content">
@@ -4343,6 +4350,23 @@ value;</expression>
                                 </extended-item>
                                 <extended-item extensionName="LevelView" name="NewLevel View5" id="440">
                                     <property name="level">Project_HourType/hourType</property>
+                                    <property name="sort">
+                                        <sort-element>
+                                            <expression name="key" type="javascript">data["actualTime"]</expression>
+                                            <property name="direction">desc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                        <sort-element>
+                                            <expression name="key" type="javascript">data["priority"]</expression>
+                                            <property name="direction">desc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                        <sort-element>
+                                            <expression name="key" type="javascript">BirtStr.toLower(data["hourType"])</expression>
+                                            <property name="direction">asc</property>
+                                            <property name="strength">-1</property>
+                                        </sort-element>
+                                    </property>
                                     <property name="member">
                                         <extended-item extensionName="CrosstabCell" id="441">
                                             <property name="content">
@@ -4472,7 +4496,7 @@ function onCreateCell( cellInst, reportContext ) {
                 <structure>
                     <property name="name">displayCode</property>
                     <expression name="expression" type="javascript">if (dimension["Project_HourType"]["projectCode"]["displayCode"] == null) {&#13;
-	"Total";&#13;
+	" Total";&#13;
 } else {&#13;
 	dimension["Project_HourType"]["projectCode"]["displayCode"];&#13;
 }</expression>

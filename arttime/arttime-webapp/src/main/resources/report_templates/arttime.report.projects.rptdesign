@@ -3382,6 +3382,7 @@ if (rootProjectCodes.contains(value)) {&#13;
                                                             <property name="fontFamily">"Arial"</property>
                                                             <property name="fontSize">10pt</property>
                                                             <property name="textAlign">left</property>
+                                                            <property name="whiteSpace">pre</property>
                                                             <property name="resultSetColumn">displayCode</property>
                                                         </data>
                                                     </property>

@@ -3801,15 +3801,9 @@
                                                         <property name="strength">-1</property>
                                                     </sort-element>
                                                     <sort-element>
-                                                        <expression name="key" type="javascript">BirtStr.toLower(data["project_userName"])</expression>
+                                                        <expression name="key" type="javascript">BirtStr.toLower(data["projectCodeM"] + data["projectCodeS"])</expression>
                                                         <property name="direction">asc</property>
                                                         <property name="strength">-1</property>
-                                                        <property name="member">
-                                                            <member-value>
-                                                                <property name="value"></property>
-                                                                <property name="level">HourTypes/hourType</property>
-                                                            </member-value>
-                                                        </property>
                                                     </sort-element>
                                                 </property>
                                                 <property name="member">
