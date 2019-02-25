@@ -9,41 +9,27 @@ services:
     container_name: arttime
     image: artezio/arttime:latest
     ports:
-      - "${http_port_web}:8080"
-      - "${http_port_web_management}:9990"
-      - "${https_port_web}:8443"
-      - "${https_port_web_management}:9993"
+      - "${http_port_web:-8080}:8080"
+      - "${http_port_web_management:-9990}:9990"
+      - "${https_port_web:-8443}:8443"
+      - "${https_port_web_management:-9993}:9993"
     depends_on:
       - arttime-demo-keycloak
       - arttime-demo-database
     networks:
       - arttime-public
       - arttime-internal
-    environment:
-      - KEYCLOAK_SERVER_URL
-      - KEYCLOAK_CLIENT_ID
-      - KEYCLOAK_REALM
-      - KEYCLOAK_LOGIN
-      - KEYCLOAK_PASSWORD
-      - ARTTIME_DB_HOST
-      - ARTTIME_DB_PORT
-      - ARTTIME_DB_NAME
-      - ARTTIME_DB_LOGIN
-      - ARTTIME_DB_PASSWORD
-      - MAX_HEAP_SIZE_MB
 
   arttime-demo-keycloak:
     build:
       context: ./keycloak
       args:
         ARTTIME_VERSION: demo
-    environment:
-      - KEYCLOAK_HOSTNAME
     container_name: arttime-demo-keycloak
     image: artezio/arttime-demo-keycloak:latest
     ports:
-      - "${http_port_keycloak}:8081"
-      - "${https_port_keycloak}:8444"
+      - "${http_port_keycloak:-8081}:8081"
+      - "${https_port_keycloak:-8444}:8444"
       - "9991:9991"
     networks:
       - arttime-internal
@@ -58,8 +44,8 @@ services:
     image: artezio/arttime-demo-database:latest
     restart: always
     environment:
-      POSTGRES_USER: ${arttime_db_login}
-      POSTGRES_PASSWORD: ${arttime_db_password}
+      POSTGRES_USER: ${arttime_db_login-postgres}
+      POSTGRES_PASSWORD: ${arttime_db_password-postgres}
     networks:
       - arttime-internal
 

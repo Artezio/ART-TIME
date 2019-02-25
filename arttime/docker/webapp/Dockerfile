@@ -25,9 +25,10 @@ ENV ARTTIME_DB_PASSWORD postgres
 ENV KEYCLOAK_SERVER_URL http://arttime-demo-keycloak:8081/auth
 ENV KEYCLOAK_CLIENT_ID arttime-demo
 ENV KEYCLOAK_REALM master
-ENV KEYCLOAK_LOGIN admin
-ENV KEYCLOAK_PASSWORD password
 ENV KEYCLOAK_USERNAME_ATTRIBUTE preferred_username
+# These two settings can be set on Settings/External Data Providers page
+# ENV KEYCLOAK_LOGIN admin
+# ENV KEYCLOAK_PASSWORD password
 ENV MAX_HEAP_SIZE_MB 2048
 ENV MAX_METASPACE_SIZE_MB 384
 
