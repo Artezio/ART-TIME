@@ -8,6 +8,9 @@ services:
         KEYCLOAK_ADAPTER_VERSION: 4.8.3.Final
     container_name: arttime
     image: artezio/arttime:latest
+    environment:
+      MAX_HEAP_SIZE_MB: 2048
+      MAX_METASPACE_SIZE_MB: 384
     ports:
       - "${http_port_web:-8080}:8080"
       - "${http_port_web_management:-9990}:9990"
@@ -44,8 +47,8 @@ services:
     image: artezio/arttime-demo-database:latest
     restart: always
     environment:
-      POSTGRES_USER: ${arttime_db_login-postgres}
-      POSTGRES_PASSWORD: ${arttime_db_password-postgres}
+      POSTGRES_USER: ${ARTTIME_DB_LOGIN-postgres}
+      POSTGRES_PASSWORD: ${ARTTIME_DB_PASSWORD-postgres}
     networks:
       - arttime-internal
 

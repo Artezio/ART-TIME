@@ -1,0 +1,11 @@
+embed-server --server-config=standalone-full.xml --std-out=echo
+try
+	/subsystem=datasources/data-source=arttime-datasource: remove()
+catch
+end-try
+try
+	/subsystem=datasources/jdbc-driver=mssql: remove()
+catch
+end-try
+run-batch --file=/opt/jboss/tools/cli/databases/mssql/change-database.cli
+stop-embedded-server
