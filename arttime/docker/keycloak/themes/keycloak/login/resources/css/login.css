@@ -1,0 +1,325 @@
+@font-face{
+
+    font-family: 'Roboto';
+    
+    src: url(../fonts/Roboto-Black.ttf) format(ttf),
+    url(../fonts/Roboto-BlackItalic.ttf) format(ttf),
+    url(../fonts/Roboto-Bold.ttf) format(ttf),
+    url(../fonts/Roboto-BoldItalic.ttf) format(ttf),
+    url(../fonts/Roboto-Italic.ttf) format(ttf),
+    url(../fonts/Roboto-Light.ttf) format(ttf),
+    url(../fonts/Roboto-LightItalic.ttf) format(ttf),
+    url(../fonts/Roboto-Medium.ttf) format(ttf),
+    url(../fonts/Roboto-MediumItalic.ttf) format(ttf),
+    url(../fonts/Roboto-Regular.ttf) format(ttf),
+    url(../fonts/Roboto-Thin.ttf) format(ttf);
+
+    font-weight: normal;   
+    font-style: normal;
+}
+
+*, *::after, *::before{
+    box-sizing: border-box;
+}
+
+html, body, input{
+    font-family: -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+}
+
+.login{
+    background: white;
+}
+
+@media (min-width: 767px) and (max-width: 800px){
+    .logo{
+        padding-left: 30px;
+    }
+}
+
+@media (min-width: 767px){ 
+    .wrapper{
+        margin-top: 15vh;
+    }
+    footer{
+        text-align: center;
+    }
+    .login-mob-page__footer{
+        display: none;
+    }
+    body{
+        background-color: #f5f6fa;
+        height: 100vh;
+    } 
+    .login{
+        width: 320px;
+        box-shadow: 0 8px 10px rgba(0,0,0,0.18), 0 0 10px rgba(0,0,0,0.18);
+    }
+    .login-page{
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 0 auto;
+        width: 767px;
+        height: 100%;
+        position: relative;
+    }
+
+    .login__body{
+        padding: 0 34px;
+    }
+    .login__header{
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    a{
+        color: #9b9b9b;
+        font-size: 11px;
+        text-decoration: none;
+        vertical-align: top;
+    }
+    .footer-big-size{
+        display: none;
+    }
+
+    .logo{
+        position: fixed;
+        top: 48vh;
+        left: 40px;
+        transform: rotate(22deg);
+    }
+    .bottom-logo{
+        background-image: url("../img/logo_arttime_h_color.png?v1");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+        height: 120px;
+        width: 100%;
+    }
+    .bottom-ico{
+        height: 16px;
+        margin-right: 2px;
+    }
+}
+
+
+@media(max-width: 766px){
+    .wrapper{
+        height: 100%;
+        width: 100%;
+    }
+    .login{
+        height: 100%;
+        flex: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .login__header{
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        font-size: 16px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+    }
+    .login__body{
+        min-width: 240px;
+        margin-top: calc(50vh - 120px);
+    }
+    .logo{
+        display: none;
+    }
+    a{
+        color: #9b9b9b;
+        font-size: 11px;
+        text-decoration: none;
+        vertical-align: top;
+    }
+    footer{
+        text-align: center;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        width: 100%
+    }
+    .footer-text{
+        text-align: center;
+    }
+    .login-page{
+        height: 100%;
+        display: flex;
+    }
+    .bottom-ico{
+        height: 16px;
+        margin-right: 2px;
+    }
+}
+
+label{
+    color: #271700;
+    font-size: 12px;
+    line-height: 1.4;
+    padding-bottom: 4px;
+    padding-left: 1px;
+    display: block;
+}
+.form-group{
+    position: relative;
+    margin: 0 0 12px; 
+    width: 100%;
+}
+.w-100{
+    width: 100%;
+}
+.btn:active,
+.btn:focus{
+    outline: none;
+}   
+.btn-default{
+    font-size: 10pt;
+    font-weight: 500;
+    background-color: #fff;
+    border: 1px solid #8b8b8b;
+    border-radius: 2%;
+    color: #424242;
+    padding-top: 7px;
+    padding-bottom: 6px;
+}
+
+.btn-default:hover{
+    background-color: #868686;
+    color: white;
+}
+
+input[type=checkbox]{
+    width: 0;
+    height: 0;
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+.custom-control{
+    height: 24px;
+    padding-left: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.custom-control::before{
+    display: block;
+    border: 1px solid #9b9b9b;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+}
+.custom-control::after{
+    position: absolute;
+    content: '';
+    background-image: url("../img/checkbox_on.svg?v1");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: block;
+    left: 0px;
+    top: 0px;
+    width: 24px;
+    height: 24px;
+}
+input[type=checkbox]:not(:checked) + .custom-control::after{
+    display: none;
+}
+input[type=checkbox]:focus + .custom-control::before{
+    border-color: #9b9b9b;
+    box-shadow: 0 0 0 3px #a0a0a029;
+}
+input.form-input:focus,
+button.btn:focus{
+    border-color: #9b9b9b;
+    box-shadow: 0 0 0 3px #a0a0a029;
+}
+.custom-control__label{
+    font-size: 12px;
+    color: black;
+    padding-left: 32px;
+    display: inline-block;
+}
+.form-input{
+    width: 100%;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    font-size: 11pt;
+    padding: 5px;
+}
+.form-input:focus,
+.form-input:active{
+    background-color: white;
+    outline: none;
+}
+.form-group__last-item{
+    padding-bottom: 24px;
+}
+.login__header-name{
+    font-weight: 500;
+    display: inline-block;
+    padding-top: 12px;
+    padding-left: 32px;
+}
+.incorrect-input__message{
+    font-size: 10px;
+    color: #d91f2d;
+    display: inline-block;
+    vertical-align: top;
+}
+.form-group__incorrect-input{
+    margin-top: -10px;
+}
+.header-picture{
+    position: relative;
+    background-image: url('../img/logo.svg?v1');
+    width: 57px;
+    height: 48px;
+    background-repeat: no-repeat;
+    background-position: 5px 0;
+
+}
+.picture-header{
+    margin-left: -18px;
+    height: 100%;
+}
+.background-color{
+    background-color: white;
+}
+form{
+    margin-bottom: 0;
+}
+footer{
+    padding-top: 12px;
+}
+body{
+    margin: 0;
+}
+.login__body{
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto; 
+}
+.btn{
+    height: 32px;
+    cursor: pointer;
+    font-size: 11px;
+}
+.form-group__checkbox{
+    margin-bottom: 24px;
+}
