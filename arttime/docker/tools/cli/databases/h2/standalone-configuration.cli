@@ -1,0 +1,7 @@
+embed-server --server-config=standalone-full.xml --std-out=echo
+try
+	/subsystem=datasources/data-source=arttime-datasource: remove()
+catch
+end-try
+run-batch --file=/opt/jboss/tools/cli/databases/h2/change-database.cli
+stop-embedded-server

@@ -1,26 +1,22 @@
-KEYCLOAK_HOSTNAME=arttime-demo-keycloak
-KEYCLOAK_SERVER_URL=http://arttime-demo-keycloak:8081/auth/
+KEYCLOAK_SERVER_URL=http://127.0.0.1:9080/auth/
 KEYCLOAK_CLIENT_ID=arttime-demo
 KEYCLOAK_REALM=master
 KEYCLOAK_LOGIN=admin
 KEYCLOAK_PASSWORD=password
 
-ARTTIME_DB_HOST=arttime-demo-database
+ARTTIME_DB_VENDOR=postgres
+ARTTIME_DB_HOST=
 ARTTIME_DB_PORT=5432
 ARTTIME_DB_NAME=arttime
 ARTTIME_DB_LOGIN=postgres
-ARTTIME_DB_PASSWORD=postgres
-ARTTIME_DB_VENDOR=postgres
+ARTTIME_DB_PASSWORD=root
 
-#Webapp server ports
 http_port_web=8080
 http_port_web_management=9990
 https_port_web=8443
 https_port_web_management=9993
 
-#Keycloak server ports
 http_port_keycloak=8081
 https_port_keycloak=8444
 
-MAX_HEAP_SIZE_MB=2048
-
+MAX_HEAP_SIZE_MB=3072

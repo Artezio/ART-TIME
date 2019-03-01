@@ -7,9 +7,9 @@
 # Lower case ARTTIME_DB_VENDOR
 ARTTIME_DB_VENDOR=`echo $ARTTIME_DB_VENDOR | tr A-Z a-z`
 
-# Default to postgres if DB type not detected
+# Default to h2 if DB type not detected
 if [ "$ARTTIME_DB_VENDOR" == "" ]; then
-    export ARTTIME_DB_VENDOR="postgres"
+    export ARTTIME_DB_VENDOR="h2"
 fi
 
 # Set DB name
@@ -24,6 +24,8 @@ case "$ARTTIME_DB_VENDOR" in
         DB_NAME="MSSQL";;
     oracle)
         DB_NAME="Oracle";;
+    h2)
+        DB_NAME="embedded H2";;
     *)
         echo "Unknown DB vendor $ARTTIME_DB_VENDOR"
         exit 1
@@ -61,5 +63,24 @@ echo ""
 # Start Arttime #
 ##################
 
-exec /opt/jboss/wildfly/bin/standalone.sh $@
+echo "========================================================================="
+
+function start_embedded_keycloak() {
+  echo "Starting embedded Keycloak server"
+  local JBOSS_HOME=/opt/jboss/keycloak
+  /opt/jboss/tools/docker-entrypoint-keycloak.sh "-Djboss.socket.binding.port-offset=1000" "-b" "0.0.0.0" &
+}
+
+# Start Keycloak if required
+if [[ $KEYCLOAK_SERVER_URL == 'http://localhost:9080/auth' ]]; then
+  start_embedded_keycloak
+else
+  echo Using external Keycloak
+fi
+
+# Start Wildfly and return result
+#exec runuser -l jboss -- /opt/jboss/wildfly/bin/standalone.sh $@
+JAVA_OPTS="-server -Xms256m -Xmx${MAX_HEAP_SIZE_MB}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=${MAX_METASPACE_SIZE_MB}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
+echo "Starting Art-Time with java_opts ${JAVA_OPTS}"
+exec /opt/jboss/wildfly/bin/standalone.sh "-c" "standalone-full.xml" "-b" "0.0.0.0" "-bmanagement" "0.0.0.0"
 exit $?
