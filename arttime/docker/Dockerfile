@@ -94,4 +94,4 @@ EXPOSE 8080
 EXPOSE 9080
 EXPOSE 9990
 
-CMD ["/opt/jboss/tools/docker-entrypoint.sh"]
+CMD ["/opt/jboss/tools/arttime/docker-entrypoint.sh"]
