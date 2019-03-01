@@ -3,5 +3,5 @@ try
 	/subsystem=datasources/data-source=arttime-datasource: remove()
 catch
 end-try
-run-batch --file=/opt/jboss/tools/cli/databases/h2/change-database.cli
+run-batch --file=/opt/jboss/tools/arttime/cli/databases/h2/change-database.cli
 stop-embedded-server

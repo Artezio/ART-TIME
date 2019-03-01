@@ -56,7 +56,7 @@ echo ""
 echo "========================================================================="
 echo ""
 
-/bin/sh /opt/jboss/tools/databases/change-database.sh $ARTTIME_DB_VENDOR
+/bin/sh /opt/jboss/tools/arttime/databases/change-database.sh $ARTTIME_DB_VENDOR
 
 
 ##################

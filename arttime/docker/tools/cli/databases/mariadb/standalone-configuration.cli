@@ -7,5 +7,5 @@ try
 	/subsystem=datasources/jdbc-driver=mariadb: remove()
 catch
 end-try
-run-batch --file=/opt/jboss/tools/cli/databases/mariadb/change-database.cli
+run-batch --file=/opt/jboss/tools/arttime/cli/databases/mariadb/change-database.cli
 stop-embedded-server

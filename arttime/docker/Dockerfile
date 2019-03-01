@@ -73,12 +73,12 @@ ENV JDBC_ORACLE_VERSION ojdbc6
 ADD --chown=jboss:0 ${ARTTIME_WAR_DOWNLOAD_URL} /opt/jboss/wildfly/standalone/deployments/arttime-webapp.war
 
 # Install database drivers
-COPY --chown=jboss:0 --from=arttime-dist /opt/arttime-dist/docker/tools /opt/jboss/tools/
-RUN chmod +x /opt/jboss/tools/*.sh && \ 
-    /opt/jboss/tools/install-databases.sh
+COPY --chown=jboss:0 --from=arttime-dist /opt/arttime-dist/docker/tools /opt/jboss/tools/arttime/
+RUN chmod +x /opt/jboss/tools/arttime/*.sh && \ 
+    /opt/jboss/tools/arttime/install-databases.sh
 
 # Configure Wildfly	
-RUN /opt/jboss/tools/configure-wildfly.sh
+RUN /opt/jboss/tools/arttime/configure-wildfly.sh
 
 # Get configured Keycloak server
 COPY --chown=jboss:0 --from=keycloak /opt/jboss/keycloak /opt/jboss/keycloak
