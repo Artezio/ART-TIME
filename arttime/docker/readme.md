@@ -32,11 +32,6 @@ To switch to external Keycloak server, set the following environment variables:
 * `KEYCLOAK_CLIENT_ID`
 * `KEYCLOAK_REALM`
 
-The following variables are only required if Keycloak is selected as External Data Provider in Art-Time:
-
-* `KEYCLOAK_LOGIN`  User with `view-users` role. This user will be used to connect to Keycloak API and list users
-* `KEYCLOAK_PASSWORD` Password of the user which will be used to connect to Keycloak API
-
 ### Database
 
 Art-Time can be used with [H2](http://www.h2database.com), [PostgreSQL](https://www.postgresql.org/) databases.
