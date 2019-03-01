@@ -2,9 +2,16 @@
 
 The image contains Art-Time with Keycloak and embedded h2 database
 
+#### Start demo with embedded Keycloak and database
 ```
 docker run -p 8080:8080 -p 9080:9080 artezio/arttime
 ```
+
+#### Start art-time with external Keycloak and database, and set memory limits. Env variables are explained below
+```
+docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/auth" -e KEYCLOAK_CLIENT_ID=<client_id> -e KEYCLOAK_REALM=<realm> -e ARTTIME_DB_VENDOR=<vendor> -e ARTTIME_DB_HOST=<host> -e ARTTIME_DB_PORT=<port> -e ARTTIME_DB_NAME=<db_name> -e ARTTIME_DB_LOGIN=<login> -e ARTTIME_DB_PASSWORD=<password> -e MAX_HEAP_SIZE_MB=<max_size> artezio/arttime
+```
+
 
 ### Published applications
 
