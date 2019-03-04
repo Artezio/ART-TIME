@@ -11,9 +11,11 @@ The image contains Art-Time with Keycloak and embedded h2 database
    docker build --build-arg ARTTIME_VERSION=<version> --build-arg KEYCLOAK_ADAPTER_VERSION=<keycloak_version> --build-arg ARTTIME_CLI_ADMIN_LOGIN=<cli_admin_login> --build-arg ARTTIME_CLI_ADMIN_PASSWORD=<cli_admin_password> --tag artezio/arttime .
    ```
    
-* `ARTTIME_VERSION` (required). This argument must point to an existing release tag (e.g. `v3.83`) in [Art-Time repository](https://github.com/Artezio/ART-TIME/)
-* `KEYCLOAK_ADAPTER_VERSION` (optional, for using with external Keycloak server). Specifies which Keycloak Wildfly Adapter version to use. Usually this version is the same as your Keycloak server version (e.g. `4.8.0.Final`). Default value `4.8.3.Final` is used for running embedded Keycloak
-* `ARTTIME_CLI_ADMIN_LOGIN`, `ARTTIME_CLI_ADMIN_PASSWORD` (optional). Specify admin login and password for accessing server management console (http://localhost:9990/). Default values are `admin`, `admin` respectively
+   Arguments used:
+   
+   * `ARTTIME_VERSION` (required). This argument must point to an existing release tag (e.g. `v3.83`) in [Art-Time repository](https://github.com/Artezio/ART-TIME/releases)
+   * `KEYCLOAK_ADAPTER_VERSION` (optional, for using with external Keycloak server). Specifies which Keycloak Wildfly Adapter version to use. Usually this version is the same as your Keycloak server version (e.g. `4.8.0.Final`). Default value `4.8.3.Final` is used for running embedded Keycloak
+   * `ARTTIME_CLI_ADMIN_LOGIN`, `ARTTIME_CLI_ADMIN_PASSWORD` (optional). Specify admin login and password for accessing server management console (http://localhost:9990/). Default values are `admin`, `admin` respectively
 
 
 ### Start demo with embedded Keycloak and database
