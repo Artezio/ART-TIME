@@ -13,7 +13,7 @@ RUN echo ${ARTTIME_DIST_DOWNLOAD_URL}
 
 RUN apk add --no-cache curl tar
 RUN mkdir -p /opt/arttime-dist &&\
-    curl -SL ${ARTTIME_DIST_DOWNLOAD_URL} /tmp/arttime-dist.tar.gz | tar zxv -C /opt/arttime-dist/ --strip-components=2
+    curl -SL ${ARTTIME_DIST_DOWNLOAD_URL} /tmp/arttime-dist.tar.gz | tar zx -C /opt/arttime-dist/ --strip-components=2
 
 
 # ----------------------------------------------------------------------------------
@@ -42,6 +42,7 @@ USER 1000
 FROM jboss/wildfly:14.0.1.Final as wildfly
 
 ARG ARTTIME_VERSION
+ENV ARTTIME_VERSION=${ARTTIME_VERSION:-demo}
 ARG ARTTIME_CLI_ADMIN_LOGIN=admin
 ARG ARTTIME_CLI_ADMIN_PASSWORD=admin
 ARG ARTTIME_WAR_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/releases/download/${ARTTIME_VERSION}/arttime-webapp.war
