@@ -4,6 +4,8 @@
 FROM alpine:3.9 as arttime-dist
 
 ARG ARTTIME_VERSION
+ENV ARTTIME_VERSION=${ARTTIME_VERSION:demo}
+
 ARG ARTTIME_DIST_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/archive/${ARTTIME_VERSION}.tar.gz
 
 RUN echo ${ARTTIME_VERSION}
