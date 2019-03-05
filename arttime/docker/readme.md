@@ -86,8 +86,9 @@ Keycloak demo server contains the following users:
 
 * `admin` - Admin, has admin access to both Art-Time and demo Keycloak
 * `exec` - Executive
-* `pm` - Project Manager
-* `officemanager` - Office Manager
+* `projectmanager` - Project Manager
+* `officemanager` - Office Manager 1
+* `officemanager2` - Office Manager 2
 * `accountant` - Accountant
 * `employee1` - Employee 1
 * `employee2` - Employee 2
