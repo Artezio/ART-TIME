@@ -20,7 +20,7 @@ The image contains Art-Time with Keycloak and embedded h2 database
 
 ### Start demo with embedded Keycloak and database
 ```
-docker run -p 8080:8080 -p 9080:9080 artezio/arttime
+docker run -p 8080:8080 -p 9080:9080 arteziollc/art-time
 ```
 
 
