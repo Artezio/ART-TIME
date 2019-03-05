@@ -15,7 +15,6 @@ RUN apk add --no-cache curl tar
 RUN mkdir -p /opt/arttime-dist &&\
     curl -SL ${ARTTIME_DIST_DOWNLOAD_URL} /tmp/arttime-dist.tar.gz | tar zx -C /opt/arttime-dist/ --strip-components=2
 
-
 # ----------------------------------------------------------------------------------
 # Build and configure embedded Keycloak server
 FROM jboss/keycloak:4.8.3.Final as keycloak
@@ -63,9 +62,6 @@ ENV KEYCLOAK_CLIENT_ID arttime-demo
 ENV KEYCLOAK_REALM master
 ENV KEYCLOAK_USERNAME_ATTRIBUTE preferred_username
 
-# These two settings can be set on Settings/External Data Providers page in the application when logged in as Admin
-# ENV KEYCLOAK_LOGIN admin
-# ENV KEYCLOAK_PASSWORD password
 ENV MAX_HEAP_SIZE_MB 2048
 ENV MAX_METASPACE_SIZE_MB 384
 

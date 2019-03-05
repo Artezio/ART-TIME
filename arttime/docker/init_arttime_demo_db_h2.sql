@@ -1,6 +1,6 @@
 SET LOCK_MODE 3;              
 ;             
-CREATE USER IF NOT EXISTS SA SALT '6f60aa49292f5a3b' HASH 'a32035b93f8a7d670a98d306917258346a6aba800be86ba39c162a400dc538d7' ADMIN;           
+CREATE USER IF NOT EXISTS SA SALT '0b66a7af15454c99' HASH 'd821f7ebde42c80c56e44889b8cbde79f5b9db1aee1781fc67769eafd69d8fe9' ADMIN;           
 DROP TABLE IF EXISTS PUBLIC."Day" CASCADE;    
 DROP TABLE IF EXISTS PUBLIC.EMPLOYEE CASCADE; 
 DROP TABLE IF EXISTS PUBLIC.EMPLOYEE_ACCESSIBLEDEPARTMENTS CASCADE;           
@@ -49,21 +49,25 @@ CREATE CACHED TABLE PUBLIC.EMPLOYEE(
 ALTER TABLE PUBLIC.EMPLOYEE ADD CONSTRAINT PUBLIC.CONSTRAINT_7 PRIMARY KEY(USERNAME);         
 -- 10 +/- SELECT COUNT(*) FROM PUBLIC.EMPLOYEE;               
 INSERT INTO PUBLIC.EMPLOYEE(USERNAME, DEPARTMENT, EMAIL, FIRSTNAME, FORMER, LASTNAME, WORKLOAD, CALENDAR_ID) VALUES
-('projectmanager', 'Moscow', 'pm@email.com', 'Project', FALSE, 'Manager', 100, 2),
 ('employee2', 'Warsaw', 'employee2@example.com', 'Employee', FALSE, '2', 100, 3),
 ('employee1', 'Warsaw', 'employee1@example.com', 'Employee', FALSE, '1', 100, 3),
-('employee3', 'Moscow', 'employee3@example.com', 'Employee', FALSE, '3', 100, 2),
 ('exec', 'Prague', 'exec@email.com', 'Exec', FALSE, '1', 100, 1),
 ('employee4', 'Prague', 'employee4@example.com', 'Employee', FALSE, '4', 100, 1),
 ('officemanager2', 'Warsaw', 'om2@example.com', 'Office', FALSE, 'Manager 2', 100, 3),
-('officemanager', 'Moscow', 'om@email.com', 'Office', FALSE, 'Manager', 100, 2),
-('admin', 'Moscow', 'admin@email.com', 'Admin', FALSE, '1', 100, 2),
-('accountant', 'Prague', 'accountant@email.com', 'Accountant', FALSE, '1', 100, 1);   
+('accountant', 'Prague', 'accountant@email.com', 'Accountant', FALSE, '1', 100, 1),
+('projectmanager', 'Minsk', 'pm@email.com', 'Project', FALSE, 'Manager', 100, 2),
+('employee3', 'Minsk', 'employee3@example.com', 'Employee', FALSE, '3', 100, 2),
+('officemanager', 'Minsk', 'om@email.com', 'Office', FALSE, 'Manager', 100, 2),
+('admin', 'Minsk', 'admin@email.com', 'Admin', FALSE, '1', 100, 2);       
 CREATE CACHED TABLE PUBLIC.EMPLOYEE_ACCESSIBLEDEPARTMENTS(
     EMPLOYEE_USERNAME VARCHAR(255) NOT NULL,
     ACCESSIBLEDEPARTMENTS VARCHAR(255)
 );          
--- 0 +/- SELECT COUNT(*) FROM PUBLIC.EMPLOYEE_ACCESSIBLEDEPARTMENTS;          
+-- 3 +/- SELECT COUNT(*) FROM PUBLIC.EMPLOYEE_ACCESSIBLEDEPARTMENTS;          
+INSERT INTO PUBLIC.EMPLOYEE_ACCESSIBLEDEPARTMENTS(EMPLOYEE_USERNAME, ACCESSIBLEDEPARTMENTS) VALUES
+('officemanager2', 'Minsk'),
+('officemanager', 'Prague'),
+('officemanager', 'Warsaw');  
 CREATE CACHED TABLE PUBLIC.FILTER(
     ID BIGINT DEFAULT (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_1A7C91D8_D5A2_4BA8_9014_2A4CDD2D4596) NOT NULL NULL_TO_DEFAULT SEQUENCE PUBLIC.SYSTEM_SEQUENCE_1A7C91D8_D5A2_4BA8_9014_2A4CDD2D4596,
     NAME VARCHAR(255),
@@ -139,10 +143,10 @@ INSERT INTO PUBLIC.PROJECT(ID, ALLOWEMPLOYEEREPORTTIME, CODE, DESCRIPTION, MASTE
 (4, TRUE, 'Management', NULL, '', 'ACTIVE', 'DISABLED', NULL, NULL),
 (5, TRUE, 'Support', NULL, '', 'ACTIVE', 'DISABLED', NULL, NULL),
 (6, FALSE, 'Days Off', NULL, '', 'ACTIVE', 'DISABLED', NULL, NULL),
-(7, FALSE, 'Days Off Moscow', NULL, '6', 'ACTIVE', 'DEPARTMENTS', 'Moscow', 6),
+(7, FALSE, 'Days Off Minsk', NULL, '6', 'ACTIVE', 'DEPARTMENTS', 'Minsk', 6),
 (8, FALSE, 'Days off Prague', NULL, '6', 'ACTIVE', 'DEPARTMENTS', 'Prague', 6),
 (9, FALSE, 'Days off Warsaw', NULL, '6', 'ACTIVE', 'DEPARTMENTS', 'Warsaw', 6),
-(10, TRUE, 'Accounting', NULL, '', 'ACTIVE', 'DISABLED', NULL, NULL);   
+(10, TRUE, 'Accounting', NULL, '', 'ACTIVE', 'DISABLED', NULL, NULL);     
 CREATE CACHED TABLE PUBLIC.PROJECT_EMPLOYEE(
     PROJECT_ID BIGINT NOT NULL,
     TEAM_USERNAME VARCHAR(255) NOT NULL
@@ -162,16 +166,16 @@ INSERT INTO PUBLIC.PROJECT_EMPLOYEE(PROJECT_ID, TEAM_USERNAME) VALUES
 (4, 'exec'),
 (5, 'admin'),
 (10, 'accountant'),
-(7, 'admin'),
-(7, 'projectmanager'),
-(7, 'employee3'),
-(7, 'officemanager'),
 (8, 'accountant'),
 (8, 'employee4'),
 (8, 'exec'),
 (9, 'officemanager2'),
 (9, 'employee2'),
-(9, 'employee1');     
+(9, 'employee1'),
+(7, 'admin'),
+(7, 'projectmanager'),
+(7, 'employee3'),
+(7, 'officemanager');     
 CREATE CACHED TABLE PUBLIC.PROJECT_HOURTYPE(
     PROJECT_ID BIGINT NOT NULL,
     ACCOUNTABLEHOURS_ID BIGINT NOT NULL
@@ -220,7 +224,7 @@ CREATE CACHED TABLE PUBLIC.SETTING(
     VALUE VARCHAR(255)
 );             
 ALTER TABLE PUBLIC.SETTING ADD CONSTRAINT PUBLIC.CONSTRAINT_A PRIMARY KEY("key");             
--- 13 +/- SELECT COUNT(*) FROM PUBLIC.SETTING;
+-- 20 +/- SELECT COUNT(*) FROM PUBLIC.SETTING;
 INSERT INTO PUBLIC.SETTING("key", VALUE) VALUES
 ('EMPLOYEE_TRACKING_SYSTEM_NAME', 'Keycloak'),
 ('KEYCLOAK_SERVER_URL', 'http://127.0.0.1:9080/auth'),
@@ -234,7 +238,14 @@ INSERT INTO PUBLIC.SETTING("key", VALUE) VALUES
 ('KEYCLOAK_USER_DEPARTMENT_ATTRIBUTE', 'department'),
 ('TIMER_HOURS_INTERVAL', '1'),
 ('EMPLOYEE_SYNCHRONIZATION_ENABLED', 'true'),
-('TEAM_SYNCHRONIZATION_ENABLED', 'true');        
+('TEAM_SYNCHRONIZATION_ENABLED', 'true'),
+('SMTP_PORT_NUMBER', NULL),
+('SMTP_USERNAME', 'admin'),
+('SMTP_PASSWORD', 'admin'),
+('SMTP_SENDER', NULL),
+('SMTP_HOST_NAME', NULL),
+('APPLICATION_BASE_URL', 'http://localhost:8080/arttime'),
+('HELP_PAGE_URL', 'https://github.com/Artezio/ART-TIME');       
 CREATE CACHED TABLE PUBLIC.WORKDAYSCALENDAR(
     ID BIGINT DEFAULT (NEXT VALUE FOR PUBLIC.SYSTEM_SEQUENCE_9DDF394E_7C88_4D3F_A0C4_FD2388218CC1) NOT NULL NULL_TO_DEFAULT SEQUENCE PUBLIC.SYSTEM_SEQUENCE_9DDF394E_7C88_4D3F_A0C4_FD2388218CC1,
     NAME VARCHAR(255) NOT NULL
@@ -251,9 +262,9 @@ CREATE CACHED TABLE PUBLIC.WORKDAYSCALENDAR_DEPARTMENTS(
 );          
 -- 3 +/- SELECT COUNT(*) FROM PUBLIC.WORKDAYSCALENDAR_DEPARTMENTS;            
 INSERT INTO PUBLIC.WORKDAYSCALENDAR_DEPARTMENTS(WORKDAYSCALENDAR_ID, DEPARTMENTS) VALUES
-(2, 'Moscow'),
+(2, 'Minsk'),
 (1, 'Prague'),
-(3, 'Warsaw');      
+(3, 'Warsaw');       
 ALTER TABLE PUBLIC.HOURTYPE ADD CONSTRAINT PUBLIC.CONSTRAINT_UNIQUE_HOURTYPE_NAME UNIQUE(TYPE);               
 ALTER TABLE PUBLIC.HOURS ADD CONSTRAINT PUBLIC.CONSTRAINT_UNIQUE_HOURS UNIQUE("date", EMPLOYEE_USERNAME, PROJECT_ID, TYPE_ID);
 ALTER TABLE PUBLIC.FILTER ADD CONSTRAINT PUBLIC.UNIQUE_FILTER_NAME_FOR_OWNER UNIQUE(OWNER, NAME);             

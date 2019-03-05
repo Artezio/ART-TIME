@@ -78,9 +78,9 @@ else
   echo Using external Keycloak
 fi
 
+
 # Start Wildfly and return result
-#exec runuser -l jboss -- /opt/jboss/wildfly/bin/standalone.sh $@
-JAVA_OPTS="-server -Xms256m -Xmx${MAX_HEAP_SIZE_MB}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=${MAX_METASPACE_SIZE_MB}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
-echo "Starting Art-Time with java_opts ${JAVA_OPTS}"
+echo "Starting Art-Time"
+export JAVA_OPTS="-server -Xms256m -Xmx${MAX_HEAP_SIZE_MB}m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=${MAX_METASPACE_SIZE_MB}m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true -Djboss.as.management.blocking.timeout=1200"
 exec /opt/jboss/wildfly/bin/standalone.sh "-c" "standalone-full.xml" "-b" "0.0.0.0" "-bmanagement" "0.0.0.0"
 exit $?
