@@ -6,6 +6,9 @@ FROM alpine:3.9 as arttime-dist
 ARG ARTTIME_VERSION
 ARG ARTTIME_DIST_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/archive/${ARTTIME_VERSION}.tar.gz
 
+RUN echo ${ARTTIME_VERSION}
+RUN echo ${ARTTIME_DIST_DOWNLOAD_URL}
+
 RUN apk add --no-cache curl tar
 RUN mkdir -p /opt/arttime-dist &&\
     curl -SL ${ARTTIME_DIST_DOWNLOAD_URL} /tmp/arttime-dist.tar.gz | tar zxv -C /opt/arttime-dist/ --strip-components=2
