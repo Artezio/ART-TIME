@@ -8,7 +8,7 @@ The image contains Art-Time with Keycloak and embedded h2 database
 2. Use the following command in the directory with `Dockerfile`:
 
    ```
-   docker build --build-arg ARTTIME_VERSION=<version> --build-arg KEYCLOAK_ADAPTER_VERSION=<keycloak_version> --build-arg ARTTIME_CLI_ADMIN_LOGIN=<cli_admin_login> --build-arg ARTTIME_CLI_ADMIN_PASSWORD=<cli_admin_password> --tag artezio/arttime .
+   docker build --build-arg ARTTIME_VERSION=<version> --build-arg KEYCLOAK_ADAPTER_VERSION=<keycloak_version> --build-arg ARTTIME_CLI_ADMIN_LOGIN=<cli_admin_login> --build-arg ARTTIME_CLI_ADMIN_PASSWORD=<cli_admin_password> --tag arteziollc/art-time .
    ```
    
    Arguments used:
@@ -26,7 +26,7 @@ docker run -p 8080:8080 -p 9080:9080 arteziollc/art-time
 
 ### Start art-time with external Keycloak and database, and set memory limits. Env variables are explained below
 ```
-docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/auth" -e KEYCLOAK_CLIENT_ID=<client_id> -e KEYCLOAK_REALM=<realm> -e ARTTIME_DB_VENDOR=<vendor> -e ARTTIME_DB_HOST=<host> -e ARTTIME_DB_PORT=<port> -e ARTTIME_DB_NAME=<db_name> -e ARTTIME_DB_LOGIN=<login> -e ARTTIME_DB_PASSWORD=<password> -e MAX_HEAP_SIZE_MB=<max_size> artezio/arttime
+docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/auth" -e KEYCLOAK_CLIENT_ID=<client_id> -e KEYCLOAK_REALM=<realm> -e ARTTIME_DB_VENDOR=<vendor> -e ARTTIME_DB_HOST=<host> -e ARTTIME_DB_PORT=<port> -e ARTTIME_DB_NAME=<db_name> -e ARTTIME_DB_LOGIN=<login> -e ARTTIME_DB_PASSWORD=<password> -e MAX_HEAP_SIZE_MB=<max_size> arteziollc/arttime
 ```
 
 ### Published applications
