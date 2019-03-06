@@ -32,13 +32,8 @@ docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/au
 ### Published applications
 
 * Art-Time web application (http://localhost:8080/arttime)
-* Art-Time server web management interface (http://localhost:9990)
-* Keycloak demo (http://localhost:9080/auth)
-
-
-### Base image
-
-The image extends [jboss/wildfly:14.0.1.Final](https://github.com/jboss-dockerfiles/wildfly)
+* Art-Time server management console (http://localhost:9990)
+* Embedded Keycloak management console (http://localhost:9080/auth) for demo purposes only
 
 
 ### Web Application
@@ -50,9 +45,7 @@ Memory limit is set through `MAX_HEAP_SIZE_MB` environment variable, which will 
 
 Art-Time uses [Keycloak](https://www.keycloak.org/) as IDM
 
-The image is bundled with pre-configured demo Keycloak server
-
-To switch to external Keycloak server, set the following environment variables:
+The image is bundled with pre-configured Keycloak server for demo purposes only. For production use, switch to external Keycloak server using the following environment variables:
 
 * `KEYCLOAK_SERVER_URL` to `http://<host>:<port>/auth/`, where `host` and `port` are external Keycloak server host and port
 * `KEYCLOAK_CLIENT_ID`
@@ -61,13 +54,11 @@ To switch to external Keycloak server, set the following environment variables:
 To use external Keycloak server as data source for Art-Time, you also need to configure it in Art-Time Settings page.
 
 
-### Database
+### Database configuration
 
 Art-Time can be used with [H2](http://www.h2database.com), [PostgreSQL](https://www.postgresql.org/) databases.
 
-This image is bundled with demo H2 database
-
-To switch to external database, set the following environment variables:
+This image is bundled with H2 database for demo purposes only. For production use, switch to an external database using the following environment variables:
 
 * `ARTTIME_DB_VENDOR` can be set to `h2`(default, uses embedded H2 server) or `postgres`. All settings below only have effect if this setting differs from `h2`
 * `ARTTIME_DB_HOST` - host or IP of database
@@ -79,6 +70,7 @@ To switch to external database, set the following environment variables:
 Database driver version can be set through the following variables:
 
 * `JDBC_POSTGRES_VERSION` - PostgreSQL Driver version. Consult (https://jdbc.postgresql.org/download.html) to determine which version to use with your Postgres server. Default is `42.2.2` for postgres version **8.2** or greater
+
 
 ### Default users
 
