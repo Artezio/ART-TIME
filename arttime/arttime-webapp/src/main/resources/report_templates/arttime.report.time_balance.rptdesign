@@ -4226,7 +4226,7 @@ value;</expression>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
                                     <method name="onRender"><![CDATA[if (this.getValue() == null) {
-	this.setDisplayValue(0);
+	this.setDisplayValue("");
 }]]></method>
                                     <property name="resultSetColumn">quantity_Project_HourType/hourType</property>
                                 </data>

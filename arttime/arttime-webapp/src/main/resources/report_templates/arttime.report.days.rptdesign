@@ -4294,8 +4294,8 @@ return false;]]></method>
                                                                 <data id="1889">
                                                                     <property name="fontFamily">"Arial"</property>
                                                                     <property name="textAlign">right</property>
-                                                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
-	this.setDisplayValue(0);
+                                                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == 0) {
+	this.setDisplayValue("");
 }]]></method>
                                                                     <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType</property>
                                                                 </data>
@@ -4637,7 +4637,7 @@ return false;]]></method>
                                                                     <property name="color">#000000</property>
                                                                     <property name="textAlign">right</property>
                                                                     <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
-	this.setDisplayValue(0);
+	this.setDisplayValue("");
 }]]></method>
                                                                     <property name="resultSetColumn">quantity_Root_Gap_HourType/hourType_MonthDate/monthDate</property>
                                                                 </data>
@@ -4919,8 +4919,8 @@ return false;]]></method>
                                 <data id="2067">
                                     <property name="fontSize">10pt</property>
                                     <property name="color">#000000</property>
-                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
-	this.setDisplayValue(0);
+                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == 0) {
+	this.setDisplayValue("");
 }]]></method>
                                     <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType_MonthDate/monthDate</property>
                                 </data>
@@ -4935,8 +4935,8 @@ return false;]]></method>
                                     <property name="fontSize">10pt</property>
                                     <property name="color">#000000</property>
                                     <property name="textAlign">right</property>
-                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == "") {
-	this.setDisplayValue(0);
+                                    <method name="onRender"><![CDATA[if (this.getValue() == null || this.getValue() == 0) {
+	this.setDisplayValue("");
 }]]></method>
                                     <property name="resultSetColumn">quantity_Project_Employee_HourType/hourType</property>
                                 </data>
