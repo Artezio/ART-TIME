@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.8.0.v201806261756</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">queryText</property>
-            <property name="id">535</property>
-        </structure>
-        <structure>
-            <property name="name">pojoDataSetClassPath</property>
-            <property name="id">4</property>
-        </structure>
-        <structure>
-            <property name="name">OdaConnProfileName</property>
-            <property name="id">4</property>
-        </structure>
-        <structure>
-            <property name="name">OdaConnProfileStorePath</property>
-            <property name="id">4</property>
-        </structure>
-    </list-property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -122,7 +104,7 @@
             <list-property name="privateDriverProperties">
                 <ex-property>
                     <name>SynchronizeClassPath</name>
-                    <value>true</value>
+                    <value>false</value>
                 </ex-property>
                 <ex-property>
                     <name>pojoClassPath</name>
@@ -2094,7 +2076,12 @@
                 <structure>
                     <property name="columnName">root_code</property>
                     <property name="alias">rootCode</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">root_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">AccountableHours</property>
+                    <text-property name="heading">AccountableHours</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -2154,8 +2141,20 @@
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">AccountableHours</property>
+                        <property name="dataType">javaObject</property>
+                    </structure>
                 </list-property>
             </structure>
+            <method name="onFetch"><![CDATA[var hourTypes = row["AccountableHours"];
+var accountableHourTypes = vars["accountableHourTypes"];
+for (var index = 0; index < hourTypes.size(); index++) {
+	accountableHourTypes.add(hourTypes.get(index).getId().toString());
+}
+vars["accountableHourTypes"] = accountableHourTypes;
+]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -2221,6 +2220,13 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">AccountableHours</property>
+                    <property name="nativeName">AccountableHours</property>
+                    <property name="dataType">javaObject</property>
+                    <property name="nativeDataType">2000</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_ROOTPROJECTS" dataSetClass="com.artezio.arttime.report.datasource.pojo.ProjectDataSet" version="1.0">
@@ -2260,6 +2266,9 @@
         </ColumnMapping>
         <Method name="getRootProject"/>
     </ClassColumnMappings>
+    <ColumnMapping index="10" name="AccountableHours" odaDataType="Java Object">
+        <Method name="getAccountableHours"/>
+    </ColumnMapping>
 </PojoQuery>
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -3582,6 +3591,10 @@
                                             <property name="name">priority</property>
                                             <property name="dataType">integer</property>
                                         </structure>
+                                        <structure>
+                                            <property name="name">hourTypeId</property>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
                                     </list-property>
                                     <property name="columnName">hourType</property>
                                 </tabular-level>
@@ -3685,6 +3698,34 @@
 			.join(', ')
 	</value-of>]]></text-property>
         </text>
+        <list id="717">
+            <property name="dataSet">Projects</property>
+            <list-property name="visibility">
+                <structure>
+                    <property name="format">all</property>
+                    <expression name="valueExpr" type="javascript">true</expression>
+                </structure>
+            </list-property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <header>
+                <text id="725">
+                    <property name="contentType">auto</property>
+                    <text-property name="content"><![CDATA[This list is for evaluation of Hour Type Ids used in selected projects]]></text-property>
+                </text>
+            </header>
+            <detail>
+                <data id="728">
+                    <property name="resultSetColumn">id</property>
+                </data>
+            </detail>
+        </list>
         <text id="534"/>
         <grid id="664">
             <property name="dataSet">Hours-EmptyHourTypes</property>
@@ -3885,6 +3926,13 @@
                                         <property name="levels">
                                             <extended-item extensionName="LevelView" name="NewLevel View8" id="568">
                                                 <property name="level">HourTypes/hourType</property>
+                                                <property name="filter">
+                                                    <filter-condition-element>
+                                                        <expression name="expr" type="javascript">vars["accountableHourTypes"].contains(""+data["HourType_Id"])</expression>
+                                                        <property name="operator">is-true</property>
+                                                        <property name="updateAggregation">true</property>
+                                                    </filter-condition-element>
+                                                </property>
                                                 <property name="sort">
                                                     <sort-element>
                                                         <expression name="key" type="javascript">data["actualTime"]</expression>
@@ -4078,10 +4126,36 @@
                                 <expression name="expression" type="javascript">data["projectCodeM"] + "/" + data["employeeUserName"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
+                            <structure>
+                                <property name="name">project_userName_1</property>
+                                <expression name="expression">dimension["Employee_Project"]["project_userName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">projectCodeM_1</property>
+                                <expression name="expression">dimension["Employee_Project"]["projectCodeM"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">projectCodeS_1</property>
+                                <expression name="expression">dimension["Employee_Project"]["projectCodeS"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">HourType_Id</property>
+                                <expression name="expression" type="javascript">dimension["HourTypes"]["hourType"]["hourTypeId"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
                         </list-property>
                     </extended-item>
                 </cell>
             </row>
         </grid>
     </body>
+    <property name="pageVariables">
+        <variable-element name="accountableHourTypes">
+            <expression name="value" type="javascript">new Packages.java.util.HashSet()</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
 </report>

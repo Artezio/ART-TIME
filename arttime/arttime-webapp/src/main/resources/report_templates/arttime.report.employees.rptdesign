@@ -981,6 +981,13 @@
                     </structure>
                 </list-property>
             </structure>
+            <method name="onFetch"><![CDATA[var hourTypes = row["accountableHours"];
+var accountableHourTypes = vars["accountableHourTypes"];
+for (var index = 0; index < hourTypes.length; index++) {
+	accountableHourTypes.add(hoursTypes[index].getId());
+}
+vars["accountableHourTypes"] = accountableHourTypes;
+]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -2076,7 +2083,12 @@
                 <structure>
                     <property name="columnName">root_code</property>
                     <property name="alias">rootCode</property>
+                    <property name="analysis">dimension</property>
                     <text-property name="heading">root_code</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">AccountableHours</property>
+                    <text-property name="heading">AccountableHours</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters">
@@ -2136,8 +2148,20 @@
                         <property name="name">rootCode</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">AccountableHours</property>
+                        <property name="dataType">javaObject</property>
+                    </structure>
                 </list-property>
             </structure>
+            <method name="onFetch"><![CDATA[var hourTypes = row["AccountableHours"];
+var accountableHourTypes = vars["accountableHourTypes"];
+for (var index = 0; index < hourTypes.size(); index++) {
+	accountableHourTypes.add(hourTypes.get(index).getId().toString());
+}
+vars["accountableHourTypes"] = accountableHourTypes;
+]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -2203,6 +2227,13 @@
                     <property name="dataType">string</property>
                     <property name="nativeDataType">1</property>
                 </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">AccountableHours</property>
+                    <property name="nativeName">AccountableHours</property>
+                    <property name="dataType">javaObject</property>
+                    <property name="nativeDataType">2000</property>
+                </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <PojoQuery appContextKey="APP_CONTEXT_KEY_ROOTPROJECTS" dataSetClass="com.artezio.arttime.report.datasource.pojo.ProjectDataSet" version="1.0">
@@ -2242,6 +2273,9 @@
         </ColumnMapping>
         <Method name="getRootProject"/>
     </ClassColumnMappings>
+    <ColumnMapping index="10" name="AccountableHours" odaDataType="Java Object">
+        <Method name="getAccountableHours"/>
+    </ColumnMapping>
 </PojoQuery>
 ]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -3572,6 +3606,10 @@
                                             <property name="name">priority</property>
                                             <property name="dataType">integer</property>
                                         </structure>
+                                        <structure>
+                                            <property name="name">hourTypeId</property>
+                                            <property name="dataType">decimal</property>
+                                        </structure>
                                     </list-property>
                                     <property name="columnName">hourType</property>
                                 </tabular-level>
@@ -3647,6 +3685,46 @@
             <property name="contentType">html</property>
             <text-property name="content"><![CDATA[From <value-of format="dd.MM.yyyy"> params["startDate"].value </value-of> to <value-of format="dd.MM.yyyy"> params["endDate"] </value-of>]]></text-property>
         </text>
+        <list id="717">
+            <property name="dataSet">Projects</property>
+            <list-property name="visibility">
+                <structure>
+                    <property name="format">all</property>
+                    <expression name="valueExpr" type="javascript">true</expression>
+                </structure>
+            </list-property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">id</property>
+                    <text-property name="displayName">id</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["id"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">code</property>
+                    <text-property name="displayName">code</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["code"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">AccountableHours</property>
+                    <text-property name="displayName">AccountableHours</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AccountableHours"]</expression>
+                    <property name="dataType">javaObject</property>
+                </structure>
+            </list-property>
+            <header>
+                <text id="725">
+                    <property name="contentType">auto</property>
+                    <text-property name="content"><![CDATA[This list is for evaluation of Hour Type Ids used in selected projects]]></text-property>
+                </text>
+            </header>
+            <detail>
+                <data id="718">
+                    <property name="resultSetColumn">id</property>
+                </data>
+            </detail>
+        </list>
         <text id="459">
             <property name="fontFamily">"Arial"</property>
             <property name="fontSize">12pt</property>
@@ -3801,6 +3879,13 @@
                                         <property name="levels">
                                             <extended-item extensionName="LevelView" name="NewLevel View3" id="687">
                                                 <property name="level">HourTypes/hourType</property>
+                                                <property name="filter">
+                                                    <filter-condition-element>
+                                                        <expression name="expr" type="javascript">vars["accountableHourTypes"].contains("" + data["hourTypeId_1"])</expression>
+                                                        <property name="operator">is-true</property>
+                                                        <property name="updateAggregation">true</property>
+                                                    </filter-condition-element>
+                                                </property>
                                                 <property name="sort">
                                                     <sort-element>
                                                         <expression name="key" type="javascript">data["actualTime"]</expression>
@@ -3932,10 +4017,21 @@
                                 <expression name="expression" type="javascript">dimension["HourTypes"]["hourType"]["priority"]</expression>
                                 <property name="dataType">integer</property>
                             </structure>
+                            <structure>
+                                <property name="name">hourTypeId_1</property>
+                                <expression name="expression">dimension["HourTypes"]["hourType"]["hourTypeId"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
                         </list-property>
                     </extended-item>
                 </cell>
             </row>
         </grid>
     </body>
+    <property name="pageVariables">
+        <variable-element name="accountableHourTypes">
+            <expression name="value" type="javascript">new Packages.java.util.HashSet()</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
 </report>
