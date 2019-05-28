@@ -69,7 +69,7 @@ public class EmployeesBean implements Serializable {
 	public void setFilteredEmployees(List<Employee> filteredEmployees) {
 		this.filteredEmployees = filteredEmployees;
 	}
-    
+
 	public boolean filterByFormer(Object value, Object filterValue, Locale locale){
 		boolean onlyCurrent = (boolean) filterValue;
 		boolean former = (boolean) value;
@@ -80,11 +80,15 @@ public class EmployeesBean implements Serializable {
         if (filter == null) {
             return true;
         }
+        Collection<WorkdaysCalendar> filterCalendars = (Collection<WorkdaysCalendar>) filter;
         if (value == null) {
-            return false;
+            if (filterCalendars.isEmpty()) {
+                return true;
+            } else {
+                return filterCalendars.contains(null);
+            }
         }
         WorkdaysCalendar currentCalendarElement = (WorkdaysCalendar) value;
-        Collection<WorkdaysCalendar> filterCalendars = (Collection<WorkdaysCalendar>) filter;
 
         return filterCalendars.isEmpty()
                 || filterCalendars.stream().anyMatch(currentCalendarElement::equals);

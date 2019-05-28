@@ -115,7 +115,7 @@ public class EmployeesBeanTest {
     }
     
     @Test
-    public void testFilterByCalendar_ValueOutOfFilter() throws NoSuchFieldException {
+    public void testFilterByCalendar_NonNullValueOutOfFilter() throws NoSuchFieldException {
         WorkdaysCalendar calendar1 = new WorkdaysCalendar("calendar1");
         setField(calendar1, "id", 1L);
         WorkdaysCalendar calendar2 = new WorkdaysCalendar("calendar2");
@@ -130,13 +130,13 @@ public class EmployeesBeanTest {
     }
 
     @Test
-    public void testFilterByCalendar_valueNull_filterNotNull() throws NoSuchFieldException {
+    public void testFilterByCalendar_valueNull_filterNotNull_filterEmpty() throws NoSuchFieldException {
         WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
         setField(calendar, "id", 1L);
 
         boolean actual = bean.filterByCalendar(null, Collections.emptyList(), null);
 
-        assertFalse(actual);
+        assertTrue(actual);
     }
 
     @Test
@@ -147,6 +147,26 @@ public class EmployeesBeanTest {
         boolean actual = bean.filterByCalendar(null, null, null);
 
         assertTrue(actual);
+    }
+
+    @Test
+    public void testFilterByCalendar_valueNull_filterContainsNull() throws NoSuchFieldException {
+        WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
+        setField(calendar, "id", 1L);
+
+        boolean actual = bean.filterByCalendar(null, Arrays.asList(new Object(), null), null);
+
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testFilterByCalendar_valueNull_filterNotContainsNull() throws NoSuchFieldException {
+        WorkdaysCalendar calendar = new WorkdaysCalendar("calendar1");
+        setField(calendar, "id", 1L);
+
+        boolean actual = bean.filterByCalendar(null, Arrays.asList(new Object()), null);
+
+        assertFalse(actual);
     }
 
 }
