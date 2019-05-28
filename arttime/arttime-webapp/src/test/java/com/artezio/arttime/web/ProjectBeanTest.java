@@ -14,7 +14,6 @@ import org.easymock.EasyMock;
 import org.easymock.EasyMockRunner;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.primefaces.component.selectcheckboxmenu.SelectCheckboxMenu;
@@ -96,22 +95,6 @@ public class ProjectBeanTest {
         assertSame(project, participations.get(employee)[0]);
         assertTrue(participations.containsKey(employee));
         assertNull(bean.getEmployee());
-    }
-
-    @Test
-    public void testAddNewTeamMember_withNullCalendar() throws NoSuchFieldException {
-        Project project = new Project();
-        Employee employee = new Employee("employee");
-        Map<Employee, Project[]> participations = new HashMap<>();
-        setField(bean, "participations", participations);
-        setField(bean, "project", project);
-        setField(bean, "employee", employee);
-        employeeService.setCalendar(anyObject());
-        replay(employeeService);
-
-        bean.addNewTeamMember();
-
-        verify(employeeService);
     }
 
     @Test

@@ -146,9 +146,6 @@ public class ProjectBean implements Serializable {
 
     public void addNewTeamMember() {
         project.addTeamMember(employee);
-        if (employee.getCalendar() == null) {
-            employeeService.setCalendar(asList(employee));
-        }
         getParticipations().put(employee, new Project[]{project});
         employee = null;
     }
