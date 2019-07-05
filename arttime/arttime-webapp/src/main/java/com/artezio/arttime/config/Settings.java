@@ -9,11 +9,11 @@ public class Settings implements Serializable {
 
     private static final long serialVersionUID = 2L;
 
-    private final static String KEYCLOAK_SERVER_URL = System.getProperty("KEYCLOAK_SERVER_URL", "http://localhost:8180/auth");
-    private final static String KEYCLOAK_CLIENT_ID = System.getProperty("KEYCLOAK_CLIENT_ID", "arttime");
-    private final static String KEYCLOAK_REALM = System.getProperty("KEYCLOAK_REALM", "master");
-    private final static String KEYCLOAK_LOGIN = System.getProperty("KEYCLOAK_LOGIN", "admin");
-    private final static String KEYCLOAK_PASSWORD = System.getProperty("KEYCLOAK_PASSWORD", "password");
+    private final static String KEYCLOAK_SERVER_URL = System.getenv("KEYCLOAK_SERVER_URL");
+    private final static String KEYCLOAK_CLIENT_ID = System.getenv("KEYCLOAK_CLIENT_ID");
+    private final static String KEYCLOAK_REALM = System.getenv("KEYCLOAK_REALM");
+    private final static String KEYCLOAK_LOGIN = System.getenv("KEYCLOAK_LOGIN");
+    private final static String KEYCLOAK_PASSWORD = System.getenv("KEYCLOAK_PASSWORD");
 
     // TODO: Remove this enum
     public enum Locale {
