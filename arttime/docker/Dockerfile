@@ -4,7 +4,7 @@
 FROM alpine:3.9 as arttime-dist
 
 ARG ARTTIME_VERSION
-ENV ARTTIME_VERSION=${ARTTIME_VERSION:-demo}
+ENV ARTTIME_VERSION=${ARTTIME_VERSION:-latest}
 
 ARG ARTTIME_DIST_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/archive/${ARTTIME_VERSION}.tar.gz
 
@@ -38,10 +38,10 @@ USER 1000
 
 # ----------------------------------------------------------------------------------
 # Build wildfly with Art-Time web application and keycloak demo
-FROM jboss/wildfly:14.0.1.Final as wildfly
+FROM jboss/wildfly:17.0.0.Final as wildfly
 
 ARG ARTTIME_VERSION
-ENV ARTTIME_VERSION=${ARTTIME_VERSION:-demo}
+ENV ARTTIME_VERSION=${ARTTIME_VERSION:-latest}
 ARG ARTTIME_CLI_ADMIN_LOGIN=admin
 ARG ARTTIME_CLI_ADMIN_PASSWORD=admin
 ARG ARTTIME_WAR_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/releases/download/${ARTTIME_VERSION}/arttime-webapp.war
