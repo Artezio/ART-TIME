@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.primefaces.component.api.Widget;
-import org.primefaces.context.RequestContext;
+import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.SortOrder;
 import org.primefaces.util.ComponentUtils;
 
@@ -1594,7 +1594,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 			eval.append("_input').val('');");
 			eval.append(jsDeltaVar);
 			eval.append("={};");
-			RequestContext.getCurrentInstance().getScriptsToExecute().add(eval.toString());
+			PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add(eval.toString());
 		}
 
 	}
@@ -1673,7 +1673,7 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 		
 		eval.append(jsVar);
 		eval.append(".ht.render();");
-		RequestContext.getCurrentInstance().getScriptsToExecute().add(eval.toString());
+		PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add(eval.toString());
 	}
 
 	/**
@@ -1692,14 +1692,14 @@ public class Sheet extends UIInput implements ClientBehaviorHolder, EditableValu
 		sb.append(";");
 		sb.append(widgetVar);
 		sb.append(".ht.render();");
-		RequestContext.getCurrentInstance().getScriptsToExecute().add(sb.toString());
+		PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add(sb.toString());
 
 		sb = new StringBuffer();
 		sb.append(widgetVar);
 		sb.append(".sheetDiv.removeClass('ui-state-error')");
 		if (!getBadUpdates().isEmpty())
 			sb.append(".addClass('ui-state-error')");
-		RequestContext.getCurrentInstance().getScriptsToExecute().add(sb.toString());
+		PrimeRequestContext.getCurrentInstance().getScriptsToExecute().add(sb.toString());
 	}
 
 	/*

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.primefaces.context.RequestContext;
+//import org.primefaces.context.RequestContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RequestContext.class})
+//@PrepareForTest({RequestContext.class})
 public class FilterBeanTest {
 
     @TestSubject

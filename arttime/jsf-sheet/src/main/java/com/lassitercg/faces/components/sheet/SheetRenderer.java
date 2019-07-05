@@ -22,31 +22,10 @@
  */
 package com.lassitercg.faces.components.sheet;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.el.ValueExpression;
-import javax.faces.annotation.FacesConfig;
-import javax.faces.component.UIComponent;
-import javax.faces.component.behavior.ClientBehavior;
-import javax.faces.component.behavior.ClientBehaviorContext;
-import javax.faces.component.behavior.ClientBehaviorHolder;
-import javax.faces.context.FacesContext;
-import javax.faces.context.FacesContextFactory;
-import javax.faces.context.ResponseWriter;
-import javax.faces.model.SelectItem;
-import javax.faces.render.FacesRenderer;
-import javax.faces.render.Renderer;
-
+import com.lassitercg.faces.components.util.VarBuilder;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.primefaces.PrimeFaces;
-import org.primefaces.context.ApplicationContext;
-import org.primefaces.context.PrimeFacesContext;
-import org.primefaces.context.PrimeFacesContextFactory;
+import org.primefaces.context.PrimeApplicationContext;
 import org.primefaces.json.JSONArray;
 import org.primefaces.json.JSONException;
 import org.primefaces.json.JSONObject;
@@ -54,7 +33,21 @@ import org.primefaces.util.WidgetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lassitercg.faces.components.util.VarBuilder;
+import javax.el.ValueExpression;
+import javax.faces.component.UIComponent;
+import javax.faces.component.behavior.ClientBehavior;
+import javax.faces.component.behavior.ClientBehaviorContext;
+import javax.faces.component.behavior.ClientBehaviorHolder;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+import javax.faces.model.SelectItem;
+import javax.faces.render.FacesRenderer;
+import javax.faces.render.Renderer;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Sheet renderer.
@@ -196,7 +189,7 @@ public class SheetRenderer extends Renderer {
 		String widgetVar = sheet.resolveWidgetVar();
 		String clientId = sheet.getClientId(context);
 
-		WidgetBuilder wb = new WidgetBuilder(context, ApplicationContext.getCurrentInstance(context).getConfig());
+		WidgetBuilder wb = new WidgetBuilder(context,  PrimeApplicationContext.getCurrentInstance(context).getConfig());
 		wb.initWithDomReady("Sheet", widgetVar, clientId);
 
 		// errors

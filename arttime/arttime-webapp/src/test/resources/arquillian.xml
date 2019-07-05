@@ -7,8 +7,8 @@
     <container qualifier="wildfly14" default="true">
         <configuration>
             <property name="jbossHome">${java.io.tmpdir}/wildfly-${wildfly.version}</property>
-            <property name="javaVmArguments">-Djboss.socket.binding.port-offset=1000</property>
-            <property name="managementPort">10990</property>
+            <property name="javaVmArguments">-Djboss.socket.binding.port-offset=5000</property>
+            <property name="managementPort">14990</property>
             <property name="serverConfig">standalone-full.xml</property>
         </configuration>
     </container>

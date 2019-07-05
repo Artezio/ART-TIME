@@ -13,9 +13,9 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <wildfly.version>14.0.1.Final</wildfly.version>
-        <hibernate.version>5.3.6.Final</hibernate.version>
-        <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
+        <wildfly.version>17.0.1.Final</wildfly.version>
+        <hibernate.version>5.3.10.Final</hibernate.version>
+        <hibernate-validator.version>6.0.16.Final</hibernate-validator.version>
         <skipIntegrationTestsMessage>To skip integration tests, use -DskipIntegrationTests parameter</skipIntegrationTestsMessage>
         <skipIntegrationTests>false</skipIntegrationTests>
     </properties>
