@@ -20,7 +20,6 @@ RUN mkdir -p /opt/arttime-dist &&\
 FROM jboss/keycloak:4.8.3.Final as keycloak
 
 # Set this variable to the host where keycloak is running
-ENV KEYCLOAK_HOSTNAME localhost
 ARG KEYCLOAK_ADMIN_LOGIN=admin
 ARG KEYCLOAK_ADMIN_PASSWORD=password
 

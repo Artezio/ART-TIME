@@ -9,6 +9,12 @@ public class Settings implements Serializable {
 
     private static final long serialVersionUID = 2L;
 
+    private final static String KEYCLOAK_SERVER_URL = System.getProperty("KEYCLOAK_SERVER_URL", "http://localhost:8180/auth");
+    private final static String KEYCLOAK_CLIENT_ID = System.getProperty("KEYCLOAK_CLIENT_ID", "arttime");
+    private final static String KEYCLOAK_REALM = System.getProperty("KEYCLOAK_REALM", "master");
+    private final static String KEYCLOAK_LOGIN = System.getProperty("KEYCLOAK_LOGIN", "admin");
+    private final static String KEYCLOAK_PASSWORD = System.getProperty("KEYCLOAK_PASSWORD", "password");
+
     // TODO: Remove this enum
     public enum Locale {
         ENGLISH("en"),
@@ -352,43 +358,23 @@ public class Settings implements Serializable {
     }
 
     public String getKeycloakServerUrl() {
-        return getAsString(Setting.Name.KEYCLOAK_SERVER_URL);
-    }
-
-    public void setKeycloakServerUrl(String keycloakServerUrl) {
-        set(Setting.Name.KEYCLOAK_SERVER_URL, keycloakServerUrl);
+        return KEYCLOAK_SERVER_URL;
     }
 
     public String getKeycloakRealm() {
-        return getAsString(Setting.Name.KEYCLOAK_REALM);
-    }
-
-    public void setKeycloakRealm(String keycloakRealm) {
-        set(Setting.Name.KEYCLOAK_REALM, keycloakRealm);
+        return KEYCLOAK_REALM;
     }
 
     public String getKeycloakUserName() {
-        return getAsString(Setting.Name.KEYCLOAK_USERNAME);
-    }
-
-    public void setKeycloakUserName(String keycloakUserName) {
-        set(Setting.Name.KEYCLOAK_USERNAME, keycloakUserName);
+        return KEYCLOAK_LOGIN;
     }
 
     public String getKeycloakPassword() {
-        return getAsString(Setting.Name.KEYCLOAK_PASSWORD);
-    }
-
-    public void setKeycloakPassword(String keycloakPassword) {
-        set(Setting.Name.KEYCLOAK_PASSWORD, keycloakPassword);
+        return KEYCLOAK_PASSWORD;
     }
 
     public String getKeycloakClientId() {
-        return getAsString(Setting.Name.KEYCLOAK_CLIENT_ID);
-    }
-
-    public void setKeycloakClientId(String keycloakClientId) {
-        set(Setting.Name.KEYCLOAK_CLIENT_ID, keycloakClientId);
+        return KEYCLOAK_CLIENT_ID;
     }
 
     public Integer getKeycloakCacheRefreshIntervalMinutes() {

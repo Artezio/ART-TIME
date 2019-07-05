@@ -26,11 +26,6 @@ public class KeycloakClient {
 
     private final static String TIMER_INFO = "com.artezio.arttime.integration.keycloak";
     static final String KEYCLOAK_TRACKING_SYSTEM_NAME = "Keycloak";
-    private final static String SERVER_URL = System.getProperty("KEYCLOAK_SERVER_URL", "http://localhost:8180/auth");
-    private final static String CLIENT_ID = System.getProperty("KEYCLOAK_CLIENT_ID", "arttime");
-    private final static String REALM_NAME = System.getProperty("KEYCLOAK_REALM", "master");
-    private final static String LOGIN = System.getProperty("KEYCLOAK_LOGIN", "admin");
-    private final static String PASSWORD = System.getProperty("KEYCLOAK_PASSWORD", "password");
 
     @Inject
     @ApplicationSettings
@@ -117,18 +112,18 @@ public class KeycloakClient {
 
     protected RealmResource getRealm() {
         return KeycloakBuilder.builder()
-                .serverUrl(SERVER_URL)
-                .realm(REALM_NAME)
-                .username(LOGIN)
-                .password(PASSWORD)
-                .clientId(CLIENT_ID)
+                .serverUrl(settings.getKeycloakServerUrl())
+                .realm(settings.getKeycloakRealm())
+                .username(settings.getKeycloakUserName())
+                .password(settings.getKeycloakPassword())
+                .clientId(settings.getKeycloakClientId())
                 .resteasyClient(new ResteasyClientBuilder()
                         .connectionPoolSize(10)
                         .register(new ResteasyJackson2Provider() {
                         })
                         .build())
                 .build()
-                .realm(REALM_NAME);
+                .realm(settings.getKeycloakRealm());
     }
 
     protected Map<String, List<UserInfo>> loadUserGroups(List<UserRepresentation> users, RealmResource realm) {
