@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,9 +25,7 @@ import javax.persistence.criteria.*;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.Type;
 
-import org.hibernate.Filter;
-import org.hibernate.Session;
-import org.hibernate.SynchronizeableQuery;
+import org.hibernate.*;
 import org.jboss.logging.Logger;
 
 import com.artezio.javax.el.ElEvaluator;
@@ -47,11 +46,13 @@ public class AbacEntityManager implements EntityManager {
     private Map<String, ParamValue[]> filters;
     private Map<String, Set<String>> filtersInContext;
     private ElEvaluator elEvaluator;
+    private Map<String, Map<String, Object>> evaluatedFilterParametersCache = new ConcurrentHashMap<>();
 
     public AbacEntityManager(EntityManager entityManager) {
         this.session = entityManager.unwrap(Session.class);
         elEvaluator = CDI.current().select(ElEvaluator.class).get();
         this.entityManager = entityManager;
+
 
         initAbacFilters();
     }
@@ -144,10 +145,15 @@ public class AbacEntityManager implements EntityManager {
             Set<String> filterParamNames = filter.getFilterDefinition().getParameterNames();
             params.stream()
                     .filter(paramValue -> filterParamNames.contains(paramValue.paramName()))
-                    .forEach(paramValue -> filter.setParameter(paramValue.paramName(), elEvaluator.evaluate(paramValue.elExpression())));
+                    .forEach(paramValue -> filter.setParameter(paramValue.paramName(), evaluateFilterParam(filterName, paramValue)));
         } else {
             session.disableFilter(filterName);
         }
+    }
+
+    private Object evaluateFilterParam(String filterName, ParamValue paramValue) {
+        Map<String, Object> evaluatedFilterParams = evaluatedFilterParametersCache.computeIfAbsent(filterName, (e) -> new ConcurrentHashMap<>());
+        return evaluatedFilterParams.computeIfAbsent(paramValue.paramName(), (paramName) -> elEvaluator.evaluate(paramValue.elExpression()));
     }
 
     private boolean isFilterHasToBeUpdated(String filterName, String context) {
@@ -164,7 +170,6 @@ public class AbacEntityManager implements EntityManager {
 
     private <T> void checkEntityAccessRights(T entity, Class<?> entityClass) {
         if (isAbacSecured(entityClass)) {
-            flush();
             String entityName = entityClass.getSimpleName();
             Query checkQuery = entityManager
                     .createQuery("SELECT 1 FROM " + entityName + " entity WHERE entity = :entity")
