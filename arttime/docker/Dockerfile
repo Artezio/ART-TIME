@@ -1,19 +1,13 @@
 # ----------------------------------------------------------------------------------
-# Download and unpack arttime dist
+# Download and build arttime from source code
+FROM maven:3.5.2-jdk-8-alpine as maven_builder
 
-FROM alpine:3.9 as arttime-dist
+RUN apk add --no-cache git
+RUN cd / &&\
+	git clone https://github.com/Artezio/ART-TIME.git &&\
+	cd /ART-TIME/arttime &&\
+	mvn clean install -Dmaven.test.skip=true
 
-ARG ARTTIME_VERSION
-ENV ARTTIME_VERSION=${ARTTIME_VERSION:-latest}
-
-ARG ARTTIME_DIST_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/archive/${ARTTIME_VERSION}.tar.gz
-
-RUN echo ${ARTTIME_VERSION}
-RUN echo ${ARTTIME_DIST_DOWNLOAD_URL}
-
-RUN apk add --no-cache curl tar
-RUN mkdir -p /opt/arttime-dist &&\
-    curl -SL ${ARTTIME_DIST_DOWNLOAD_URL} /tmp/arttime-dist.tar.gz | tar zx -C /opt/arttime-dist/ --strip-components=2
 
 # ----------------------------------------------------------------------------------
 # Build and configure embedded Keycloak server
@@ -24,8 +18,8 @@ ARG KEYCLOAK_ADMIN_LOGIN=admin
 ARG KEYCLOAK_ADMIN_PASSWORD=password
 
 # Add demo keycloak db and login theme from dist image
-COPY --chown=1000:0 --from=arttime-dist /opt/arttime-dist/docker/keycloak/keycloak.mv.db /opt/jboss/keycloak/standalone/data/keycloak.mv.db
-COPY --chown=1000:0 --from=arttime-dist /opt/arttime-dist/docker/keycloak/themes/keycloak /opt/jboss/keycloak/themes/keycloak/
+COPY --chown=1000:0 --from=maven_builder /ART-TIME/arttime/docker/keycloak/keycloak.mv.db /opt/jboss/keycloak/standalone/data/keycloak.mv.db
+COPY --chown=1000:0 --from=maven_builder /ART-TIME/arttime/docker/keycloak/themes/keycloak /opt/jboss/keycloak/themes/keycloak/
 
 # Add keycloak admin user so art-time can connect to its API
 RUN /opt/jboss/keycloak/bin/add-user.sh ${KEYCLOAK_ADMIN_LOGIN} ${KEYCLOAK_ADMIN_PASSWORD}
@@ -39,11 +33,8 @@ USER 1000
 # Build wildfly with Art-Time web application and keycloak demo
 FROM jboss/wildfly:17.0.0.Final as wildfly
 
-ARG ARTTIME_VERSION
-ENV ARTTIME_VERSION=${ARTTIME_VERSION:-latest}
 ARG ARTTIME_CLI_ADMIN_LOGIN=admin
 ARG ARTTIME_CLI_ADMIN_PASSWORD=admin
-ARG ARTTIME_WAR_DOWNLOAD_URL=https://github.com/Artezio/ART-TIME/releases/download/${ARTTIME_VERSION}/arttime-webapp.war
 ARG KEYCLOAK_ADAPTER_VERSION=4.8.3.Final
 ARG KEYCLOAK_ADAPTER_DOWNLOAD_URL=https://downloads.jboss.org/keycloak/${KEYCLOAK_ADAPTER_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_ADAPTER_VERSION}.tar.gz
 ARG JBOSS_CLI=/opt/jboss/wildfly/bin/jboss-cli.sh
@@ -63,6 +54,7 @@ ENV KEYCLOAK_USERNAME_ATTRIBUTE preferred_username
 
 ENV MAX_HEAP_SIZE_MB 2048
 ENV MAX_METASPACE_SIZE_MB 384
+ENV JBOSS_ARGUMENTS ""
 
 ENV JDBC_POSTGRES_VERSION 42.2.2
 ENV JDBC_MYSQL_VERSION 5.1.46
@@ -70,11 +62,11 @@ ENV JDBC_MSSQL_VERSION 6.4.0.jre7
 ENV JDBC_MARIADB_VERSION 2.2.3 
 ENV JDBC_ORACLE_VERSION ojdbc6
 
-# Install Art-Time webapp
-ADD --chown=jboss:0 ${ARTTIME_WAR_DOWNLOAD_URL} /opt/jboss/wildfly/standalone/deployments/arttime-webapp.war
+# Deploy Art-Time webapp
+COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/arttime-webapp/target/arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/arttime-webapp.war
 
 # Install database drivers
-COPY --chown=jboss:0 --from=arttime-dist /opt/arttime-dist/docker/tools /opt/jboss/tools/arttime/
+COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/docker/tools /opt/jboss/tools/arttime/
 RUN chmod +x /opt/jboss/tools/arttime/*.sh && \ 
     /opt/jboss/tools/arttime/install-databases.sh
 
@@ -88,7 +80,8 @@ COPY --chown=jboss:0 --from=keycloak /opt/jboss/tools /opt/jboss/tools
 # Setup demo database
 USER root
 RUN mkdir -p /opt/arttime-demo-db && chown jboss:0 /opt/arttime-demo-db
-COPY --chown=jboss:0 --from=arttime-dist /opt/arttime-dist/docker/init_arttime_demo_db_h2.sql /opt/arttime-demo-db/init-arttime-demo-db.sql
+COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/docker/init_arttime_demo_db_h2.sql /opt/arttime-demo-db/init-arttime-demo-db.sql
+
 USER jboss
 
 EXPOSE 8080

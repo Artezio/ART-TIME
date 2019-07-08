@@ -20,3 +20,4 @@ http_port_keycloak=8081
 https_port_keycloak=8444
 
 MAX_HEAP_SIZE_MB=3072
+JBOSS_ARGUMENTS=--debug *:8787
