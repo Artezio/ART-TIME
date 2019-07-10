@@ -6,6 +6,8 @@
 	<entry key="com.artezio.arttime.exceptions.ActualTimeRemovalException">exception.message.actualTimeRemovalException</entry>
 	<entry key="org.hibernate.exception.ConstraintViolationException">exception.message.ConstraintViolationException</entry>
 	<entry key="org.hibernate.exception.ConstraintViolationException.uniqueprojectcodes">message.constraint.constraint_unique_project_code</entry>
+	<entry key="org.hibernate.exception.ConstraintViolationException.project_code_key">message.constraint.constraint_unique_project_code</entry>
+
 	<entry key="org.apache.shiro.authc.AuthenticationException">exception.message.AuthenticationException</entry>
     <entry key="org.eclipse.birt.report.engine.api.impl.ParameterValidationException">exception.message.BirtParameterValidationException</entry>
 
