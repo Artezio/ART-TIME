@@ -18,6 +18,7 @@ import java.util.List;
 
 import static com.artezio.arttime.admin_tool.cache.WebCached.Scope.REQUEST_SCOPED;
 import static com.artezio.arttime.admin_tool.cache.WebCached.Scope.VIEW_SCOPED;
+import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import static com.artezio.arttime.security.AbacContexts.MANAGE_PROJECTS;
 import static com.artezio.arttime.security.AbacContexts.VIEW_TIMESHEET;
 import static com.artezio.arttime.security.auth.UserRoles.*;
@@ -124,7 +125,16 @@ public class ProjectService implements Serializable {
     @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER})
     @AbacContext(MANAGE_PROJECTS)
     public List<Project> getManagedProjectHierarchy(Project master) {
-        return getProjectHierarchy(master);
+        List<Project> projects = asList(master);
+        List<Project> result = new LinkedList<>();
+        while (!projects.isEmpty()) {
+            result.addAll(projects);
+            projects = projectRepository.query()
+                    .masters(projects)
+                    .distinct()
+                    .list();
+        }
+        return result;
     }
 
     @RolesAllowed({EXEC_ROLE, PM_ROLE, OFFICE_MANAGER, ACCOUNTANT, INTEGRATION_CLIENT_ROLE})
@@ -136,6 +146,7 @@ public class ProjectService implements Serializable {
             result.addAll(projects);
             projects = projectRepository.query()
                     .masters(projects)
+                    .status(ACTIVE)
                     .distinct()
                     .list();
         }
