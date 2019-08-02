@@ -4,7 +4,7 @@
             xsi:schemaLocation="http://jboss.org/schema/arquillian
                                 http://www.jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-    <container qualifier="wildfly14" default="true">
+    <container qualifier="wildfly-${wildfly.version}" default="true">
         <configuration>
             <property name="jbossHome">${java.io.tmpdir}/wildfly-${wildfly.version}</property>
             <property name="javaVmArguments">-Djboss.socket.binding.port-offset=5000</property>

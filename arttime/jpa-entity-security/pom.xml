@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.artezio.javax.jpa</groupId>
-	<artifactId>abac</artifactId>
-	<version>1.0.2.Alpha</version>
-	<packaging>jar</packaging>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.artezio.javax.jpa</groupId>
+    <artifactId>abac</artifactId>
+    <version>1.0.2.Alpha</version>
+    <packaging>jar</packaging>
 
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -16,7 +16,8 @@
         <wildfly.version>17.0.1.Final</wildfly.version>
         <hibernate.version>5.3.10.Final</hibernate.version>
         <hibernate-validator.version>6.0.16.Final</hibernate-validator.version>
-        <skipIntegrationTestsMessage>To skip integration tests, use -DskipIntegrationTests parameter</skipIntegrationTestsMessage>
+        <skipIntegrationTestsMessage>To skip integration tests, use -DskipIntegrationTests parameter
+        </skipIntegrationTestsMessage>
         <skipIntegrationTests>false</skipIntegrationTests>
     </properties>
 
@@ -118,6 +119,18 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
     <dependencies>
         <dependency>
@@ -166,15 +179,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.arquillian</groupId>
             <artifactId>wildfly-arquillian-container-managed</artifactId>
-            <version>8.2.1.Final</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>sun.jdk</groupId>
-                    <artifactId>jconsole</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>2.1.1.Final</version>
             <scope>test</scope>
         </dependency>
         <dependency>
