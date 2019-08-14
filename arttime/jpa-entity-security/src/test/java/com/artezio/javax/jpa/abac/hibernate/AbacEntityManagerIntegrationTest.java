@@ -25,6 +25,7 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
@@ -60,10 +61,12 @@ public class AbacEntityManagerIntegrationTest {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class, "abac-test.jar")
+                .addPackages(true, "com/google")
                 .addPackage("com.artezio.javax.el")
                 .addPackage("com.artezio.javax.jpa.abac")
                 .addPackage("com.artezio.javax.jpa.abac.testServices")
                 .addPackage("com.artezio.javax.jpa.abac.hibernate")
+                .addPackage("com.artezio.javax.jpa.abac.hibernate.spi")
                 .addPackage("com.artezio.javax.jpa.model")
                 .addClass(IntegrationTest.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -379,9 +382,20 @@ public class AbacEntityManagerIntegrationTest {
         assertEquals(expected, actuals.get(0));
     }
 
+    @Test(expected = EJBTransactionRolledbackException.class)
+    @Transactional(TransactionMode.COMMIT)
+    public void testSaveSecuredEntity_batch() {
+        SecuredEntity entity1 = new SecuredEntity("two");
+        SecuredEntity entity2 = new SecuredEntity("one");
+        SecuredEntity entity3 = new SecuredEntity("two");
+        SecuredEntity entity4 = new SecuredEntity("one");
+        SecuredEntity entity5 = new SecuredEntity("one");
+        statelessBean.save(Arrays.asList(entity1, entity2, entity3, entity4, entity5));
+    }
+
     @Test
     public void testListAbacFilters() {
-        AbacEntityManager em = new AbacEntityManager(notSecuredEntityManager);
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
         Set<Class<?>> entitiesToScan = new HashSet<>(Arrays.asList(SecuredEntity.class, MultipleContextSecuredEntity.class));
         Set<String> expectedFilterNames = new HashSet<>(Arrays.asList("secured", "contextSecured1", "contextSecured2"));
 
@@ -395,7 +409,7 @@ public class AbacEntityManagerIntegrationTest {
 
     @Test
     public void testGetSecuredEntities() {
-        AbacEntityManager em = new AbacEntityManager(notSecuredEntityManager);
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
         Set<Class<?>> actuals = em.listSecuredEntities();
 
         assertTrue(actuals.contains(SecuredEntity.class));
@@ -404,7 +418,7 @@ public class AbacEntityManagerIntegrationTest {
 
     @Test
     public void testListFiltersInContext() {
-        AbacEntityManager em = new AbacEntityManager(notSecuredEntityManager);
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
         Set<Class<?>> entitiesToScan = new HashSet<>(Arrays.asList(SecuredEntity.class, MultipleContextSecuredEntity.class));
         Set<String> expectedContextNames = new HashSet<>(Arrays.asList("", "contextOne", "contextTwo"));
 
@@ -426,7 +440,7 @@ public class AbacEntityManagerIntegrationTest {
 
     @Test
     public void testListAbacAnnotations() {
-        AbacEntityManager em = new AbacEntityManager(notSecuredEntityManager);
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
 
         List<AbacRule> actuals = em.listAbacAnnotations(MultipleContextSecuredEntity.class);
 
@@ -548,4 +562,43 @@ public class AbacEntityManagerIntegrationTest {
         abacEntityManager.persist(owningEntity);
     }
 
+    @Test
+    public void testCheckEntitiesAccessRights() {
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
+        SecuredEntity securedEntity1 = new SecuredEntity("one");
+        SecuredEntity securedEntity2 = new SecuredEntity("one");
+        em.persist(securedEntity1);
+        em.persist(securedEntity2);
+        em.flush();
+        em.checkEntitiesAccessRights(SecuredEntity.class, Arrays.asList(securedEntity1, securedEntity2));
+        List<SecuredEntity> actual = em.createQuery("FROM SecuredEntity e", SecuredEntity.class).getResultList();
+        assertTrue(actual.contains(securedEntity1));
+        assertTrue(actual.contains(securedEntity2));
+    }
+
+    @Test(expected = EntityAccessDeniedException.class)
+    public void testCheckEntitiesAccessRights_noAccessRightsForOneOfEntities() {
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
+        SecuredEntity securedEntity1 = new SecuredEntity("one");
+        SecuredEntity securedEntity2 = new SecuredEntity("two");
+        notSecuredEntityManager.persist(securedEntity1);
+        notSecuredEntityManager.persist(securedEntity2);
+        notSecuredEntityManager.flush();
+
+        em.checkEntitiesAccessRights(SecuredEntity.class, Arrays.asList(securedEntity1, securedEntity2));
+    }
+
+    @Test(expected = EntityAccessDeniedException.class)
+    public void testBatchIsCheckedBeforeRead() {
+        AbacEntityManager em = createAbacEntityManager(notSecuredEntityManager);
+        SecuredEntity securedEntity1 = new SecuredEntity("one");
+        SecuredEntity securedEntity2 = new SecuredEntity("two");
+        em.persist(securedEntity1);
+        em.persist(securedEntity2);
+        em.find(SecuredEntity.class, securedEntity1.getId());
+    }
+
+    private AbacEntityManager createAbacEntityManager(EntityManager delegate) {
+        return new AbacEntityManager(delegate);
+    }
 }

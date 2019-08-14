@@ -339,9 +339,9 @@ public class HoursAbacIntegrationTest extends AbacIntegrationTest {
             unsecuredEntityManager.persist(hours);
         });
         List<Hours> actualHours = runInNewTx.call(() -> {
-                abacEntityManager.joinTransaction();
-                return abacEntityManager.createQuery("SELECT h FROM Hours h", Hours.class).getResultList();
-            });
+            abacEntityManager.joinTransaction();
+            return abacEntityManager.createQuery("SELECT h FROM Hours h", Hours.class).getResultList();
+        });
         assertTrue(actualHours.isEmpty());
     }
 

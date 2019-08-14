@@ -447,6 +447,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
+                    <argLine>-Xmx768m -XX:MaxPermSize=384m</argLine>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <reuseForks>false</reuseForks>
                     <systemPropertyVariables>
                         <jbossHome>${java.io.tmpdir}/wildfly-${wildfly.version}</jbossHome>
                     </systemPropertyVariables>

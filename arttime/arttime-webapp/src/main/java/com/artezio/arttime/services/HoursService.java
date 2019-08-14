@@ -89,8 +89,7 @@ public class HoursService {
 
     @RolesAllowed({INTEGRATION_CLIENT_ROLE, PM_ROLE, EXEC_ROLE, OFFICE_MANAGER, ACCOUNTANT})
     public List<Hours> getHours(Filter filter) {
-        HoursQuery query = hoursRepository.query();
-        List<Hours> result = query
+        return hoursRepository.query()
                 .approved(filter.isApproved())
                 .projects(filter.getProjects())
                 .departments(filter.getDepartments())
@@ -98,7 +97,6 @@ public class HoursService {
                 .period(filter.getPeriod())
                 .employees(filter.getEmployees())
                 .list();
-        return result;
     }
 
     // TODO: Change signature for using Filter
