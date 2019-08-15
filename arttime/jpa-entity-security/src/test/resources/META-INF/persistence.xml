@@ -41,4 +41,30 @@
             <property name="hibernate.cache.use_second_level_cache" value="false"/>
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="test-pu-resourcelocal" transaction-type="RESOURCE_LOCAL">
+        <provider>com.artezio.javax.jpa.abac.hibernate.AbacPersistenceProvider</provider>
+        <class>com.artezio.javax.jpa.model.Master</class>
+        <class>com.artezio.javax.jpa.model.Detail</class>
+        <class>com.artezio.javax.jpa.model.SecuredEntity</class>
+        <class>com.artezio.javax.jpa.model.SecuredEntity2</class>
+        <class>com.artezio.javax.jpa.model.SecuredEntityByContextValue</class>
+        <class>com.artezio.javax.jpa.model.MultipleContextSecuredEntity</class>
+        <class>com.artezio.javax.jpa.model.DefaultContextSecuredEntity</class>
+        <class>com.artezio.javax.jpa.model.MultipleFilterSecuredEntity</class>
+        <class>com.artezio.javax.jpa.model.AssociationOwningEntity</class>
+        <class>com.artezio.javax.jpa.model.AssociationChildEntity</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;IGNORECASE=TRUE"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.cache.use_query_cache" value="false"/>
+            <property name="hibernate.cache.use_second_level_cache" value="false"/>
+        </properties>
+    </persistence-unit>
 </persistence>

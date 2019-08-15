@@ -1,38 +1,28 @@
 package com.artezio.javax.jpa.abac.hibernate;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.enterprise.inject.spi.CDI;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.StoredProcedureQuery;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import javax.persistence.metamodel.Metamodel;
-import javax.persistence.metamodel.Type;
-
-import org.hibernate.*;
-import org.jboss.logging.Logger;
-
 import com.artezio.javax.el.ElEvaluator;
 import com.artezio.javax.jpa.abac.AbacRule;
 import com.artezio.javax.jpa.abac.ActiveAbacContext;
 import com.artezio.javax.jpa.abac.EntityAccessDeniedException;
 import com.artezio.javax.jpa.abac.ParamValue;
+import com.google.common.collect.Lists;
+import org.hibernate.Filter;
+import org.hibernate.Session;
+import org.jboss.logging.Logger;
+
+import javax.enterprise.inject.spi.CDI;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.Type;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AbacEntityManager implements EntityManager {
 
@@ -47,17 +37,61 @@ public class AbacEntityManager implements EntityManager {
     private Map<String, Set<String>> filtersInContext;
     private ElEvaluator elEvaluator;
     private Map<String, Map<String, Object>> evaluatedFilterParametersCache = new ConcurrentHashMap<>();
+    private BatchAccessRightsChecker batchAccessRightsChecker = new BatchAccessRightsChecker();
+
+    class BatchAccessRightsChecker {
+
+        private final static int BATCH_SIZE = 100;
+
+        private List<Object> entitiesToCheck = new LinkedList<>();
+
+        void performAccessCheck() {
+            List<Object> entitiesToCheck = this.entitiesToCheck;
+            this.entitiesToCheck = new LinkedList<>();
+            Map<Class<?>, List<Object>> entitiesByClasses = entitiesToCheck.stream()
+                    .collect(Collectors.groupingBy(Object::getClass));
+            entitiesByClasses.forEach(this::checkAccessInBatches);
+        }
+
+        private void checkAccessInBatches(Class<?> entityClass, List<Object> entities) {
+            Lists.partition(entities, BatchAccessRightsChecker.BATCH_SIZE)
+                    .forEach(batchOfEntities -> checkEntitiesAccessRights(entityClass, batchOfEntities));
+        }
+
+        void entityCreated(Object entity) {
+            entitiesToCheck.add(entity);
+        }
+
+        void entityModified(Object entity) {
+            entitiesToCheck.add(entity);
+        }
+
+        void entityLoaded(Object entity) {
+            entitiesToCheck.add(entity);
+            performAccessCheck();
+        }
+
+        void entityIsAboutToBeRemoved(Object entity) {
+            entitiesToCheck.add(entity);
+            performAccessCheck();
+        }
+    }
 
     public AbacEntityManager(EntityManager entityManager) {
         this.session = entityManager.unwrap(Session.class);
+
         elEvaluator = CDI.current().select(ElEvaluator.class).get();
         this.entityManager = entityManager;
-
 
         initAbacFilters();
     }
 
+    void postFlush() {
+        updateAbacState();
+        batchAccessRightsChecker.performAccessCheck();
+    }
     // TODO: Move the initialization to factory class
+
     private void initAbacFilters() {
         Set<Class<?>> securedEntities = listSecuredEntities();
         filters = listAbacFilters(securedEntities);
@@ -164,7 +198,7 @@ public class AbacEntityManager implements EntityManager {
         return filtersInContext.containsKey(context);
     }
 
-    private <T> void checkEntityAccessRights(T entity) {
+    public <T> void checkEntityAccessRights(T entity) {
         checkEntityAccessRights(entity, entity.getClass());
     }
 
@@ -183,27 +217,42 @@ public class AbacEntityManager implements EntityManager {
         }
     }
 
+    protected <T> void checkEntitiesAccessRights(Class<?> entityClass, Collection<T> entities) {
+        if (isAbacSecured(entityClass)) {
+            String entityName = entityClass.getSimpleName();
+            updateAbacState();
+            Query checkQuery = entityManager
+                    .createQuery("SELECT DISTINCT COUNT(*) FROM " + entityName + " entity WHERE entity in :entities")
+                    .setParameter("entities", entities);
+            long accessibleEntitiesCount = (long) checkQuery.getSingleResult();
+            if (accessibleEntitiesCount != entities.size()) {
+                entities.forEach(entity -> checkEntityAccessRights(entity, entityClass));
+            }
+        }
+    }
+
     private boolean isAbacSecured(Class<?> entityClass) {
         return securedEntities.contains(entityClass);
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void persist(Object entity) {
         entityManager.persist(entity);
-        checkEntityAccessRights(entity);
+        batchAccessRightsChecker.entityCreated(entity);
     }
 
     @Override
     public <T> T merge(T entity) {
         T result = (T) entityManager.merge(entity);
-        checkEntityAccessRights(result);
+        batchAccessRightsChecker.entityModified(result);
         return result;
     }
 
     public void remove(Object entity) {
         if (!entityManager.contains(entity)) {
-            checkEntityAccessRights(entity);
+            batchAccessRightsChecker.entityIsAboutToBeRemoved(entity);
         }
         entityManager.remove(entity);
     }
@@ -211,7 +260,7 @@ public class AbacEntityManager implements EntityManager {
     public <T> T find(Class<T> entityClass, Object primaryKey) {
         T result = entityManager.find(entityClass, primaryKey);
         if (result != null) {
-            checkEntityAccessRights(result, entityClass);
+            batchAccessRightsChecker.entityLoaded(result);
         }
         return result;
     }
@@ -219,7 +268,7 @@ public class AbacEntityManager implements EntityManager {
     public <T> T find(Class<T> entityClass, Object primaryKey, Map<String, Object> properties) {
         T result = entityManager.find(entityClass, primaryKey, properties);
         if (result != null) {
-            checkEntityAccessRights(result, entityClass);
+            batchAccessRightsChecker.entityLoaded(result);
         }
         return result;
     }
@@ -227,7 +276,7 @@ public class AbacEntityManager implements EntityManager {
     public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode) {
         T result = entityManager.find(entityClass, primaryKey, lockMode);
         if (result != null) {
-            checkEntityAccessRights(result, entityClass);
+            batchAccessRightsChecker.entityLoaded(result);
         }
         return result;
     }
@@ -235,7 +284,7 @@ public class AbacEntityManager implements EntityManager {
     public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode, Map<String, Object> properties) {
         T result = entityManager.find(entityClass, primaryKey, lockMode, properties);
         if (result != null) {
-            checkEntityAccessRights(result, entityClass);
+            batchAccessRightsChecker.entityLoaded(result);
         }
         return result;
     }
@@ -427,5 +476,4 @@ public class AbacEntityManager implements EntityManager {
     public <T> List<EntityGraph<? super T>> getEntityGraphs(Class<T> entityClass) {
         return entityManager.getEntityGraphs(entityClass);
     }
-
 }

@@ -1,8 +1,13 @@
 package com.artezio.javax.jpa.abac.hibernate;
 
+import org.hibernate.Session;
+import org.hibernate.SessionBuilder;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.metamodel.Metamodel;
+import java.util.Collections;
 import java.util.Map;
 
 public class AbacEntityManagerFactory implements EntityManagerFactory {
@@ -15,22 +20,46 @@ public class AbacEntityManagerFactory implements EntityManagerFactory {
 
     @Override
     public EntityManager createEntityManager() {
-        return new AbacEntityManager(entityManagerFactory.createEntityManager());
+        return createAbacEntityManager(SynchronizationType.SYNCHRONIZED, Collections.emptyMap());
     }
 
     @Override
     public EntityManager createEntityManager(Map map) {
-        return new AbacEntityManager(entityManagerFactory.createEntityManager(map));
+        return createAbacEntityManager(SynchronizationType.SYNCHRONIZED, map);
     }
 
     @Override
     public EntityManager createEntityManager(SynchronizationType synchronizationType) {
-        return new AbacEntityManager(entityManagerFactory.createEntityManager(synchronizationType));
+        return createAbacEntityManager(synchronizationType, Collections.emptyMap());
     }
 
     @Override
     public EntityManager createEntityManager(SynchronizationType synchronizationType, Map map) {
-        return new AbacEntityManager(entityManagerFactory.createEntityManager(synchronizationType, map));
+        return createAbacEntityManager(synchronizationType, map);
+    }
+
+    private AbacEntityManager createAbacEntityManager(SynchronizationType synchronizationType, Map map) {
+        PostFlushInterceptor interceptor = new PostFlushInterceptor();
+        SessionFactoryImplementor sessionFactory = entityManagerFactory.unwrap(SessionFactoryImplementor.class);
+        SessionBuilder sessionBuilder = sessionFactory
+                .withOptions()
+                .interceptor(interceptor);
+        if (synchronizationType == SynchronizationType.SYNCHRONIZED) {
+            sessionBuilder.autoJoinTransactions(true);
+        } else {
+            sessionBuilder.autoJoinTransactions(false);
+        }
+        Session session = sessionBuilder.openSession();
+        if (map != null) {
+            map.keySet().forEach(key -> {
+                if (key instanceof String) {
+                    session.setProperty((String) key, map.get(key));
+                }
+            });
+        }
+        AbacEntityManager abacEntityManager = new AbacEntityManager(session);
+        interceptor.onPostFlush(abacEntityManager::postFlush);
+        return abacEntityManager;
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.artezio.javax.jpa.abac.AbacContext;
 import com.artezio.javax.jpa.model.DefaultContextSecuredEntity;
 import com.artezio.javax.jpa.model.Master;
 import com.artezio.javax.jpa.model.MultipleContextSecuredEntity;
+import com.artezio.javax.jpa.model.SecuredEntity;
 
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -47,11 +48,22 @@ public class StatelessBean {
                 .getResultList();
     }
 
+    public List<SecuredEntity> getSecured() {
+        return abacEntityManager
+                .createQuery("SELECT e FROM SecuredEntity e", SecuredEntity.class)
+                .getResultList();
+    }
+
     @AbacContext("notDeclaredContext")
     public List<DefaultContextSecuredEntity> getFromNotDeclaredContext() {
         return abacEntityManager
                 .createQuery("SELECT e FROM DefaultContextSecuredEntity e", DefaultContextSecuredEntity.class)
                 .getResultList();
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void save(List<SecuredEntity> securedEntities) {
+        securedEntities.forEach(abacEntityManager::persist);
     }
 
 }
