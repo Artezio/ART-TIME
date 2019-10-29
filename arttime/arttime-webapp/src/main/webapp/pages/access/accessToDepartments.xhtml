@@ -41,7 +41,7 @@
                 <p:autoComplete id="employeesAutocomplete"
                                 multiple="true"
                                 value="#{departmentAccessBean.accessToDepartments[department]}"
-                                completeMethod="#{employeesBean.findByFullName}"
+                                completeMethod="#{employeeTrackingSystem.findEmployeesByFullName}"
                                 queryDelay="500"
                                 unique="true"
                                 inputStyleClass="avoidChangeTracking"
