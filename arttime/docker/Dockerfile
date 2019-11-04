@@ -11,7 +11,7 @@ RUN cd / &&\
 
 # ----------------------------------------------------------------------------------
 # Build and configure embedded Keycloak server
-FROM jboss/keycloak:4.8.3.Final as keycloak
+FROM jboss/keycloak:6.0.1 as keycloak
 
 # Set this variable to the host where keycloak is running
 ARG KEYCLOAK_ADMIN_LOGIN=admin
@@ -35,7 +35,7 @@ FROM jboss/wildfly:17.0.0.Final as wildfly
 
 ARG ARTTIME_CLI_ADMIN_LOGIN=admin
 ARG ARTTIME_CLI_ADMIN_PASSWORD=admin
-ARG KEYCLOAK_ADAPTER_VERSION=4.8.3.Final
+ARG KEYCLOAK_ADAPTER_VERSION=6.0.1
 ARG KEYCLOAK_ADAPTER_DOWNLOAD_URL=https://downloads.jboss.org/keycloak/${KEYCLOAK_ADAPTER_VERSION}/adapters/keycloak-oidc/keycloak-wildfly-adapter-dist-${KEYCLOAK_ADAPTER_VERSION}.tar.gz
 ARG JBOSS_CLI=/opt/jboss/wildfly/bin/jboss-cli.sh
 
@@ -63,24 +63,26 @@ ENV JDBC_MARIADB_VERSION 2.2.3
 ENV JDBC_ORACLE_VERSION ojdbc6
 
 # Deploy Art-Time webapp
-COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/arttime-webapp/target/arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/arttime-webapp.war
+COPY --chown=jboss --from=maven_builder /ART-TIME/arttime/arttime-webapp/target/arttime-webapp.war /opt/jboss/wildfly/standalone/deployments/arttime-webapp.war
 
 # Install database drivers
-COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/docker/tools /opt/jboss/tools/arttime/
+COPY --chown=jboss --from=maven_builder /ART-TIME/arttime/docker/tools /opt/jboss/tools/arttime/
+USER root
 RUN chmod +x /opt/jboss/tools/arttime/*.sh && \ 
     /opt/jboss/tools/arttime/install-databases.sh
+USER jboss
 
 # Configure Wildfly	
 RUN /opt/jboss/tools/arttime/configure-wildfly.sh
 
 # Get configured Keycloak server
-COPY --chown=jboss:0 --from=keycloak /opt/jboss/keycloak /opt/jboss/keycloak
-COPY --chown=jboss:0 --from=keycloak /opt/jboss/tools /opt/jboss/tools
+COPY --chown=jboss --from=keycloak /opt/jboss/keycloak /opt/jboss/keycloak
+COPY --chown=jboss --from=keycloak /opt/jboss/tools /opt/jboss/tools
 
 # Setup demo database
 USER root
 RUN mkdir -p /opt/arttime-demo-db && chown jboss:0 /opt/arttime-demo-db
-COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/docker/init_arttime_demo_db_h2.sql /opt/arttime-demo-db/init-arttime-demo-db.sql
+COPY --chown=jboss --from=maven_builder /ART-TIME/arttime/docker/init_arttime_demo_db_h2.sql /opt/arttime-demo-db/init-arttime-demo-db.sql
 
 USER jboss
 
