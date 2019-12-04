@@ -35,6 +35,7 @@
         <class>com.artezio.javax.jpa.model.AssociationChildEntity</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
+            <property name="wildfly.jpa.default-unit" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.cache.use_query_cache" value="false"/>

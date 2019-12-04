@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.artezio.javax.jpa</groupId>
     <artifactId>abac</artifactId>
-    <version>1.0.2.Alpha</version>
+    <version>1.0.3.Alpha</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -187,6 +187,11 @@
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+            <artifactId>shrinkwrap-descriptors-impl-javaee</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

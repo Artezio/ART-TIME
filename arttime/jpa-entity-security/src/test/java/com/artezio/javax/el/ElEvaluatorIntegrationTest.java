@@ -33,7 +33,8 @@ public class ElEvaluatorIntegrationTest {
                 .addClass(CdiTestService.class)
                 .addClass(BeanNotFoundException.class)
                 .addClass(IntegrationTest.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "META-INF/beans.xml");
     }
 
     @Test
