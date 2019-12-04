@@ -66,4 +66,10 @@ public class StatelessBean {
         securedEntities.forEach(abacEntityManager::persist);
     }
 
+    @AbacContext("contextTwo")
+    @TransactionAttribute(TransactionAttributeType.MANDATORY)
+    public void saveInCurrentTransactionSecuredByContextTwo(List<MultipleContextSecuredEntity> securedEntities) {
+        securedEntities.forEach(abacEntityManager::persist);
+    }
+
 }

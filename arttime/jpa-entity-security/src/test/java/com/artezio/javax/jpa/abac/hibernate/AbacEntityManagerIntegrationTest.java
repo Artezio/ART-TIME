@@ -4,6 +4,7 @@ import com.artezio.javax.jpa.abac.AbacRule;
 import com.artezio.javax.jpa.abac.EntityAccessDeniedException;
 import com.artezio.javax.jpa.abac.ParamValue;
 import com.artezio.javax.jpa.abac.testServices.StatelessBean;
+import com.artezio.javax.jpa.abac.testServices.TransactionalStatelessBean;
 import com.artezio.javax.jpa.model.*;
 import com.artezio.javax.markers.IntegrationTest;
 import junitx.framework.ListAssert;
@@ -17,9 +18,9 @@ import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
 import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -57,10 +58,12 @@ public class AbacEntityManagerIntegrationTest {
     private EntityManager abacEntityManager;
     @EJB
     private StatelessBean statelessBean;
+    @EJB
+    private TransactionalStatelessBean transactionalStatelessBean;
 
     @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class, "abac-test.jar")
+    public static WebArchive createDeployment() {
+        JavaArchive abacJar = ShrinkWrap.create(JavaArchive.class, "abac-test.jar")
                 .addPackages(true, "com/google")
                 .addPackage("com.artezio.javax.el")
                 .addPackage("com.artezio.javax.jpa.abac")
@@ -69,12 +72,16 @@ public class AbacEntityManagerIntegrationTest {
                 .addPackage("com.artezio.javax.jpa.abac.hibernate.spi")
                 .addPackage("com.artezio.javax.jpa.model")
                 .addClass(IntegrationTest.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsResource("META-INF/services/javax.persistence.spi.PersistenceProvider", "META-INF/services/javax.persistence.spi.PersistenceProvider")
                 .setManifest(new StringAsset("Manifest-Version: 1.0\nDependencies: org.hibernate"))
                 .addAsResource("META-INF/jboss-deployment-structure.xml", "META-INF/jboss-deployment-structure.xml")
-                .addAsManifestResource("META-INF/persistence.xml", "persistence.xml")
+                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("META-INF/beans.xml", "META-INF/beans.xml")
                 .addPackages(true, "junitx.framework");
+        return ShrinkWrap.create(WebArchive.class)
+                .addAsWebInfResource("META-INF/jboss-deployment-structure.xml", "jboss-deployment-structure.xml")
+                .addAsWebInfResource("META-INF/persistence.xml", "persistence.xml")
+                .addAsLibrary(abacJar);
     }
 
     @Test
@@ -596,6 +603,16 @@ public class AbacEntityManagerIntegrationTest {
         em.persist(securedEntity1);
         em.persist(securedEntity2);
         em.find(SecuredEntity.class, securedEntity1.getId());
+    }
+
+    @Test(expected = EntityAccessDeniedException.class)
+    public void testAccessChecksPerformedOnLeavingContextWhileTransactionIsStillOpen() {
+        MultipleContextSecuredEntity entity1 = new MultipleContextSecuredEntity("two");
+        MultipleContextSecuredEntity entity2 = new MultipleContextSecuredEntity("one");
+        MultipleContextSecuredEntity entity3 = new MultipleContextSecuredEntity("three");
+        MultipleContextSecuredEntity entity4 = new MultipleContextSecuredEntity("one");
+        MultipleContextSecuredEntity entity5 = new MultipleContextSecuredEntity("one");
+        transactionalStatelessBean.openTransactionAndSaveEntitiesSecuredByContextTwo(Arrays.asList(entity1, entity2, entity3, entity4, entity5));
     }
 
     private AbacEntityManager createAbacEntityManager(EntityManager delegate) {
