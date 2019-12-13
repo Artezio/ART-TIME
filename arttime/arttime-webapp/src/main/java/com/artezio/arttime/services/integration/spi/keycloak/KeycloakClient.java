@@ -114,9 +114,9 @@ public class KeycloakClient {
         return KeycloakBuilder.builder()
                 .serverUrl(settings.getKeycloakServerUrl())
                 .realm(settings.getKeycloakRealm())
-                .username(settings.getKeycloakUserName())
-                .password(settings.getKeycloakPassword())
                 .clientId(settings.getKeycloakClientId())
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .clientSecret(settings.getKeycloakClientSecret())
                 .resteasyClient(new ResteasyClientBuilder()
                         .connectionPoolSize(10)
                         .register(new ResteasyJackson2Provider() {
