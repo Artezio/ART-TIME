@@ -1,13 +1,17 @@
 package com.artezio.arttime.services.integration.spi.keycloak;
 
+import com.artezio.arttime.config.Setting;
 import com.artezio.arttime.config.Settings;
 import com.artezio.arttime.services.integration.spi.UserInfo;
 import org.easymock.EasyMockRunner;
 import org.easymock.TestSubject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
 import org.keycloak.admin.client.resource.*;
+import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
@@ -26,10 +30,15 @@ public class KeycloakClientTest {
 
     @TestSubject
     private KeycloakClient keycloakClient = new KeycloakClient();
+    private final String KEYCLOAK_CLIENT_ID = "TestClientId";
     private Settings settings;
+
+    @Rule
+    public final EnvironmentVariables environmentVariables = new EnvironmentVariables();
 
     @Before
     public void setUp() throws NoSuchFieldException {
+        environmentVariables.set(Setting.Name.KEYCLOAK_CLIENT_ID.name(), KEYCLOAK_CLIENT_ID);
         settings = new Settings(new HashMap<>());
         setField(keycloakClient, "settings", settings);
     }
@@ -119,7 +128,7 @@ public class KeycloakClientTest {
     @Test
     public void testLoadUserGroups() throws NoSuchFieldException {
         keycloakClient = createMockBuilder(KeycloakClient.class)
-                .addMockedMethod("listRoles", UserRepresentation.class, RealmResource.class)
+                .addMockedMethod("listGroups", UserRepresentation.class, RealmResource.class)
                 .createMock();
         setField(keycloakClient, "settings", settings);
 
@@ -152,9 +161,9 @@ public class KeycloakClientTest {
 
         RealmResource mockRealm = mock(RealmResource.class);
 
-        expect(keycloakClient.listRoles(user1, mockRealm)).andReturn(new HashSet<>(user1groups));
-        expect(keycloakClient.listRoles(user2, mockRealm)).andReturn(new HashSet<>(user2groups));
-        expect(keycloakClient.listRoles(user3, mockRealm)).andReturn(new HashSet<>(user3groups));
+        expect(keycloakClient.listGroups(user1, mockRealm)).andReturn(new HashSet<>(user1groups));
+        expect(keycloakClient.listGroups(user2, mockRealm)).andReturn(new HashSet<>(user2groups));
+        expect(keycloakClient.listGroups(user3, mockRealm)).andReturn(new HashSet<>(user3groups));
         replay(keycloakClient);
 
         Map<String, List<UserInfo>> actual = keycloakClient.loadUserGroups(Arrays.asList(user1, user2, user3), mockRealm);
@@ -287,7 +296,7 @@ public class KeycloakClientTest {
         expect(realm.users()).andReturn(usersResource);
         expect(usersResource.get(userId)).andReturn(userResource);
         expect(userResource.roles()).andReturn(roleMappingResource);
-        expect(roleMappingResource.realmLevel()).andReturn(roleScopeResource);
+        expect(roleMappingResource.clientLevel(anyString())).andReturn(roleScopeResource);
         expect(roleScopeResource.listAll())
                 .andReturn(Arrays.asList(
                         new RoleRepresentation(role1, "", false),
@@ -300,5 +309,32 @@ public class KeycloakClientTest {
         assertFalse(actual.isEmpty());
         assertTrue(actual.contains(role1));
         assertTrue(actual.contains(role2));
+    }
+
+    @Test
+    public void testListGroups() {
+        UserRepresentation user = new UserRepresentation();
+        RealmResource realm = mock(RealmResource.class);
+        UsersResource usersResource = mock(UsersResource.class);
+        UserResource userResource = mock(UserResource.class);
+        String group1 = "Group1";
+        String group2 = "Group_2";
+        String userId = "id-user";
+        user.setId(userId);
+        expect(realm.users()).andReturn(usersResource);
+        expect(usersResource.get(userId)).andReturn(userResource);
+        GroupRepresentation groupRepresentation1 = new GroupRepresentation();
+        GroupRepresentation groupRepresentation2 = new GroupRepresentation();
+        groupRepresentation1.setName(group1);
+        groupRepresentation2.setName(group2);
+        expect(userResource.groups()).andReturn(Arrays.asList(groupRepresentation1, groupRepresentation2));
+        replay(realm, usersResource, userResource);
+
+        Set<String> actual = keycloakClient.listGroups(user, realm);
+
+        verify(realm);
+        assertFalse(actual.isEmpty());
+        assertTrue(actual.contains(group1));
+        assertTrue(actual.contains(group2));
     }
 }

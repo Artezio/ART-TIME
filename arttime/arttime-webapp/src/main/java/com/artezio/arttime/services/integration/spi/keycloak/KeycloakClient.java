@@ -5,8 +5,10 @@ import com.artezio.arttime.config.Settings;
 import com.artezio.arttime.services.integration.spi.UserInfo;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
+import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
@@ -130,9 +132,9 @@ public class KeycloakClient {
         Map<String, List<UserInfo>> result = new ConcurrentHashMap<>();
         users.parallelStream()
                 .forEach(user -> {
-                    listRoles(user, realm)
-                            .forEach(role -> {
-                                result.computeIfAbsent(role, k -> new CopyOnWriteArrayList<>())
+                    listGroups(user, realm)
+                            .forEach(group -> {
+                                result.computeIfAbsent(group, k -> new CopyOnWriteArrayList<>())
                                         .add(toUserInfo(user));
                             });
                 });
@@ -154,11 +156,23 @@ public class KeycloakClient {
     }
 
     protected Set<String> listRoles(UserRepresentation user, RealmResource realm) {
-        List<RoleRepresentation> roles = realm.users().get(user.getId()).roles().realmLevel().listAll();
+        List<RoleRepresentation> roles = realm.users()
+                .get(user.getId())
+                .roles()
+                .clientLevel(settings.getKeycloakClientId())
+                .listAll();
         return roles.stream()
                 .map(RoleRepresentation::getName)
                 .collect(Collectors.toSet());
     }
+
+    protected Set<String> listGroups(UserRepresentation user, RealmResource realm) {
+        List<GroupRepresentation> groups = realm.users().get(user.getId()).groups();
+        return groups.stream()
+                .map(GroupRepresentation::getName)
+                .collect(Collectors.toSet());
+    }
+
 
     List<UserInfo> toUserInfo(List<UserRepresentation> userRepresentations) {
         return userRepresentations.parallelStream()
