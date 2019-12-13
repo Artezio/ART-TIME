@@ -7,13 +7,12 @@ import java.util.Map;
 
 public class Settings implements Serializable {
 
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
 
-    private final static String KEYCLOAK_SERVER_URL = System.getenv("KEYCLOAK_SERVER_URL");
-    private final static String KEYCLOAK_CLIENT_ID = System.getenv("KEYCLOAK_CLIENT_ID");
-    private final static String KEYCLOAK_REALM = System.getenv("KEYCLOAK_REALM");
-    private final static String KEYCLOAK_LOGIN = System.getenv("KEYCLOAK_LOGIN");
-    private final static String KEYCLOAK_PASSWORD = System.getenv("KEYCLOAK_PASSWORD");
+    protected final static String KEYCLOAK_SERVER_URL = System.getenv("KEYCLOAK_SERVER_URL");
+    protected final static String KEYCLOAK_CLIENT_ID = System.getenv("KEYCLOAK_CLIENT_ID");
+    protected final static String KEYCLOAK_CLIENT_SECRET = System.getenv("KEYCLOAK_CLIENT_SECRET");
+    protected final static String KEYCLOAK_REALM = System.getenv("KEYCLOAK_REALM");
 
     // TODO: Remove this enum
     public enum Locale {
@@ -365,16 +364,12 @@ public class Settings implements Serializable {
         return KEYCLOAK_REALM;
     }
 
-    public String getKeycloakUserName() {
-        return KEYCLOAK_LOGIN;
-    }
-
-    public String getKeycloakPassword() {
-        return KEYCLOAK_PASSWORD;
-    }
-
     public String getKeycloakClientId() {
         return KEYCLOAK_CLIENT_ID;
+    }
+
+    public String getKeycloakClientSecret() {
+        return KEYCLOAK_CLIENT_SECRET;
     }
 
     public Integer getKeycloakCacheRefreshIntervalMinutes() {
