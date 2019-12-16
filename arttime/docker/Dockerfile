@@ -47,9 +47,10 @@ ENV ARTTIME_DB_PORT 5432
 ENV ARTTIME_DB_NAME arttime
 ENV ARTTIME_DB_LOGIN postgres
 ENV ARTTIME_DB_PASSWORD postgres
-ENV KEYCLOAK_SERVER_URL http://localhost:9080/auth
-ENV KEYCLOAK_CLIENT_ID arttime-demo
-ENV KEYCLOAK_REALM master
+ENV KEYCLOAK_SERVER_URL "http://127.0.0.1:9080/auth"
+ENV KEYCLOAK_CLIENT_ID "arttime-demo"
+ENV KEYCLOAK_CLIENT_SECRET "d4087176-81a0-41b4-91f9-1c1829a71e87"
+ENV KEYCLOAK_REALM "master"
 ENV KEYCLOAK_USERNAME_ATTRIBUTE preferred_username
 
 ENV MAX_HEAP_SIZE_MB 2048
@@ -70,7 +71,7 @@ COPY --chown=jboss:0 --from=maven_builder /ART-TIME/arttime/docker/tools /opt/jb
 RUN chmod +x /opt/jboss/tools/arttime/*.sh && \ 
     /opt/jboss/tools/arttime/install-databases.sh
 
-# Configure Wildfly	
+# Configure Wildfly
 RUN /opt/jboss/tools/arttime/configure-wildfly.sh
 
 # Get configured Keycloak server

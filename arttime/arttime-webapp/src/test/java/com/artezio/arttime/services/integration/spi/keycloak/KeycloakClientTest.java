@@ -10,9 +10,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.EnvironmentVariables;
 import org.junit.runner.RunWith;
-import org.keycloak.admin.client.resource.*;
+import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.GroupRepresentation;
-import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.ejb.Timer;
@@ -279,36 +280,6 @@ public class KeycloakClientTest {
         keycloakClient.init();
 
         verify(keycloakClient);
-    }
-
-    @Test
-    public void testListRoles() {
-        UserRepresentation user = new UserRepresentation();
-        RealmResource realm = mock(RealmResource.class);
-        UsersResource usersResource = mock(UsersResource.class);
-        UserResource userResource = mock(UserResource.class);
-        RoleMappingResource roleMappingResource = mock(RoleMappingResource.class);
-        RoleScopeResource roleScopeResource = mock(RoleScopeResource.class);
-        String userId = "id-user";
-        user.setId(userId);
-        String role1 = "admin";
-        String role2 = "employee";
-        expect(realm.users()).andReturn(usersResource);
-        expect(usersResource.get(userId)).andReturn(userResource);
-        expect(userResource.roles()).andReturn(roleMappingResource);
-        expect(roleMappingResource.clientLevel(anyString())).andReturn(roleScopeResource);
-        expect(roleScopeResource.listAll())
-                .andReturn(Arrays.asList(
-                        new RoleRepresentation(role1, "", false),
-                        new RoleRepresentation(role2, "", false)));
-        replay(realm, usersResource, userResource, roleMappingResource, roleScopeResource);
-
-        Set<String> actual = keycloakClient.listRoles(user, realm);
-
-        verify(realm);
-        assertFalse(actual.isEmpty());
-        assertTrue(actual.contains(role1));
-        assertTrue(actual.contains(role2));
     }
 
     @Test

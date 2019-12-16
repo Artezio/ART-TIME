@@ -35,8 +35,9 @@ $JBOSS_CLI --commands="embed-server --server-config=standalone-full.xml"\
 	realm=\${env.KEYCLOAK_REALM}, \
 	resource=\${env.KEYCLOAK_CLIENT_ID}, \
     enable-basic-auth=true, \
-	public-client=true, \
 	auth-server-url=\${env.KEYCLOAK_SERVER_URL}, \
 	ssl-required=EXTERNAL, \
 	principal-attribute=\${env.KEYCLOAK_USERNAME_ATTRIBUTE})"\
+,"/subsystem=keycloak/secure-deployment=arttime-webapp.war/credential=secret:add( \
+	value=\${env.KEYCLOAK_CLIENT_SECRET})"\
 ,stop-embedded-server

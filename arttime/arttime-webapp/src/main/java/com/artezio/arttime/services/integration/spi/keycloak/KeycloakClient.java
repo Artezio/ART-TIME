@@ -155,17 +155,6 @@ public class KeycloakClient {
                 .collect(Collectors.toSet());
     }
 
-    protected Set<String> listRoles(UserRepresentation user, RealmResource realm) {
-        List<RoleRepresentation> roles = realm.users()
-                .get(user.getId())
-                .roles()
-                .clientLevel(settings.getKeycloakClientId())
-                .listAll();
-        return roles.stream()
-                .map(RoleRepresentation::getName)
-                .collect(Collectors.toSet());
-    }
-
     protected Set<String> listGroups(UserRepresentation user, RealmResource realm) {
         List<GroupRepresentation> groups = realm.users().get(user.getId()).groups();
         return groups.stream()

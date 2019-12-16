@@ -25,7 +25,7 @@ docker run -p 8080:8080 -p 9080:9080 arteziollc/art-time
 
 ### Start art-time with external Keycloak and database, and set memory limits. Env variables are explained below
 ```
-docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/auth" -e KEYCLOAK_CLIENT_ID=<client_id> -e KEYCLOAK_REALM=<realm> -e ARTTIME_DB_VENDOR=<vendor> -e ARTTIME_DB_HOST=<host> -e ARTTIME_DB_PORT=<port> -e ARTTIME_DB_NAME=<db_name> -e ARTTIME_DB_LOGIN=<login> -e ARTTIME_DB_PASSWORD=<password> -e MAX_HEAP_SIZE_MB=<max_size> arteziollc/arttime
+docker run -p 8080:8080 -e KEYCLOAK_SERVER_URL="http://<keycloak_host>:<port>/auth" -e KEYCLOAK_CLIENT_ID=<client_id> -e KEYCLOAK_CLIENT_SECRET=<client_secret> -e KEYCLOAK_REALM=<realm> -e ARTTIME_DB_VENDOR=<vendor> -e ARTTIME_DB_HOST=<host> -e ARTTIME_DB_PORT=<port> -e ARTTIME_DB_NAME=<db_name> -e ARTTIME_DB_LOGIN=<login> -e ARTTIME_DB_PASSWORD=<password> -e MAX_HEAP_SIZE_MB=<max_size> arteziollc/arttime
 ```
 
 ### Published applications
@@ -48,9 +48,11 @@ The image is bundled with pre-configured Keycloak server for demo purposes only.
 
 * `KEYCLOAK_SERVER_URL` to `http://<host>:<port>/auth/`, where `host` and `port` are external Keycloak server host and port
 * `KEYCLOAK_CLIENT_ID`
+* `KEYCLOAK_CLIENT_SECRET`
 * `KEYCLOAK_REALM`
 * `KEYCLOAK_USERNAME_ATTRIBUTE` to the attribute which is used as username (e.g. `preferred_username` or `email`)
 
+Enable client Service Account and add Realm Role 'view-users' in Service Account Roles tab in Client configuration
 To use external Keycloak server as data source for Art-Time, you also need to configure it in Art-Time Settings page.
 
 

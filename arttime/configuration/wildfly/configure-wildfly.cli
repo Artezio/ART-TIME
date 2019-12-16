@@ -60,8 +60,9 @@ end-if
 
 echo Configure keycloak adapter
 if (outcome != success) of /subsystem=keycloak/secure-deployment=${keycloak.app-name}:read-resource
-  /subsystem=keycloak/secure-deployment=${keycloak.app-name}:add(realm=${keycloak.realm}, resource=${keycloak.client}, \
-    enable-basic-auth=true,public-client=true,auth-server-url=${keycloak.auth-server-url},ssl-required=EXTERNAL,principal-attribute=preferred_username)
+  /subsystem=keycloak/secure-deployment=${keycloak.app-name}:add(realm=${env.KEYCLOAK_REALM}, resource=${env.KEYCLOAK_CLIENT_ID}, \
+    enable-basic-auth=true,public-client=true,auth-server-url=${env.KEYCLOAK_SERVER_URL},ssl-required=EXTERNAL,principal-attribute=preferred_username)
+  /subsystem=keycloak/secure-deployment=arttime-webapp.war/credential=secret:add(value=${env.KEYCLOAK_CLIENT_SECRET})
 else   
   echo [SKIP] Secure deployment ${keycloak.app-name} already configured
 end-if
