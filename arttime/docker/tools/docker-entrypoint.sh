@@ -72,7 +72,7 @@ function start_embedded_keycloak() {
 }
 
 # Start Keycloak if required
-if [[ $KEYCLOAK_SERVER_URL == 'http://localhost:9080/auth' ]]; then
+if [[ $KEYCLOAK_SERVER_URL == 'http://127.0.0.1:9080/auth' ]]; then
   start_embedded_keycloak
 else
   echo Using external Keycloak

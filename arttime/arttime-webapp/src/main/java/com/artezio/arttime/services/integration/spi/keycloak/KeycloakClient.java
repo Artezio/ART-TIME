@@ -5,8 +5,10 @@ import com.artezio.arttime.config.Settings;
 import com.artezio.arttime.services.integration.spi.UserInfo;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.plugins.providers.jackson.ResteasyJackson2Provider;
+import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.representations.idm.GroupRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
@@ -114,9 +116,9 @@ public class KeycloakClient {
         return KeycloakBuilder.builder()
                 .serverUrl(settings.getKeycloakServerUrl())
                 .realm(settings.getKeycloakRealm())
-                .username(settings.getKeycloakUserName())
-                .password(settings.getKeycloakPassword())
                 .clientId(settings.getKeycloakClientId())
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .clientSecret(settings.getKeycloakClientSecret())
                 .resteasyClient(new ResteasyClientBuilder()
                         .connectionPoolSize(10)
                         .register(new ResteasyJackson2Provider() {
@@ -130,9 +132,9 @@ public class KeycloakClient {
         Map<String, List<UserInfo>> result = new ConcurrentHashMap<>();
         users.parallelStream()
                 .forEach(user -> {
-                    listRoles(user, realm)
-                            .forEach(role -> {
-                                result.computeIfAbsent(role, k -> new CopyOnWriteArrayList<>())
+                    listGroups(user, realm)
+                            .forEach(group -> {
+                                result.computeIfAbsent(group, k -> new CopyOnWriteArrayList<>())
                                         .add(toUserInfo(user));
                             });
                 });
@@ -153,12 +155,13 @@ public class KeycloakClient {
                 .collect(Collectors.toSet());
     }
 
-    protected Set<String> listRoles(UserRepresentation user, RealmResource realm) {
-        List<RoleRepresentation> roles = realm.users().get(user.getId()).roles().realmLevel().listAll();
-        return roles.stream()
-                .map(RoleRepresentation::getName)
+    protected Set<String> listGroups(UserRepresentation user, RealmResource realm) {
+        List<GroupRepresentation> groups = realm.users().get(user.getId()).groups();
+        return groups.stream()
+                .map(GroupRepresentation::getName)
                 .collect(Collectors.toSet());
     }
+
 
     List<UserInfo> toUserInfo(List<UserRepresentation> userRepresentations) {
         return userRepresentations.parallelStream()
