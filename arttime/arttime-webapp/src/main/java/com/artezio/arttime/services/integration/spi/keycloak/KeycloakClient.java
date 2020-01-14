@@ -9,7 +9,6 @@ import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.representations.idm.GroupRepresentation;
-import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.annotation.PostConstruct;
@@ -24,9 +23,10 @@ import java.util.stream.Collectors;
 
 @Startup
 @Singleton
+@Lock(LockType.READ)
 public class KeycloakClient {
 
-    private final static String TIMER_INFO = "com.artezio.arttime.integration.keycloak";
+    private static final String TIMER_INFO = "com.artezio.arttime.integration.keycloak";
     static final String KEYCLOAK_TRACKING_SYSTEM_NAME = "Keycloak";
 
     @Inject
@@ -36,17 +36,14 @@ public class KeycloakClient {
     private TimerService timerService;
 
     private class Cache {
-        private List<UserInfo> users = Collections.emptyList();
-        private Set<String> departments = Collections.emptySet();
-        private Map<String, List<UserInfo>> usersByGroups = Collections.emptyMap();
+        private final List<UserInfo> users;
+        private final Set<String> departments;
+        private final Map<String, List<UserInfo>> usersByGroups;
 
         Cache(List<UserInfo> users, Set<String> departments, Map<String, List<UserInfo>> usersByGroups) {
             this.users = users;
             this.departments = departments;
             this.usersByGroups = usersByGroups;
-        }
-
-        Cache() {
         }
 
         List<UserInfo> getUsers() {
@@ -62,7 +59,7 @@ public class KeycloakClient {
         }
     }
 
-    volatile private Cache cache = new Cache();
+    volatile private Cache cache = new Cache(Collections.emptyList(), Collections.emptySet(), Collections.emptyMap());
 
     @PostConstruct
     void init() {

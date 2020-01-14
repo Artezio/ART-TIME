@@ -51,8 +51,7 @@ public class KeycloakAdapter implements EmployeeTrackingSystem, TeamTrackingSyst
     }
 
     @Override
-    public @Nullable
-    Employee findEmployee(String userName) {
+    public @Nullable Employee findEmployee(String userName) {
         return keycloakClient.listUsers().parallelStream()
                 .filter(user -> user.getUsername().equals(userName))
                 .findAny()
