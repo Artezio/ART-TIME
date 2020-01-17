@@ -62,7 +62,7 @@
                                   converter="omnifaces.SelectItemsConverter"
                                   required="true"
                                   binding="#{projectsBean.hourTypesCheckbox}">
-                <f:selectItems value="#{hourTypeService.all}" var="hourType" itemLabel="#{hourType.type}"/>
+                <f:selectItems value="#{hourTypesBean.hourTypes}" var="hourType" itemLabel="#{hourType.type}"/>
             </p:selectManyCheckbox>
         </h:panelGroup>
         <h:panelGroup>
