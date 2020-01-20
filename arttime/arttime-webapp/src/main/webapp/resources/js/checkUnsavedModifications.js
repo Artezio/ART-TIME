@@ -24,7 +24,10 @@ function checkUnsavedModifications() {
 			setWindowUnloadMessage();
 		}
 	}
-					
+	setupModificationListeners();
+}
+
+function setupModificationListeners() {
 	$("input:not(.avoidChangeTracking input)").on("change", setWindowUnloadMessage);
 	$("textarea:not(.avoidChangeTracking textarea)").on("change", setWindowUnloadMessage);
 	$("select:not(.avoidChangeTracking select)").on("change", setWindowUnloadMessage);
@@ -34,10 +37,10 @@ function checkUnsavedModifications() {
 	$(".hasDatepicker:not(.avoidChangeTracking .hasDatepicker)").on("click", setWindowUnloadMessage);
 	$(".ui-autocomplete-token-icon.ui-icon-close:not(.avoidChangeTracking)").on("click", setWindowUnloadMessage);
 
-	$(".avoidChangeTracking").off("click change", setWindowUnloadMessage);			
-							
-	$(".cancelTrackedChanges").click(removeWindowUnloadMessage);
-};
+	$(".avoidChangeTracking").off("click change", setWindowUnloadMessage);
 
-window.addEventListener("load", checkUnsavedModifications, false);
-$(document).on("pfAjaxComplete", checkUnsavedModifications);
+	$(".cancelTrackedChanges").click(removeWindowUnloadMessage);
+}
+
+window.addEventListener("load", setupModificationListeners, false);
+$(document).on("pfAjaxComplete", setupModificationListeners);

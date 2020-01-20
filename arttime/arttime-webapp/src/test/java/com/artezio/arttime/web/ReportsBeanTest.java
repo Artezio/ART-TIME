@@ -1,9 +1,6 @@
 package com.artezio.arttime.web;
 
-import com.artezio.arttime.datamodel.Employee;
-import com.artezio.arttime.datamodel.HourType;
-import com.artezio.arttime.datamodel.Period;
-import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.datamodel.*;
 import com.artezio.arttime.filter.Filter;
 import com.artezio.arttime.report.OutputFormat;
 import com.artezio.arttime.report.ReportEngine;
@@ -225,11 +222,11 @@ public class ReportsBeanTest {
 
     @Test
     public void testGetSelectedProjectIds() throws NoSuchFieldException {
-        Project project1 = new Project();
-        setField(project1, "id", 1L);
-        List<Project> projects = asList(project1);
+        Project selectedProject = new Project();
+        setField(selectedProject, "id", 1L);
+        List<Project> projects = asList(selectedProject);
         Filter filter = new Filter();
-        filter.setProjects(asList(project1));
+        filter.setProjects(asList(selectedProject));
 
         EasyMock.expect(filterBean.getCurrentFilter()).andReturn(filter).anyTimes();
         EasyMock.expect(hoursService.getHours(filter)).andReturn(emptyList());
@@ -261,7 +258,57 @@ public class ReportsBeanTest {
         verify(hoursService, filterBean, projectService);
         Assert.assertArrayEquals(new Long[]{1L, 2L}, actual);
     }
-    
+
+    @Test
+    public void testGetSelectedProjectIds_noProjectsSelected() throws NoSuchFieldException {
+        Project activeProject = new Project();
+        activeProject.setStatus(Project.Status.ACTIVE);
+        setField(activeProject, "id", 1L);
+        Project inactiveProject = new Project();
+        inactiveProject.setStatus(Project.Status.CLOSED);
+        setField(inactiveProject, "id", 2L);
+        Project inactiveProjectWithReportedHours = new Project();
+        inactiveProjectWithReportedHours.setStatus(Project.Status.CLOSED);
+        setField(inactiveProjectWithReportedHours, "id", 3L);
+        List<Project> projects = asList(activeProject, inactiveProject, inactiveProjectWithReportedHours);
+        Hours reportedHours = new Hours(inactiveProjectWithReportedHours, null, null, null);
+        Filter filter = new Filter();
+
+        EasyMock.expect(filterBean.getCurrentFilter()).andReturn(filter).anyTimes();
+        EasyMock.expect(hoursService.getHours(filter)).andReturn(asList(reportedHours));
+        EasyMock.expect(projectService.getEffortsProjects(filter)).andReturn(projects);
+        EasyMock.replay(hoursService, projectService, filterBean);
+
+        Long[] actual = reportsBean.getSelectedProjectIds();
+
+        EasyMock.verify(hoursService, projectService, filterBean);
+        Assert.assertArrayEquals(new Long[]{1L, 3L}, actual);
+    }
+
+    @Test
+    public void testGetSelectedProjectIds_savedFilterWithInactiveProjects() throws NoSuchFieldException {
+        Project selectedInactiveProject = new Project();
+        setField(selectedInactiveProject, "id", 1L);
+        selectedInactiveProject.setStatus(Project.Status.CLOSED);
+        Project nonSelectedActiveProject = new Project();
+        setField(nonSelectedActiveProject, "id", 2L);
+        nonSelectedActiveProject.setStatus(Project.Status.ACTIVE);
+        List<Project> selectedProjects = asList(selectedInactiveProject);
+        Filter filter = new Filter();
+        filter.setName("Filter Name");
+        filter.setProjects(asList(selectedInactiveProject));
+
+        EasyMock.expect(filterBean.getCurrentFilter()).andReturn(filter).anyTimes();
+        EasyMock.expect(hoursService.getHours(filter)).andReturn(emptyList());
+        EasyMock.expect(projectService.getEffortsProjects(filter)).andReturn(selectedProjects);
+        EasyMock.replay(hoursService, projectService, filterBean);
+
+        Long[] actual = reportsBean.getSelectedProjectIds();
+
+        EasyMock.verify(hoursService, projectService, filterBean);
+        Assert.assertArrayEquals(new Long[]{selectedInactiveProject.getId()}, actual);
+    }
+
     @Test
     public void testGetSelectedHourTypeIds() throws NoSuchFieldException {
         HourType hourType1 = new HourType();

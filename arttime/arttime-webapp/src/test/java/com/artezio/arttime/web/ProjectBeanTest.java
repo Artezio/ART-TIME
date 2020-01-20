@@ -65,6 +65,20 @@ public class ProjectBeanTest {
     }
 
     @Test
+    public void testCreate_codeIsTrimmed() throws NoSuchFieldException {
+        Project project = createProject(1L, "  \t code \t ", Status.ACTIVE);
+        setField(bean, "project", project);
+
+        EasyMock.expect(projectService.create(project)).andReturn(project);
+        EasyMock.replay(projectService);
+
+        bean.create();
+
+        EasyMock.verify(projectService);
+        assertEquals("code", project.getCode());
+    }
+
+    @Test
     public void testUpdate() throws NoSuchFieldException {
         Project project = new Project();
         setField(bean, "project", project);
@@ -75,6 +89,21 @@ public class ProjectBeanTest {
         bean.update();
 
         EasyMock.verify(projectService);
+    }
+
+    @Test
+    public void testUpdate_codeIsTrimmed() throws NoSuchFieldException {
+        Project project = new Project();
+        project.setCode("  \t code\t ");
+        setField(bean, "project", project);
+
+        projectService.update(bean.getActiveProjects());
+        EasyMock.replay(projectService);
+
+        bean.update();
+
+        EasyMock.verify(projectService);
+        assertEquals("code", project.getCode());
     }
 
     @Test

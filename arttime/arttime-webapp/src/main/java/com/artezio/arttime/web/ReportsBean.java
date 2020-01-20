@@ -8,6 +8,8 @@ import com.artezio.arttime.filter.Filter;
 import com.artezio.arttime.report.OutputFormat;
 import com.artezio.arttime.report.ReportEngine;
 import com.artezio.arttime.services.*;
+import com.artezio.arttime.web.spread_sheet.SpreadSheet;
+import com.google.common.collect.Sets;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -19,13 +21,13 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import static com.artezio.arttime.report.datasource.pojo.DataSet.*;
+import static java.util.Objects.nonNull;
 
 @Named
 @ViewScoped
@@ -113,11 +115,14 @@ public class ReportsBean implements Serializable {
     }
 
     protected Long[] getSelectedProjectIds() {
-        List<Hours> hours = hoursService.getHours(getFilter());
-        Set<Project> projects = hours.stream()
-                .map(Hours::getProject)
+        Filter filter = getFilter();
+        List<Hours> reportedHours = hoursService.getHours(getFilter());
+        Set<Project> projectsWithReportedHours = reportedHours.parallelStream().map(Hours::getProject).collect(Collectors.toSet());
+        Set<Project> projects = new HashSet<>(projectService.getEffortsProjects(filter));
+        projects = Sets.union(projects, projectsWithReportedHours).stream()
+                .filter(project -> project.getStatus() == ACTIVE || projectsWithReportedHours.contains(project)
+                        || (nonNull(filter.getName()) && filter.getProjects().contains(project)))
                 .collect(Collectors.toSet());
-        projects.addAll(projectService.getEffortsProjects(getFilter()));
         return projects.stream()
                 .map(Project::getId)
                 .toArray(Long[]::new);

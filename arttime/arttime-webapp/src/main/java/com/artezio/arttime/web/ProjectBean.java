@@ -99,10 +99,12 @@ public class ProjectBean implements Serializable {
     public void update() {
         modifyTeamsForChangedProjects();
         List<Project> projects = getProjectTree();
+        projects.forEach(this::trimProjectCode);
         projectService.update(projects);
     }
 
     public void create() {
+        trimProjectCode(project);
         projectService.create(project);
     }
 
@@ -116,6 +118,10 @@ public class ProjectBean implements Serializable {
         List<Project> projectsByEmployee = asList(getParticipations().get(employee));
         projectsByEmployee.forEach(prj -> prj.removeTeamMember(employee));
         getParticipations().remove(employee);
+    }
+
+    protected void trimProjectCode(Project project) {
+        project.setCode(project.getCode().trim());
     }
 
     protected void modifyTeamsForChangedProjects() {
