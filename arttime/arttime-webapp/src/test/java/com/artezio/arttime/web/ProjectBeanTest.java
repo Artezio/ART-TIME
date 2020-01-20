@@ -81,6 +81,7 @@ public class ProjectBeanTest {
     @Test
     public void testUpdate() throws NoSuchFieldException {
         Project project = new Project();
+        project.setCode("code");
         setField(bean, "project", project);
 
         projectService.update(bean.getActiveProjects());
