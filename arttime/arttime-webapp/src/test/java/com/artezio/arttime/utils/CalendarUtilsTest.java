@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.junit.Test;
@@ -18,7 +18,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.ibm.icu.text.SimpleDateFormat;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Locale.class, Calendar.class, CalendarUtils.class, FacesContext.class})
+@PrepareForTest({Locale.class, Calendar.class, CalendarUtils.class, FacesContext.class, ExternalContext.class})
 public class CalendarUtilsTest {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -78,14 +78,13 @@ public class CalendarUtilsTest {
     @Test
     public void testGetLocale_ifFacesContextNotNull() {
         FacesContext facesContext = createMock(FacesContext.class);
-        UIViewRoot viewRoot = createMock(UIViewRoot.class);
+        ExternalContext externalContext = createMock(ExternalContext.class);
 
-        PowerMock.mockStatic(Locale.class);
         PowerMock.mockStatic(FacesContext.class);
         expect(FacesContext.getCurrentInstance()).andReturn(facesContext);
-        expect(facesContext.getViewRoot()).andReturn(viewRoot);
-        expect(viewRoot.getLocale()).andReturn(Locale.CANADA);
-        PowerMock.replayAll(FacesContext.class, facesContext, viewRoot);
+        expect(facesContext.getExternalContext()).andReturn(externalContext);
+        expect(externalContext.getRequestLocale()).andReturn(Locale.CANADA);
+        PowerMock.replayAll(FacesContext.class, facesContext, externalContext);
 
         Locale actual = CalendarUtils.getLocale();
 
