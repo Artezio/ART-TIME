@@ -11,6 +11,9 @@ import java.util.Optional;
 
 public class CalendarUtils {	
 
+    private static final Locale RU_LOCALE = new Locale("ru");
+    private static final Locale RU_RU_LOCALE = new Locale("ru", "RU");
+
     public static Date currentWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(getLocale());
 		calendar.get(Calendar.DAY_OF_WEEK);		
@@ -30,6 +33,7 @@ public class CalendarUtils {
         return Optional.ofNullable(FacesContext.getCurrentInstance())
                 .map(FacesContext::getExternalContext)
                 .map(ExternalContext::getRequestLocale)
+                .map(locale -> RU_LOCALE.equals(locale)? RU_RU_LOCALE: locale)
                 .orElse(Locale.getDefault());
 	}
 	

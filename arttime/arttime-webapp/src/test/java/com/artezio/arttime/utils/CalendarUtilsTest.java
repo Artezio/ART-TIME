@@ -40,7 +40,7 @@ public class CalendarUtilsTest {
 
         assertEquals(sdf.parse("7-06-2015"), actual);
     }
-
+    
     @Test
     public void testCurrentWeekEndDate() throws ParseException {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
@@ -73,6 +73,26 @@ public class CalendarUtilsTest {
         PowerMock.verifyAll();
 
         assertEquals(Locale.ENGLISH, actual);
+    }
+    
+    @Test
+    public void testGetLocale_ifRuLocale() {
+        FacesContext facesContext = createMock(FacesContext.class);
+        ExternalContext externalContext = createMock(ExternalContext.class);
+
+        PowerMock.mockStatic(FacesContext.class);
+        expect(FacesContext.getCurrentInstance()).andReturn(facesContext);
+        expect(facesContext.getExternalContext()).andReturn(externalContext);
+        expect(externalContext.getRequestLocale()).andReturn(new Locale("ru"));
+        PowerMock.replayAll(FacesContext.class, facesContext, externalContext);
+
+        Locale actual = CalendarUtils.getLocale();
+
+        PowerMock.verifyAll();
+
+        assertEquals(new Locale("ru", "RU"), actual);
+        
+        
     }
 
     @Test
