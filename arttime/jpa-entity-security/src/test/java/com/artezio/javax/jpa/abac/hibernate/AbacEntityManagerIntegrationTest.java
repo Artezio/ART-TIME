@@ -7,7 +7,6 @@ import com.artezio.javax.jpa.abac.testServices.StatelessBean;
 import com.artezio.javax.jpa.abac.testServices.TransactionalStatelessBean;
 import com.artezio.javax.jpa.model.*;
 import com.artezio.javax.markers.IntegrationTest;
-import junitx.framework.ListAssert;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -438,7 +437,7 @@ public class AbacEntityManagerIntegrationTest {
 
     @SuppressWarnings("unchecked")
     private void assertSetsEquals(Set<?> expecteds, Set<?> actuals) {
-        ListAssert.assertEquals(new ArrayList(expecteds), new ArrayList(expecteds));
+        assertEquals(new ArrayList(expecteds), new ArrayList(expecteds));
     }
 
     private static <T> Set<T> asSet(T... a) {
@@ -467,7 +466,7 @@ public class AbacEntityManagerIntegrationTest {
 
         List<DefaultContextSecuredEntity> actuals = statelessBean.getFromNotDeclaredContext();
 
-        ListAssert.assertEquals(expecteds, actuals);
+        assertEquals(expecteds, actuals);
     }
 
     @Test
@@ -482,8 +481,8 @@ public class AbacEntityManagerIntegrationTest {
         List<DefaultContextSecuredEntity> actualsByDefault = statelessBean.getSecuredByDefault();
         List<DefaultContextSecuredEntity> actualsByDefaultAndContextTwo = statelessBean.getSecuredByContextTwo();
 
-        ListAssert.assertEquals(Arrays.asList(defaultSecured), actualsByDefault);
-        ListAssert.assertEquals(Arrays.asList(ctxTwoSecured), actualsByDefaultAndContextTwo);
+        assertEquals(Arrays.asList(defaultSecured), actualsByDefault);
+        assertEquals(Arrays.asList(ctxTwoSecured), actualsByDefaultAndContextTwo);
     }
 
     @Test
@@ -506,7 +505,7 @@ public class AbacEntityManagerIntegrationTest {
         List<MultipleFilterSecuredEntity> actuals = abacEntityManager.createQuery(
                 "SELECT e FROM MultipleFilterSecuredEntity e", MultipleFilterSecuredEntity.class).getResultList();
 
-        ListAssert.assertEquals(expecteds, actuals);
+        assertEquals(expecteds, actuals);
     }
 
     @Test

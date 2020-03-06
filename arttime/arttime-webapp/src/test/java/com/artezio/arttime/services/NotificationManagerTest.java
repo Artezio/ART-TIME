@@ -1,13 +1,40 @@
 package com.artezio.arttime.services;
 
+import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+
+import java.math.BigDecimal;
+import java.security.Principal;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Stream;
+
+import javax.ejb.SessionContext;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
 import com.artezio.arttime.config.Settings;
 import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.HourType;
 import com.artezio.arttime.datamodel.Period;
 import com.artezio.arttime.datamodel.Project;
-import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import com.artezio.arttime.repositories.EmployeeRepository;
-import com.artezio.arttime.repositories.HourTypeRepository;
 import com.artezio.arttime.repositories.ProjectRepository;
 import com.artezio.arttime.services.NotificationManager.WorkTimeProblems;
 import com.artezio.arttime.services.mailing.Mail;
@@ -16,27 +43,10 @@ import com.artezio.arttime.services.mailing.MailTemplateManager;
 import com.artezio.arttime.services.mailing.MailingEngine;
 import com.google.common.collect.Lists;
 import com.ibm.icu.text.SimpleDateFormat;
-import java.math.BigDecimal;
-import java.security.Principal;
-import java.util.*;
-import java.util.stream.Stream;
-import javax.ejb.SessionContext;
-import javax.mail.MessagingException;
-import junitx.framework.ListAssert;
-import static junitx.util.PrivateAccessor.setField;
-import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
-import org.easymock.Mock;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@PowerMockIgnore("javax.security.*")
-@RunWith(PowerMockRunner.class)
+import junitx.framework.ListAssert;
+
+@RunWith(EasyMockRunner.class)
 public class NotificationManagerTest {
 
     private NotificationManager notificationManager = new NotificationManager();

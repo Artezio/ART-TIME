@@ -20,6 +20,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
@@ -90,6 +91,7 @@ public class DepartmentServiceRbacIntegrationTest {
                 .addAsLibraries(resolveStage.resolve("org.mockito:mockito-core:1.10.19").withTransitivity().asFile())
                 .addAsLibraries(resolveStage.resolve("junit-addons:junit-addons:1.4").withTransitivity().asFile())
                 .addAsResource("META-INF/arquillian-persistence.xml", "META-INF/persistence.xml")
+                .addAsManifestResource(new StringAsset("Dependencies: jdk.unsupported\n"), "MANIFEST.MF")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

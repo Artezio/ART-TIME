@@ -1,21 +1,5 @@
 package com.artezio.arttime.services;
 
-import com.artezio.arttime.datamodel.Project;
-import com.artezio.arttime.repositories.ProjectRepository;
-import junitx.framework.ListAssert;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.api.easymock.annotation.Mock;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import javax.persistence.NoResultException;
-import java.util.Arrays;
-import java.util.List;
-
 import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import static com.artezio.arttime.datamodel.Project.Status.CLOSED;
 import static java.util.Arrays.asList;
@@ -24,8 +8,25 @@ import static junit.framework.TestCase.assertEquals;
 import static junitx.util.PrivateAccessor.setField;
 import static org.easymock.EasyMock.replay;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore(value = "javax.security.auth.*")
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.NoResultException;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.repositories.ProjectRepository;
+
+import junitx.framework.ListAssert;
+
+@RunWith(EasyMockRunner.class)
 public class ProjectServiceTest {
 
     private ProjectService projectService = new ProjectService();

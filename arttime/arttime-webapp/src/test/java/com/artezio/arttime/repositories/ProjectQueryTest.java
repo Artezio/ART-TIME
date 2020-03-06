@@ -4,7 +4,6 @@ import com.artezio.arttime.datamodel.*;
 import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import static com.artezio.arttime.datamodel.Project.Status.CLOSED;
 import static com.artezio.arttime.test.utils.CalendarUtils.getOffsetDate;
-import com.artezio.javax.jpa.abac.hibernate.AbacEntityManager;
 import static java.util.Arrays.asList;
 
 import java.util.*;

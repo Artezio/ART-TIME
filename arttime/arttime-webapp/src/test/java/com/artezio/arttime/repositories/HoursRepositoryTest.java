@@ -1,30 +1,40 @@
 package com.artezio.arttime.repositories;
 
-import com.artezio.arttime.datamodel.*;
-import com.artezio.arttime.datamodel.Project.Status;
 import static com.artezio.arttime.test.utils.CalendarUtils.getOffsetDate;
+import static java.util.Arrays.asList;
+import static junitx.util.PrivateAccessor.setField;
+import static org.junit.Assert.*;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import static java.util.Arrays.asList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PessimisticLockException;
 
-import com.artezio.javax.jpa.abac.hibernate.AbacEntityManager;
-import junitx.framework.ListAssert;
-import static junitx.util.PrivateAccessor.setField;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.datamodel.HourType;
+import com.artezio.arttime.datamodel.Hours;
+import com.artezio.arttime.datamodel.Period;
+import com.artezio.arttime.datamodel.Project;
+
+import junitx.framework.ListAssert;
 
 @RunWith(PowerMockRunner.class)
 public class HoursRepositoryTest {

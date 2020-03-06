@@ -1,5 +1,31 @@
 package com.artezio.arttime.web;
 
+import static com.artezio.arttime.web.EffortsGrouping.BY_EMPLOYEES;
+import static com.artezio.arttime.web.EffortsGrouping.BY_PROJECTS;
+import static junit.framework.TestCase.assertEquals;
+import static junitx.util.PrivateAccessor.getField;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+import static org.powermock.api.easymock.PowerMock.createMock;
+import static org.powermock.api.easymock.PowerMock.replay;
+import static org.powermock.api.easymock.PowerMock.verify;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.omnifaces.util.Faces;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.Hours;
 import com.artezio.arttime.datamodel.Project;
@@ -9,53 +35,34 @@ import com.artezio.arttime.services.EmployeeService;
 import com.artezio.arttime.services.FilterService;
 import com.artezio.arttime.services.HoursService;
 import com.artezio.arttime.services.NotificationManager;
-import static com.artezio.arttime.web.EffortsGrouping.BY_EMPLOYEES;
-import static com.artezio.arttime.web.EffortsGrouping.BY_PROJECTS;
-import com.artezio.arttime.web.spread_sheet.*;
+import com.artezio.arttime.web.spread_sheet.EmployeeEffortsSpreadSheet;
+import com.artezio.arttime.web.spread_sheet.HeadSpreadSheetRow;
+import com.artezio.arttime.web.spread_sheet.ProjectEffortsSpreadSheet;
+import com.artezio.arttime.web.spread_sheet.SpreadSheet;
+import com.artezio.arttime.web.spread_sheet.SpreadSheetRow;
 import com.artezio.arttime.web.spread_sheet.strategies.EmployeeEffortsSpreadSheetBuildingStrategy;
 import com.artezio.arttime.web.spread_sheet.strategies.ProjectEffortsSpreadSheetBuildingStrategy;
 import com.lassitercg.faces.components.sheet.Sheet;
-
-import java.util.*;
-
-import static junit.framework.TestCase.assertEquals;
-import static junitx.util.PrivateAccessor.getField;
-import static junitx.util.PrivateAccessor.setField;
-import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.omnifaces.util.Faces;
-import org.powermock.api.easymock.PowerMock;
-import static org.powermock.api.easymock.PowerMock.createMock;
-import static org.powermock.api.easymock.PowerMock.replay;
-import static org.powermock.api.easymock.PowerMock.verify;
-import org.powermock.api.easymock.annotation.Mock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Faces.class})
 public class ManageEffortsBeanTest {
 
     private ManageEffortsBean manageEffortsBean;
-    @Mock
     private FilterBean filterBean;
-    @Mock
     private SpreadSheet spreadSheet;
-    @Mock
     private HoursService hoursService;
-    @Mock
     private FilterService filterService;
-    @Mock
     private NotificationManager notificationManager;
 
     @Before
     public void setUp() throws Exception {
         manageEffortsBean = new ManageEffortsBean();
-
+        filterBean = createMock(FilterBean.class);
+        spreadSheet = createMock(SpreadSheet.class);
+        hoursService = createMock(HoursService.class);
+        filterService = createMock(FilterService.class);
+        notificationManager =  createMock(NotificationManager.class);
         setField(manageEffortsBean, "filterBean", filterBean);
         setField(manageEffortsBean, "spreadSheet", spreadSheet);
         setField(manageEffortsBean, "hoursService", hoursService);
