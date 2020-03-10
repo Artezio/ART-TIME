@@ -138,7 +138,7 @@
 		<dependency>
 			<groupId>com.artezio.javax.jpa</groupId>
 			<artifactId>abac</artifactId>
-			<version>1.0.3.Alpha</version>
+			<version>1.0.4.Alpha</version>
 		</dependency>
 
 		<dependency>
