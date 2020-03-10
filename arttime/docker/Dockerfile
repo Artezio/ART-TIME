@@ -1,8 +1,7 @@
 # ----------------------------------------------------------------------------------
 # Download and build arttime from source code
-FROM maven:3.5.2-jdk-8-alpine as maven_builder
+FROM maven:3.6.3-jdk-11 as maven_builder
 
-RUN apk add --no-cache git
 RUN cd / &&\
 	git clone https://github.com/Artezio/ART-TIME.git &&\
 	cd /ART-TIME/arttime &&\
@@ -31,7 +30,7 @@ USER 1000
 
 # ----------------------------------------------------------------------------------
 # Build wildfly with Art-Time web application and keycloak demo
-FROM jboss/wildfly:17.0.0.Final as wildfly
+FROM jboss/wildfly:17.0.1.Final as wildfly
 
 ARG ARTTIME_CLI_ADMIN_LOGIN=admin
 ARG ARTTIME_CLI_ADMIN_PASSWORD=admin
