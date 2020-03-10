@@ -109,12 +109,18 @@ public abstract class SpreadSheet implements Serializable {
 
     public Set<Hours> getUpdatedHours() {
         List<SheetUpdate> updates = sheet.getAccumulatedUpdates();
+        updates.addAll(sheet.getUpdates());
         List<Date> days = filter.getPeriod().getDays();
         return updates.stream()
                 .filter(update -> update.getRowData() instanceof HoursSpreadSheetRow)
-                .map(update ->
-                        ((HoursSpreadSheetRow) update.getRowData()).get(days.get(update.getColIndex() - sheet.getFixedCols())))
+                .map(update -> getUpdatedHour(days, update))
                 .collect(Collectors.toSet());
+    }
+    
+    private Hours getUpdatedHour(List<Date> days, SheetUpdate update) {
+        HoursSpreadSheetRow rowData = (HoursSpreadSheetRow) update.getRowData();
+        Date date = days.get(update.getColIndex() - sheet.getFixedCols());
+        return rowData.get(date);
     }
 
     //TODO rename (perhaps HoursHelper or HoursWrapper are more appropriate) + try to remove this class
