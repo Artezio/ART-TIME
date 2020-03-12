@@ -14,7 +14,6 @@
 		<wildfly.version>17.0.1.Final</wildfly.version>
 		<richfaces.version>4.5.17.Final</richfaces.version>
 		<birt-extensions.version>1.0.1</birt-extensions.version>
-		<birt-extensions.version>1.0.1</birt-extensions.version>
 		<keycloak.version>4.1.0.Final</keycloak.version>
 		<skipIntegrationTestsMessage>To skip integration tests, use -DskipIntegrationTests parameter</skipIntegrationTestsMessage>
 		<skipIntegrationTests>false</skipIntegrationTests>
