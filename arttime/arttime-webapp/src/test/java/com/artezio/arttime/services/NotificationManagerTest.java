@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +43,6 @@ import com.artezio.arttime.services.mailing.MailTemplate;
 import com.artezio.arttime.services.mailing.MailTemplateManager;
 import com.artezio.arttime.services.mailing.MailingEngine;
 import com.google.common.collect.Lists;
-import com.ibm.icu.text.SimpleDateFormat;
 
 import junitx.framework.ListAssert;
 

@@ -14,18 +14,20 @@ import java.util.Map;
 import junitx.framework.ListAssert;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.test.utils.DefaultLocaleRule;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Locale.class)
 public class SelectManyComponentTest {
 	private SelectManyComponent<Project> selector;
+	
+	@Rule
+        public DefaultLocaleRule defaultLocaleRule = new DefaultLocaleRule(Locale.US);
 	
 	@Before
 	public void setUp() {
@@ -43,8 +45,6 @@ public class SelectManyComponentTest {
 		selectedProjects.add(project1);
 		setField(selector, "availableItems", availableProjects);
 		setField(selector, "selectedItems", selectedProjects);
-		PowerMock.mockStatic(Locale.class);
-		expect(Locale.getDefault()).andReturn(Locale.US);
 		
 		selector.selectAll();
 		
@@ -63,8 +63,6 @@ public class SelectManyComponentTest {
 		selectedProjects.add(project1);
 		setField(selector, "availableItems", availableProjects);
 		setField(selector, "selectedItems", selectedProjects);
-		PowerMock.mockStatic(Locale.class);
-		expect(Locale.getDefault()).andReturn(Locale.US);
 		
 		selector.selectNone();
 		
@@ -83,8 +81,6 @@ public class SelectManyComponentTest {
 		selectedProjects.add(project1);
 		setField(selector, "availableItems", availableProjects);
 		setField(selector, "selectedItems", selectedProjects);
-		PowerMock.mockStatic(Locale.class);
-		expect(Locale.getDefault()).andReturn(Locale.US);
 		List<Project> expected = Arrays.asList(project2, project3);
 		
 		selector.invertSelection();

@@ -4,35 +4,38 @@ import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import com.ibm.icu.text.SimpleDateFormat;
+
+import com.artezio.arttime.test.utils.DefaultLocaleRule;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Locale.class, Calendar.class, CalendarUtils.class, FacesContext.class, ExternalContext.class})
+@PrepareForTest({Calendar.class, CalendarUtils.class, FacesContext.class, ExternalContext.class})
 public class CalendarUtilsTest {
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    
+    @Rule
+    public DefaultLocaleRule defaultLocaleRule = new DefaultLocaleRule(Locale.ENGLISH);
 
     @Test
     public void testCurrentWeekStartDate() throws ParseException {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.set(2015, 5, 9);
-        PowerMock.mockStatic(Locale.class);
-        Locale locale = Locale.ENGLISH;
 
-        expect(Locale.getDefault()).andReturn(locale);
         PowerMock.mockStatic(Calendar.class);
-        expect(Calendar.getInstance(locale)).andReturn(calendar);
-        PowerMock.replayAll(Calendar.class, Locale.class);
+        expect(Calendar.getInstance(Locale.ENGLISH)).andReturn(calendar);
+        PowerMock.replayAll();
 
         Date actual = CalendarUtils.currentWeekStartDate();
 
@@ -46,11 +49,9 @@ public class CalendarUtilsTest {
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.set(2015, 5, 9);
 
-        PowerMock.mockStatic(Locale.class);
-        expect(Locale.getDefault()).andReturn(Locale.ENGLISH);
         PowerMock.mockStatic(Calendar.class);
         expect(Calendar.getInstance(Locale.ENGLISH)).andReturn(calendar);
-        PowerMock.replayAll(Calendar.class, Locale.class);
+        PowerMock.replayAll();
 
         Date actual = CalendarUtils.currentWeekEndDate();
 
@@ -61,12 +62,9 @@ public class CalendarUtilsTest {
 
     @Test
     public void testGetLocale_ifFacesContextIsNull() {
-        PowerMock.mockStatic(Locale.class);
         PowerMock.mockStatic(FacesContext.class);
-
         expect(FacesContext.getCurrentInstance()).andReturn(null);
-        expect(Locale.getDefault()).andReturn(Locale.ENGLISH);
-        PowerMock.replayAll(Locale.class, FacesContext.class);
+        PowerMock.replayAll();
 
         Locale actual = CalendarUtils.getLocale();
 
@@ -115,25 +113,14 @@ public class CalendarUtilsTest {
 
     @Test
     public void testFirstDayOfWeek() throws Exception {
-        PowerMock.mockStatic(Locale.class);
-        expect(Locale.getDefault()).andReturn(Locale.ENGLISH);
-        PowerMock.replayAll(Locale.class);
-
         Date actual = CalendarUtils.firstDayOfWeek(sdf.parse("9-06-2015"));
 
-        PowerMock.verifyAll();
         assertEquals(sdf.parse("7-06-2015"), actual);
     }
 
     @Test
     public void testLastDayOfWeek() throws Exception {
-        PowerMock.mockStatic(Locale.class);
-        expect(Locale.getDefault()).andReturn(Locale.ENGLISH);
-        PowerMock.replayAll(Locale.class);
-
         Date actual = CalendarUtils.lastDayOfWeek(sdf.parse("9-06-2015"));
-
-        PowerMock.verifyAll();
 
         assertEquals(sdf.parse("13-06-2015"), actual);
     }

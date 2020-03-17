@@ -1,9 +1,9 @@
 package com.artezio.arttime.datamodel;
 
-import com.ibm.icu.text.SimpleDateFormat;
 import org.junit.Test;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
