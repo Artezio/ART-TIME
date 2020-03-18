@@ -1,5 +1,6 @@
 package com.artezio.arttime.web.validators;
 
+import static junitx.util.PrivateAccessor.setField;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
@@ -24,9 +25,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorContext;
 import javax.validation.ValidatorFactory;
 
-import org.easymock.Mock;
-import org.easymock.TestSubject;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omnifaces.util.Components;
@@ -38,19 +37,23 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({FacesContext.class, Components.class})
 public class PeriodValidatorTest {
 
-    @TestSubject
     private PeriodValidator periodValidator = new PeriodValidator();
-    @Mock
     private UIInput input;
-    @Mock
     private Validator validator;
-    @Mock
     private UIComponent component;
-    @Mock
     private FacesContext facesContext;
-    @Mock
     private ValidatorFactory validatorFactory;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+    
+    @Before
+    public void setUp() throws Exception {
+        input = PowerMock.createMock(UIInput.class);
+        validator = PowerMock.createMock(Validator.class);
+        component = PowerMock.createMock(UIComponent.class);
+        facesContext = PowerMock.createMock(FacesContext.class);
+        validatorFactory = PowerMock.createMock(ValidatorFactory.class);
+        setField(periodValidator, "validatorFactory", validatorFactory);
+    }
     
     @Test(expected = ValidatorException.class)
     public void testValidate_ifNotValid() throws Exception {

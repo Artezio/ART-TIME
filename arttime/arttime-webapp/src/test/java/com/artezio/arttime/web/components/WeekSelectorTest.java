@@ -2,7 +2,6 @@ package com.artezio.arttime.web.components;
 
 import static junitx.util.PrivateAccessor.setField;
 import static junitx.util.PrivateAccessor.getField;
-import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.*;
 
 import java.text.ParseException;
@@ -11,19 +10,21 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.artezio.arttime.datamodel.Period;
+import com.artezio.arttime.test.utils.DefaultLocaleRule;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Locale.class)
 public class WeekSelectorTest {
 	private WeekSelector weekSelector;
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	
+	@Rule
+        public DefaultLocaleRule defaultLocaleRule = new DefaultLocaleRule(Locale.US);
 	
 	@Before
 	public void setUp() {
@@ -36,8 +37,6 @@ public class WeekSelectorTest {
 		Date lastDayOfWeek = sdf.parse("4-05-2014");
 		Period period = new Period(firstDayOfWeek, lastDayOfWeek);
 		setField(weekSelector, "period", period);
-		PowerMock.mockStatic(Locale.class);
-		expect(Locale.getDefault()).andReturn(Locale.US);
 		Period expected = new Period(sdf.parse("21-04-2014"), sdf.parse("27-04-2014"));
 		
 		weekSelector.setPreviousPeriod();
@@ -52,8 +51,6 @@ public class WeekSelectorTest {
 		Date lastDayOfWeek = sdf.parse("4-05-2014");
 		Period period = new Period(firstDayOfWeek, lastDayOfWeek);
 		setField(weekSelector, "period", period);
-		PowerMock.mockStatic(Locale.class);
-		expect(Locale.getDefault()).andReturn(Locale.US);
 		Period expected = new Period(sdf.parse("5-05-2014"), sdf.parse("11-05-2014"));
 		
 		weekSelector.setNextPeriod();

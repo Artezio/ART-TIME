@@ -1,19 +1,27 @@
 package com.artezio.arttime.repositories;
 
-import com.artezio.arttime.datamodel.*;
-import com.artezio.javax.jpa.abac.hibernate.AbacEntityManager;
-import java.util.*;
+import static junitx.util.PrivateAccessor.setField;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import static junitx.util.PrivateAccessor.setField;
+
 import org.junit.After;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.artezio.arttime.datamodel.Employee;
 
 @RunWith(PowerMockRunner.class)
 public class EmployeeQueryTest {

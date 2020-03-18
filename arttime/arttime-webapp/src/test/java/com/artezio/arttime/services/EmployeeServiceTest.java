@@ -1,10 +1,19 @@
 package com.artezio.arttime.services;
 
-import com.artezio.arttime.datamodel.Employee;
-import com.artezio.arttime.repositories.EmployeeRepository;
-import com.google.common.collect.Sets;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.enterprise.inject.spi.CDI;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.easymock.internal.LastControl;
 import org.hibernate.Hibernate;
 import org.junit.After;
@@ -14,26 +23,15 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import javax.enterprise.inject.spi.CDI;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static junitx.util.PrivateAccessor.setField;
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.repositories.EmployeeRepository;
+import com.google.common.collect.Sets;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CDI.class)
 public class EmployeeServiceTest {
 
-    @Mock
     private EmployeeRepository employeeRepository;
-    @TestSubject
     private EmployeeService employeeService = new EmployeeService();
     private EntityManager entityManager;
     private EntityManagerFactory entityManagerFactory;
@@ -46,6 +44,8 @@ public class EmployeeServiceTest {
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         LastControl.pullMatchers();
+        employeeRepository = createMock(EmployeeRepository.class);
+        setField(employeeService, "employeeRepository", employeeRepository);
     }
 
     @After
@@ -66,7 +66,7 @@ public class EmployeeServiceTest {
         Employee employee = new Employee("Emp");
         expect(employeeRepository.update(employee)).andReturn(employee);
         replay(employeeRepository);
-
+        
         employeeService.update(employee);
 
         verify(employeeRepository);
@@ -99,12 +99,6 @@ public class EmployeeServiceTest {
         Employee actual2 = actual.get(actual.indexOf(expected2));
         assertTrue(Hibernate.isInitialized(actual1.getAccessibleDepartments()));
         assertTrue(Hibernate.isInitialized(actual2.getAccessibleDepartments()));
-    }
-
-    private Employee createEmployee(String userName, String department) {
-        Employee employee = new Employee(userName);
-        employee.setDepartment(department);
-        return employee;
     }
 
 }

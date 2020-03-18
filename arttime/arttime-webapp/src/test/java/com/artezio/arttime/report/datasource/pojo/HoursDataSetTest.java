@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,12 +30,12 @@ import com.artezio.arttime.services.HoursService;
 public class HoursDataSetTest {
 
     private HoursDataSet hoursDataSet;
-    @Mock
     private HoursService hoursService;
 
     @Before
     public void setUp() throws Exception {
         hoursDataSet = PowerMock.createPartialMock(HoursDataSet.class, "getHoursService");
+        hoursService = PowerMock.createMock(HoursService.class);
     }
 
     @Test

@@ -1,11 +1,11 @@
 package com.artezio.arttime.datamodel;
 
-import com.ibm.icu.text.SimpleDateFormat;
 import junitx.framework.ListAssert;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
