@@ -5,7 +5,7 @@ FROM maven:3.6.3-jdk-11 as maven_builder
 RUN cd / &&\
 	git clone https://github.com/Artezio/ART-TIME.git &&\
 	cd /ART-TIME/arttime &&\
-	mvn clean install -Dmaven.test.skip=true
+	mvn clean install -Pproduction
 
 
 # ----------------------------------------------------------------------------------

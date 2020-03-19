@@ -17,6 +17,7 @@
 		<keycloak.version>4.1.0.Final</keycloak.version>
 		<skipIntegrationTestsMessage>To skip integration tests, use -DskipIntegrationTests parameter</skipIntegrationTestsMessage>
 		<skipIntegrationTests>false</skipIntegrationTests>
+		<jsfProjectStage>Development</jsfProjectStage>
 	</properties>
 
 	<repositories>
@@ -264,10 +265,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.jboss.shrinkwrap.resolver</groupId>
-            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
-            <scope>test</scope>
-        </dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -305,10 +306,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.javassist</groupId>
-		    <artifactId>javassist</artifactId>
-		    <version>3.26.0-GA</version>
-		    <scope>test</scope>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.26.0-GA</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -376,7 +377,6 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.0</version>
 				<configuration>
 					<argLine>-Xmx768m -XX:MaxPermSize=384m</argLine>
 					<useSystemClassLoader>false</useSystemClassLoader>
@@ -475,6 +475,15 @@
 				<version>2.2</version>
 				<configuration>
 					<attachClasses>true</attachClasses>
+					<webResources>
+						<resource>
+							<directory>${basedir}/src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>WEB-INF/web.xml</include>
+							</includes>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -501,6 +510,7 @@
 			<properties>
 				<debug>true</debug>
 				<skipIntegrationTests>false</skipIntegrationTests>
+				<jsfProjectStage>Development</jsfProjectStage>
 			</properties>
 		</profile>
 		<profile>
@@ -508,70 +518,8 @@
 			<properties>
 				<debug>false</debug>
 				<skipIntegrationTests>false</skipIntegrationTests>
+				<jsfProjectStage>Production</jsfProjectStage>
 			</properties>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>atlassian</id>
-					<url>https://maven.atlassian.com/3rdparty/</url>
-				</pluginRepository>
-			</pluginRepositories>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.7</version>
-						<dependencies>
-							<dependency>
-								<groupId>com.oopsconsultancy</groupId>
-								<artifactId>xmltask</artifactId>
-								<version>1.16</version>
-							</dependency>
-						</dependencies>
-						<executions>
-							<execution>
-								<phase>prepare-package</phase>
-								<configuration>
-									<target>
-										<copy todir="target/arttime-webapp">
-											<fileset dir="src/main/webapp" includes="**/*" />
-										</copy>
-										<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" />
-										<xmltask source="target/arttime-webapp/WEB-INF/web.xml" dest="target/arttime-webapp/WEB-INF/web.xml">
-											<replace path="//:context-param[:param-name/text()='javax.faces.PROJECT_STAGE']/:param-value/text()" withText="Production" />
-										</xmltask>
-									</target>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<warSourceDirectory>target/arttime-webapp</warSourceDirectory>
-							<packagingExcludes>WEB-INF/classes/report_templates/*test.rptdesign</packagingExcludes>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.wildfly.plugins</groupId>
-						<artifactId>wildfly-maven-plugin</artifactId>
-						<version>1.2.2.Final</version>
-						<configuration>
-							<force>true</force>
-							<hostname>${wildfly-deployment-host}</hostname>
-							<port>${wildfly-deployment-port}</port>
-							<username>${wildfly-deployment-username}</username>
-							<password>${wildfly-deployment-password}</password>
-							<name>${project.build.finalName}.${project.packaging}</name>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>clover-report</id>
@@ -591,7 +539,6 @@
 				<plugins>
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.8</version>
 						<dependencies>
 							<dependency>
 								<groupId>org.apache.ant</groupId>
