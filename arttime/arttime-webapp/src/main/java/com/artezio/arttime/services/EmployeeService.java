@@ -114,6 +114,13 @@ public class EmployeeService implements Serializable {
         return employeeRepository.query()
                 .list();
     }
+    
+    @RolesAllowed({SYSTEM_ROLE})
+    public List<Employee> getCurrent() {
+        return employeeRepository.query()
+                .notFormer()
+                .list();
+    }
 
     @PermitAll
     @AbacContext(VIEW_TIMESHEET)

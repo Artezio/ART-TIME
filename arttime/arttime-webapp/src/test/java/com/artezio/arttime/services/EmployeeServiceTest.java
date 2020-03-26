@@ -2,9 +2,9 @@ package com.artezio.arttime.services;
 
 import static junitx.util.PrivateAccessor.setField;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +99,30 @@ public class EmployeeServiceTest {
         Employee actual2 = actual.get(actual.indexOf(expected2));
         assertTrue(Hibernate.isInitialized(actual1.getAccessibleDepartments()));
         assertTrue(Hibernate.isInitialized(actual2.getAccessibleDepartments()));
+    }
+    
+    @Test
+    public void testGetCurrent() throws Exception {
+        
+        Employee currentEmployee1 = new Employee("uname1", "fname1", "lname1", "email1");
+        currentEmployee1.setFormer(false);
+        Employee currentEmployee2 = new Employee("uname2", "fname2", "lname2", "email2");
+        currentEmployee2.setFormer(false);
+        Employee formerEmployee = new Employee("uxname3", "fname3", "lname3", "email3");
+        formerEmployee.setFormer(true);
+        List<Employee> expected = Arrays.asList(currentEmployee1, currentEmployee2);
+        
+        employeeRepository = new EmployeeRepository();
+        setField(employeeRepository, "entityManager", entityManager);
+        setField(employeeService, "employeeRepository", employeeRepository);
+        entityManager.persist(currentEmployee1);
+        entityManager.persist(currentEmployee2);
+        entityManager.persist(formerEmployee);
+        entityManager.flush();
+        
+        List<Employee> actual = employeeService.getCurrent();
+        
+        assertEquals(expected, actual);
     }
 
 }

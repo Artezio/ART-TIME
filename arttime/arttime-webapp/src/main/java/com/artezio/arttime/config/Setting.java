@@ -49,7 +49,9 @@ public class Setting implements Serializable {
 
         EMPLOYEE_SYNCHRONIZATION_ENABLED,
         TEAM_SYNCHRONIZATION_ENABLED,
+        
         APPLICATION_BASE_URL,
+        INCORRECT_TIMESHEET_NOTIFICATION_ENABLED,
 
         HELP_PAGE_URL,
 

@@ -24,10 +24,17 @@
 	<ui:define name="content">
 		<h:panelGroup styleClass="settings-group" layout="block">
 			<h:panelGrid columns="4" styleClass="panelGridDetails">
+			
 				<p:outputLabel for="appUrl" value="#{messages['notification.baseurl.label']}" />
 				<h:inputText id="appUrl" value="#{settingsBean.settings.applicationBaseUrl}" />
 				<h:message for="appUrl"/>
 				<h:outputText value="#{messages['notification.baseurl.description']}"/>
+				
+				<p:outputLabel for="incorrectTimesheetNotification" value="#{messages['notification.incorrectTimesheetNotification.label']}" />
+				<h:selectBooleanCheckbox id="incorrectTimesheetNotification" value="#{settingsBean.settings.incorrectTimesheetNotificationEnabled}" />
+				<h:message for="incorrectTimesheetNotification" />
+				<h:outputText value="#{messages['notification.incorrectTimesheetNotification.description']}"/>
+				
 			</h:panelGrid>
 		</h:panelGroup>
 	</ui:define>

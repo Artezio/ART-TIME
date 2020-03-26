@@ -82,6 +82,31 @@ public class NotificationManager implements NotificationManagerLocal {
         project.getManagers().forEach(manager ->
                 mailingEngine.send(mailBuilder.setRecipientEmailAddress(manager.getEmail()).build()));
     }
+    
+    @RolesAllowed(SYSTEM_ROLE)
+    public void notifyAboutIncorrectTimesheet(List<Employee> employees, Period period) {
+        employees.stream()
+                .filter(employee -> isTimesheetIncorrect(employee, period))
+                .forEach(employee -> notifyAboutIncorrectTimesheet(employee, period));
+    }
+
+    private boolean isTimesheetIncorrect(Employee employee, Period period) {
+        BigDecimal requiredWorkHours = workTimeService.getRequiredWorkHours(employee, period);
+        BigDecimal actualWorkHours = workTimeService.getActualWorkHours(employee, period);
+        return requiredWorkHours.compareTo(actualWorkHours) != 0;
+    }
+
+    protected void notifyAboutIncorrectTimesheet(Employee employee, Period period) {
+        HourType actualTime = hourTypeService.findActualTime();
+        Mail mail = new RequiredWorkHoursMailBuilder(mailTemplateManager)
+                .setHourType(actualTime)
+                .setPeriod(period)
+                .setRecipientEmailAddress(employee.getEmail())
+                .setAppHost(settings.getApplicationBaseUrl())
+                .setSenderEmailAddress(settings.getSmtpSender())
+                .build();
+        mailingEngine.send(mail);
+    }
 
     protected void notifyEmployees(List<Employee> employees, Period period, String comment) {
         Map<Employee, Map<Date, BigDecimal>> timeProblems = workTimeService.getWorkTimeDeviations(period, employees);

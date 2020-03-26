@@ -27,7 +27,11 @@ import static com.artezio.arttime.security.AbacContexts.*;
 @Table(uniqueConstraints = {
         @UniqueConstraint(name = "constraint_unique_hours", columnNames = {"date", "employee_userName", "project_id", "type_id"})
 })
-@FilterDef(name = "Hours.visibleInTimesheet", parameters = {@ParamDef(name = "callerUsername", type = "string")})
+@FilterDef(name = "Hours.visibleInTimesheet", 
+        parameters = {
+                @ParamDef(name = "callerUsername", type = "string"),
+                @ParamDef(name = "isSystem", type = "boolean")
+        })
 @FilterDef(name = "Hours.canBeReported", parameters = {@ParamDef(name = "callerUsername", type = "string")})
 @FilterDef(name = "Hours.defaultFilter",
         parameters = {
@@ -38,7 +42,7 @@ import static com.artezio.arttime.security.AbacContexts.*;
                 @ParamDef(name = "isOfficeManager", type = "boolean"),
                 @ParamDef(name = "isAccountant", type = "boolean")
         })
-@Filter(name = "Hours.visibleInTimesheet", condition = "(employee_userName = :callerUsername)")
+@Filter(name = "Hours.visibleInTimesheet", condition = "(employee_userName = :callerUsername OR :isSystem)")
 @Filter(name = "Hours.canBeReported",
         condition = "((approved = false) AND EXISTS (SELECT 1 FROM Project hp WHERE hp.id = project_id AND hp.allowEmployeeReportTime=true))")
 @Filter(name = "Hours.defaultFilter", condition = "(:isExec OR :isIntegrationClient " +
@@ -51,11 +55,17 @@ import static com.artezio.arttime.security.AbacContexts.*;
 @AbacRule(
         contexts = VIEW_TIMESHEET,
         filtersUsed = "Hours.visibleInTimesheet",
-        paramValues = {@ParamValue(paramName = "callerUsername", elExpression = "#{sessionContext.getCallerPrincipal().getName()}")})
+        paramValues = {
+                @ParamValue(paramName = "callerUsername", elExpression = "#{sessionContext.getCallerPrincipal().getName()}"),
+                @ParamValue(paramName = "isSystem", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.SYSTEM_ROLE + "')}")
+        })
 @AbacRule(
         contexts = REPORT_TIME,
         filtersUsed = {"Hours.visibleInTimesheet", "Hours.canBeReported"},
-        paramValues = {@ParamValue(paramName = "callerUsername", elExpression = "#{sessionContext.getCallerPrincipal().getName()}")})
+        paramValues = {
+                @ParamValue(paramName = "callerUsername", elExpression = "#{sessionContext.getCallerPrincipal().getName()}"),
+                @ParamValue(paramName = "isSystem", elExpression = "#{sessionContext.isCallerInRole('" + UserRoles.SYSTEM_ROLE + "')}")
+        })
 @AbacRule(
         filtersUsed = {"Hours.defaultFilter"},
         paramValues = {

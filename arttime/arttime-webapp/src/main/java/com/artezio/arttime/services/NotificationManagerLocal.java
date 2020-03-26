@@ -12,5 +12,6 @@ public interface NotificationManagerLocal {
     void notifyAboutWorkTimeProblems(List<Employee> employees, Period period, String notificationComment);
     void requestWorkTimeReport(String recipientEmail, Period period) throws MessagingException;
     void notifyAboutTeamChanges(Project project, List<Employee> formerTeamMembers, List<Employee> newTeamMembers);
+    void notifyAboutIncorrectTimesheet(List<Employee> employees, Period period);
 
 }
