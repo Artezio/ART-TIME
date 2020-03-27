@@ -12,8 +12,10 @@ public enum MailTemplate {
     TIME_PROBLEM_BODY_FOR_PM("mail_templates/timeProblemNotificationBodyForPM.ftl"),
     TEAM_SYNCHRONIZATION_SUBJECT("mail_templates/teamSynchronizationSubject.ftl"),
     TEAM_SYNCHRONIZATION_BODY("mail_templates/teamSynchronizationBody.ftl"),
-    REQUIRED_WORK_HOURS_SUBJECT("mail_templates/incorrectTimesheetNotificationSubject.ftl"),
-    REQUIRED_WORK_HOURS_BODY("mail_templates/incorrectTimesheetNotificationBody.ftl"),
+    INCORRECT_TIMESHEET_SUBJECT("mail_templates/incorrectTimesheetNotificationSubject.ftl"),
+    INCORRECT_TIMESHEET_BODY("mail_templates/incorrectTimesheetNotificationBody.ftl"),
+    UNAPPROVED_HOURS_SUBJECT("mail_templates/unapprovedHoursNotificationSubject.ftl"),
+    UNAPPROVED_HOURS_BODY("mail_templates/unapprovedHoursNotificationBody.ftl"),
     ;
 
     private String fileName;

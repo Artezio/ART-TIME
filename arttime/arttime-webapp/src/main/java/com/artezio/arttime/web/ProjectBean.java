@@ -280,8 +280,8 @@ public class ProjectBean implements Serializable {
 
     private boolean hasAnyParticipation(Employee employee) {
         // Workaround: Mojarra could write Object[] instead of Employee[] into participations, which then would cause ClassCastException on loadProject().length
-        Set<Project> projects = Sets.newHashSet(getParticipations().get(employee));
-        return !projects.isEmpty();
+        Object[] emploteeParticipations = getParticipations().get(employee);
+        return emploteeParticipations.length > 0;
     }
 
     private List<Project> getProjectsByEmployee(List<Project> projects, Employee employee) {

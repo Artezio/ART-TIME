@@ -123,7 +123,17 @@ public class HoursService {
             }
         }
     }
-
+    
+    @AbacContext(VIEW_TIMESHEET)
+    @RolesAllowed(SYSTEM_ROLE)
+    public List<Employee> getManagersForUnapprovedHours(Period period) {
+        return hoursRepository.tupleQuery()
+                .unapproved()
+                .period(period)
+                .withQuantity()
+                .getManagers();
+    }
+    
     protected void apply(HoursChange change) {
         Employee employee = employeeRepository.get(change.getEmployeeUsername());
         hoursRepository.lock(employee);

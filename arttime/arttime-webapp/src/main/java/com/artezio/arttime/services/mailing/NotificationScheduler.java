@@ -15,6 +15,7 @@ import org.apache.commons.lang.time.DateUtils;
 import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.Period;
 import com.artezio.arttime.services.EmployeeService;
+import com.artezio.arttime.services.HoursService;
 import com.artezio.arttime.services.NotificationManagerLocal;
 import com.artezio.arttime.services.SettingsService;
 import com.artezio.arttime.utils.CalendarUtils;
@@ -24,6 +25,7 @@ import com.artezio.arttime.utils.CalendarUtils;
 public class NotificationScheduler {
     
     private static final String NOTIFY_ABOUT_INCORRECT_TIMESHEET_INFO = "On the 1st day of the month notify employees if a timesheet is incorrect";
+    private static final String NOTIFY_ABOUT_UNAPPROVED_HOURS_INFO = "On the 2nd day of the month notify project managers if there are unapproved hours in their projects.";
 
     @Inject
     private SettingsService settingsService;
@@ -31,6 +33,8 @@ public class NotificationScheduler {
     private NotificationManagerLocal notificationManager;
     @Inject
     private EmployeeService employeeService;
+    @Inject
+    private HoursService hoursService;
 
     @Schedule(dayOfMonth="1", persistent = false, info = NOTIFY_ABOUT_INCORRECT_TIMESHEET_INFO)
     public void notifyAboutIncorrectTimesheet() {
@@ -40,8 +44,17 @@ public class NotificationScheduler {
             notificationManager.notifyAboutIncorrectTimesheet(employees, period);
         }
     }
+    
+    @Schedule(dayOfMonth="2", persistent = false, info = NOTIFY_ABOUT_UNAPPROVED_HOURS_INFO)
+    public void notifyAboutUnapprovedHours() {
+        if (settingsService.getSettings().isUnapprovedHoursNotificationEnabled()) {
+            Period period = getPeriodForPreviousMonth();
+            List<Employee> managers = hoursService.getManagersForUnapprovedHours(period);
+            notificationManager.notifyAboutUnapprovedHours(managers, period);
+        }
+    }
 
-    private Period getPeriodForPreviousMonth() {
+    protected Period getPeriodForPreviousMonth() {
         Date previousMonth = DateUtils.addMonths(getCurrentDate(), -1);
         return new Period(CalendarUtils.firstDayOfMonth(previousMonth), CalendarUtils.lastDayOfMonth(previousMonth));
     }

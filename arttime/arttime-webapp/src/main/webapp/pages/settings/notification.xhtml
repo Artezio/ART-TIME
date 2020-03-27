@@ -35,6 +35,11 @@
 				<h:message for="incorrectTimesheetNotification" />
 				<h:outputText value="#{messages['notification.incorrectTimesheetNotification.description']}"/>
 				
+				<p:outputLabel for="unapprovedHoursNotification" value="#{messages['notification.unapprovedHoursNotification.label']}" />
+				<h:selectBooleanCheckbox id="unapprovedHoursNotification" value="#{settingsBean.settings.unapprovedHoursNotificationEnabled}" />
+				<h:message for="unapprovedHoursNotification" />
+				<h:outputText value="#{messages['notification.unapprovedHoursNotification.description']}"/>
+				
 			</h:panelGrid>
 		</h:panelGroup>
 	</ui:define>

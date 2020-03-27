@@ -98,8 +98,23 @@ public class NotificationManager implements NotificationManagerLocal {
 
     protected void notifyAboutIncorrectTimesheet(Employee employee, Period period) {
         HourType actualTime = hourTypeService.findActualTime();
-        Mail mail = new RequiredWorkHoursMailBuilder(mailTemplateManager)
+        Mail mail = new IncorrectTimesheetMailBuilder(mailTemplateManager)
                 .setHourType(actualTime)
+                .setPeriod(period)
+                .setRecipientEmailAddress(employee.getEmail())
+                .setAppHost(settings.getApplicationBaseUrl())
+                .setSenderEmailAddress(settings.getSmtpSender())
+                .build();
+        mailingEngine.send(mail);
+    }
+    
+    @RolesAllowed(SYSTEM_ROLE)
+    public void notifyAboutUnapprovedHours(List<Employee> managers, Period period) {
+        managers.forEach(manager -> notifyAboutUnapprovedHours(manager, period));
+    }
+
+    protected void notifyAboutUnapprovedHours(Employee employee, Period period) {
+        Mail mail = new UnapprovedHoursMailBuilder(mailTemplateManager)
                 .setPeriod(period)
                 .setRecipientEmailAddress(employee.getEmail())
                 .setAppHost(settings.getApplicationBaseUrl())
@@ -243,5 +258,6 @@ public class NotificationManager implements NotificationManagerLocal {
         }
 
     }
+
 
 }

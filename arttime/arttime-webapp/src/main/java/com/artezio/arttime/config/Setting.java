@@ -52,6 +52,7 @@ public class Setting implements Serializable {
         
         APPLICATION_BASE_URL,
         INCORRECT_TIMESHEET_NOTIFICATION_ENABLED,
+        UNAPPROVED_HOURS_NOTIFICATION_ENABLED,
 
         HELP_PAGE_URL,
 
