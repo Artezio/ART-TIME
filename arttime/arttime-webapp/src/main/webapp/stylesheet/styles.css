@@ -173,7 +173,11 @@ a.filter-pin-button .stick-left {
 }
 
 #form\:manageEffortsSheet_tbl {
-    max-height: 100%;
+    position: relative;
+    transform-origin: top left;
+    transform: scale(0.9);
+    width: 111.1%;
+    height: 111.1% !important;
 }
 
 .content {
@@ -3981,4 +3985,12 @@ table.calendar-editor > tbody > tr > td {
 
 table.calendar-editor > tbody > tr > td:first-child {
     padding-left: 0;
+}
+
+.manualColumnResizer{
+	display: none !important;
+}
+
+.manualColumnResizerGuide{
+	display: none !important;
 }
