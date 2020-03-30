@@ -6,14 +6,12 @@ import com.artezio.arttime.admin_tool.log.DetailedLogged;
 import com.artezio.arttime.admin_tool.log.Log;
 import com.artezio.arttime.datamodel.*;
 import com.artezio.arttime.utils.CalendarUtils;
-import com.artezio.javax.jpa.abac.hibernate.AbacEntityManager;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -80,17 +78,7 @@ public class HoursRepository {
                 .actualTime()
                 .withQuantity()
                 .unapproved()
-                .getManagers();
-        return collectManagersByEmployee(managersAndEmployees);
-    }
-
-    public Map<Employee, List<Employee>> getManagersByEmployee(List<Employee> employees, Period period) {
-        List<Tuple> managersAndEmployees = new HoursQuery(true)
-                .period(period)
-                .employees(employees)
-                .actualTime()
-                .withQuantity()
-                .getManagers();
+                .getManagersByEmployee();
         return collectManagersByEmployee(managersAndEmployees);
     }
 
@@ -227,13 +215,24 @@ public class HoursRepository {
             return this;
         }
 
-        public List<Tuple> getManagers() {
+        public List<Tuple> getManagersByEmployee() {
             Path<Employee> employeeSelector = getRoot().get(Hours_.employee);
             Expression<Set<Employee>> managersSelector = getRoot().get(Hours_.project).get(Project_.managers);
 
             getTupleCriteriaQuery().multiselect(employeeSelector, managersSelector).distinct(true);
             addWhereClause(getTupleCriteriaQuery());
             return createQuery(getTupleCriteriaQuery(), false).getResultList();
+        }
+        
+        public List<Employee> getManagers() {
+            Expression<Set<Employee>> managersSelector = getRoot().get(Hours_.project).get(Project_.managers);
+            getTupleCriteriaQuery().multiselect(managersSelector).distinct(true);
+            addWhereClause(getTupleCriteriaQuery());
+            return createQuery(getTupleCriteriaQuery(), false)
+                    .getResultList()
+                    .stream()
+                    .map(t -> t.get(0, Employee.class))
+                    .collect(Collectors.toList());
         }
 
         public HoursQuery approved() {

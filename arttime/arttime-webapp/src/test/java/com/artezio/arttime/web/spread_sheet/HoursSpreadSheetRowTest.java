@@ -5,10 +5,10 @@ import com.artezio.arttime.datamodel.HourType;
 import com.artezio.arttime.datamodel.Hours;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.web.EffortsGrouping;
-import com.ibm.icu.text.SimpleDateFormat;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;

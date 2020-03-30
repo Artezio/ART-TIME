@@ -1,24 +1,5 @@
 package com.artezio.arttime.services;
 
-import com.artezio.arttime.datamodel.*;
-import com.artezio.arttime.exceptions.SaveApprovedHoursException;
-import com.artezio.arttime.filter.Filter;
-import com.artezio.arttime.repositories.*;
-import com.artezio.arttime.web.criteria.RangePeriodSelector;
-import org.easymock.EasyMock;
-import org.easymock.Mock;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
-
-import javax.ejb.SessionContext;
-import java.math.BigDecimal;
-import java.util.*;
-
 import static com.artezio.arttime.test.utils.CalendarUtils.createPeriod;
 import static com.artezio.arttime.test.utils.CalendarUtils.getOffsetDate;
 import static java.util.Arrays.asList;
@@ -28,8 +9,36 @@ import static junitx.util.PrivateAccessor.setField;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
-@PowerMockIgnore("javax.security.*")
-@RunWith(PowerMockRunner.class)
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.ejb.SessionContext;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.datamodel.HourType;
+import com.artezio.arttime.datamodel.Hours;
+import com.artezio.arttime.datamodel.Period;
+import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.exceptions.SaveApprovedHoursException;
+import com.artezio.arttime.filter.Filter;
+import com.artezio.arttime.repositories.EmployeeRepository;
+import com.artezio.arttime.repositories.HoursRepository;
+import com.artezio.arttime.repositories.ProjectRepository;
+import com.artezio.arttime.web.criteria.RangePeriodSelector;
+
+@RunWith(EasyMockRunner.class)
 public class HoursServiceTest {
 
     @Mock

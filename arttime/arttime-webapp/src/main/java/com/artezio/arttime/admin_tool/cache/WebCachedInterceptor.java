@@ -1,6 +1,7 @@
 package com.artezio.arttime.admin_tool.cache;
 
 import com.artezio.arttime.admin_tool.cache.WebCached.Scope;
+import com.sun.faces.config.InitFacesContext;
 
 import javax.faces.context.FacesContext;
 import javax.interceptor.AroundInvoke;
@@ -53,7 +54,7 @@ public class WebCachedInterceptor {
 
     protected Map<String, Object> getContextProperties(Scope contextScope) {
 		FacesContext context = FacesContext.getCurrentInstance();
-		if (context == null) return null;
+		if (context == null || context instanceof InitFacesContext) return null;
 		if (Scope.APPLICATION_SCOPED == contextScope) {
 		    return context.getExternalContext().getApplicationMap();
 		}

@@ -1,6 +1,5 @@
 package com.artezio.arttime.datamodel;
 
-import com.ibm.icu.text.SimpleDateFormat;
 import org.junit.Test;
 
 import javax.validation.ConstraintViolation;
@@ -9,6 +8,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 

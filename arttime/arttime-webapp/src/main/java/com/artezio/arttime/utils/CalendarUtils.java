@@ -2,14 +2,19 @@ package com.artezio.arttime.utils;
 
 import org.apache.commons.lang.time.DateUtils;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 public class CalendarUtils {	
 
-	public static Date currentWeekStartDate() {
+    private static final Locale RU_LOCALE = new Locale("ru");
+    private static final Locale RU_RU_LOCALE = new Locale("ru", "RU");
+
+    public static Date currentWeekStartDate() {
 		Calendar calendar = Calendar.getInstance(getLocale());
 		calendar.get(Calendar.DAY_OF_WEEK);		
 		calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());		
@@ -25,10 +30,11 @@ public class CalendarUtils {
 	}
 
 	public static Locale getLocale() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();		
-		return (facesContext != null) 
-				? facesContext.getViewRoot().getLocale()
-				: Locale.getDefault();
+        return Optional.ofNullable(FacesContext.getCurrentInstance())
+                .map(FacesContext::getExternalContext)
+                .map(ExternalContext::getRequestLocale)
+                .map(locale -> RU_LOCALE.equals(locale)? RU_RU_LOCALE: locale)
+                .orElse(Locale.getDefault());
 	}
 	
     public static Date firstDayOfWeek(Date date){

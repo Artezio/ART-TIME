@@ -1,13 +1,42 @@
 package com.artezio.arttime.services;
 
+import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+
+import java.math.BigDecimal;
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Stream;
+
+import javax.ejb.SessionContext;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
 import com.artezio.arttime.config.Settings;
 import com.artezio.arttime.datamodel.Employee;
 import com.artezio.arttime.datamodel.HourType;
 import com.artezio.arttime.datamodel.Period;
 import com.artezio.arttime.datamodel.Project;
-import static com.artezio.arttime.datamodel.Project.Status.ACTIVE;
 import com.artezio.arttime.repositories.EmployeeRepository;
-import com.artezio.arttime.repositories.HourTypeRepository;
 import com.artezio.arttime.repositories.ProjectRepository;
 import com.artezio.arttime.services.NotificationManager.WorkTimeProblems;
 import com.artezio.arttime.services.mailing.Mail;
@@ -15,28 +44,10 @@ import com.artezio.arttime.services.mailing.MailTemplate;
 import com.artezio.arttime.services.mailing.MailTemplateManager;
 import com.artezio.arttime.services.mailing.MailingEngine;
 import com.google.common.collect.Lists;
-import com.ibm.icu.text.SimpleDateFormat;
-import java.math.BigDecimal;
-import java.security.Principal;
-import java.util.*;
-import java.util.stream.Stream;
-import javax.ejb.SessionContext;
-import javax.mail.MessagingException;
-import junitx.framework.ListAssert;
-import static junitx.util.PrivateAccessor.setField;
-import org.easymock.EasyMock;
-import static org.easymock.EasyMock.*;
-import org.easymock.Mock;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@PowerMockIgnore("javax.security.*")
-@RunWith(PowerMockRunner.class)
+import junitx.framework.ListAssert;
+
+@RunWith(EasyMockRunner.class)
 public class NotificationManagerTest {
 
     private NotificationManager notificationManager = new NotificationManager();
@@ -317,6 +328,129 @@ public class NotificationManagerTest {
         notificationManager.notifyAboutTeamChanges(project, closedEmployees, newEmployees);
 
         verify(mailTemplateManager, mailingEngine);
+    }
+    
+    @Test
+    public void testNotifyAboutIncorrectTimesheet() throws Exception {
+        notificationManager = createMockBuilder(NotificationManager.class)
+                .addMockedMethod("notifyAboutIncorrectTimesheet", Employee.class, Period.class)
+                .createMock();
+        setMockServices(notificationManager);
+        
+        Employee goodEmployee = new Employee("good_employee");
+        Employee badEmployee1 = new Employee("bad_employee1");
+        Employee badEmployee2 = new Employee("bad_employee2");
+        List<Employee> employees = Arrays.asList(goodEmployee, badEmployee1, badEmployee2);
+        
+        Date start =  new GregorianCalendar(2020, 1, 1).getTime();
+        Date finish =  new GregorianCalendar(2020, 1, 29).getTime();
+        Period period = new Period(start, finish);
+        
+        expect(workTimeService.getRequiredWorkHours(goodEmployee, period)).andReturn(BigDecimal.valueOf(160));
+        expect(workTimeService.getRequiredWorkHours(badEmployee1, period)).andReturn(BigDecimal.valueOf(160));
+        expect(workTimeService.getRequiredWorkHours(badEmployee2, period)).andReturn(BigDecimal.valueOf(160));
+        expect(workTimeService.getActualWorkHours(goodEmployee, period)).andReturn(BigDecimal.valueOf(160));
+        expect(workTimeService.getActualWorkHours(badEmployee1, period)).andReturn(BigDecimal.valueOf(8));
+        expect(workTimeService.getActualWorkHours(badEmployee2, period)).andReturn(BigDecimal.valueOf(168));
+        notificationManager.notifyAboutIncorrectTimesheet(badEmployee1, period);
+        notificationManager.notifyAboutIncorrectTimesheet(badEmployee2, period);
+        replay(notificationManager, workTimeService);
+        
+        notificationManager.notifyAboutIncorrectTimesheet(employees, period);
+        
+        verify(notificationManager, workTimeService);
+        
+    }
+    
+    @Test
+    public void testNotifyAboutIncorrectTimesheet_oneEmployee() throws Exception {
+        setMockServices(notificationManager);
+        
+        Employee employee = new Employee("user_name");
+        String employeeEmail = "user_name@mail.com";
+        employee.setEmail(employeeEmail);
+        Period period = mock(Period.class);
+        HourType actualTime = new HourType("actual");
+        
+        String senderEmail = "sender@mail.com";
+        String body = "mail_body";
+        String subject = "mail_subject";
+        Mail mail = new Mail(subject, body, senderEmail, employeeEmail);
+        
+        String applicationBaseUrl = "url";
+        Map<String, Object> mailParameters = new HashMap<>();
+        mailParameters.put("hourType", actualTime);
+        mailParameters.put("period", period);
+        mailParameters.put("appHost", applicationBaseUrl);
+        
+        expect(hourTypeService.findActualTime()).andReturn(actualTime);
+        expect(settings.getSmtpSender()).andReturn(senderEmail);
+        expect(settings.getApplicationBaseUrl()).andReturn(applicationBaseUrl);
+        expect(mailTemplateManager.getTemplateText(MailTemplate.INCORRECT_TIMESHEET_BODY.getFileName(), mailParameters)).andReturn(body);
+        expect(mailTemplateManager.getTemplateText(MailTemplate.INCORRECT_TIMESHEET_SUBJECT.getFileName(), mailParameters)).andReturn(subject);
+        mailingEngine.send(mail);
+        replay(hourTypeService, settings, mailTemplateManager, mailingEngine);
+        
+        notificationManager.notifyAboutIncorrectTimesheet(employee, period);
+        
+        verify(hourTypeService, settings, mailTemplateManager, mailingEngine);
+        
+    }
+    
+    @Test
+    public void testNotifyAboutUnapprovedHours() throws Exception {
+        notificationManager = createMockBuilder(NotificationManager.class)
+                .addMockedMethod("notifyAboutUnapprovedHours", Employee.class, Period.class)
+                .createMock();
+        setMockServices(notificationManager);
+        
+        Date start =  new GregorianCalendar(2020, 1, 1).getTime();
+        Date finish =  new GregorianCalendar(2020, 1, 29).getTime();
+        Period period = new Period(start, finish);
+        
+        Employee manager1 = new Employee("user1");
+        Employee manager2 = new Employee("user2");;
+        List<Employee> managers = Arrays.asList(manager1, manager2);
+        
+        notificationManager.notifyAboutUnapprovedHours(manager1, period);
+        notificationManager.notifyAboutUnapprovedHours(manager2, period);
+        replay(notificationManager);
+        
+        notificationManager.notifyAboutUnapprovedHours(managers, period);
+        
+        verify(notificationManager);
+    }
+    
+    @Test
+    public void testNotifyAboutUnapprovedHours_oneEmployee() throws Exception {
+        setMockServices(notificationManager);
+        
+        Employee employee = new Employee("user_name");
+        String employeeEmail = "user_name@mail.com";
+        employee.setEmail(employeeEmail);
+        Period period = mock(Period.class);
+        
+        String senderEmail = "sender@mail.com";
+        String body = "mail_body";
+        String subject = "mail_subject";
+        Mail mail = new Mail(subject, body, senderEmail, employeeEmail);
+        
+        String applicationBaseUrl = "url";
+        Map<String, Object> mailParameters = new HashMap<>();
+        mailParameters.put("period", period);
+        mailParameters.put("appHost", applicationBaseUrl);
+        
+        expect(settings.getSmtpSender()).andReturn(senderEmail);
+        expect(settings.getApplicationBaseUrl()).andReturn(applicationBaseUrl);
+        expect(mailTemplateManager.getTemplateText(MailTemplate.UNAPPROVED_HOURS_BODY.getFileName(), mailParameters)).andReturn(body);
+        expect(mailTemplateManager.getTemplateText(MailTemplate.UNAPPROVED_HOURS_SUBJECT.getFileName(), mailParameters)).andReturn(subject);
+        mailingEngine.send(mail);
+        replay(settings, mailTemplateManager, mailingEngine);
+        
+        notificationManager.notifyAboutUnapprovedHours(employee, period);
+        
+        verify(settings, mailTemplateManager, mailingEngine);
+        
     }
 
     private void setMockServices(NotificationManager manager) throws NoSuchFieldException {

@@ -1,25 +1,5 @@
 package com.artezio.arttime.web;
 
-import com.artezio.arttime.datamodel.Employee;
-import com.artezio.arttime.datamodel.Project;
-import com.artezio.arttime.filter.Filter;
-import com.artezio.arttime.services.EmployeeService;
-import com.artezio.arttime.services.FilterService;
-import com.artezio.arttime.services.ProjectService;
-import junitx.framework.ListAssert;
-import org.easymock.EasyMock;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-//import org.primefaces.context.RequestContext;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import static com.artezio.arttime.datamodel.Project.Status.CLOSED;
 import static com.artezio.arttime.datamodel.Project.Status.FROZEN;
 import static java.util.Arrays.asList;
@@ -28,8 +8,27 @@ import static junitx.util.PrivateAccessor.setField;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
-@RunWith(PowerMockRunner.class)
-//@PrepareForTest({RequestContext.class})
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import org.easymock.EasyMock;
+import org.easymock.EasyMockRunner;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.filter.Filter;
+import com.artezio.arttime.services.EmployeeService;
+import com.artezio.arttime.services.FilterService;
+import com.artezio.arttime.services.ProjectService;
+
+import junitx.framework.ListAssert;
+
+@RunWith(EasyMockRunner.class)
 public class FilterBeanTest {
 
     @TestSubject

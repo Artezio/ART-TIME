@@ -1,18 +1,19 @@
 package com.artezio.arttime.services.integration.spi.ldap;
 
-import com.artezio.arttime.config.Setting;
-import com.artezio.arttime.config.Settings;
-import com.artezio.arttime.datamodel.Employee;
-import com.artezio.arttime.services.integration.spi.UserInfo;
-import org.apache.commons.lang.WordUtils;
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.times;
+import static org.powermock.api.easymock.PowerMock.createMock;
+import static org.powermock.api.easymock.PowerMock.replay;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -21,15 +22,22 @@ import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
-import java.util.*;
 
-import static junitx.util.PrivateAccessor.getField;
-import static junitx.util.PrivateAccessor.setField;
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.powermock.api.easymock.PowerMock.createMock;
-import static org.powermock.api.easymock.PowerMock.replay;
+import org.apache.commons.lang.WordUtils;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.artezio.arttime.config.Setting;
+import com.artezio.arttime.config.Settings;
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.services.integration.spi.UserInfo;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({InitialLdapContext.class, LdapClient.class})
@@ -103,9 +111,9 @@ public class LdapClientTest {
         final String filterExpression = "filter-expr";
         final Object[] filterArgs = new Object[]{};
         LdapClient.Filter mockFilter = createMock(LdapClient.Filter.class);
+        PowerMock.expectNew(LdapClient.Filter.class, settings.getLdapDepartmentFilter(), new Object[]{}).andReturn(mockFilter);
         expect(mockFilter.getExpression()).andReturn(filterExpression).anyTimes();
         expect(mockFilter.getArgs()).andReturn(filterArgs).anyTimes();
-        PowerMockito.whenNew(LdapClient.Filter.class).withAnyArguments().thenReturn(mockFilter);
         SearchControls mockControls = createMock(SearchControls.class);
         InitialLdapContext mockContext = createMock(InitialLdapContext.class);
         ldapClient = createMockBuilder(LdapClient.class)
@@ -140,7 +148,7 @@ public class LdapClientTest {
         expectLastCall().once().andVoid();
         expect(mockContext.search(eq(userContextDN), eq(filterExpression), eq(filterArgs), eq(mockControls)))
                 .andReturn(enumeration);
-        replay(ldapClient, mockContext, mockControls, mockFilter, enumeration, result1, result2, result3);
+        replay(LdapClient.Filter.class, ldapClient, mockContext, mockControls, mockFilter, enumeration, result1, result2, result3);
 
         Set<String> actualSet = ldapClient.listDepartments();
 
@@ -229,21 +237,21 @@ public class LdapClientTest {
         settings.setLdapServerHost(serverHost);
         settings.setLdapServerPort(serverPort);
         InitialLdapContext initialContextMock = PowerMockito.mock(InitialLdapContext.class);
-
+    
         Capture<Hashtable> capture = Capture.newInstance();
-
+    
         PowerMockito.whenNew(InitialLdapContext.class)
                 .withAnyArguments()
-                .thenAnswer((invocation) -> {
-                    capture.setValue(invocation.getArgumentAt(0, Properties.class));
+                .thenAnswer(invocation -> {
+                    capture.setValue(invocation.getArgument(0));
                     return initialContextMock;
                 });
-
+        
         ldapClient.initializeContext(principal, credentials);
-
-        PowerMockito.verifyNew(InitialLdapContext.class);
-
+    
         Hashtable properties = capture.getValue();
+        PowerMockito.verifyNew(InitialLdapContext.class, times(1)).withArguments(properties, null);
+    
         assertTrue(properties.containsKey(Context.SECURITY_AUTHENTICATION));
         assertTrue(properties.containsKey(Context.INITIAL_CONTEXT_FACTORY));
         assertTrue(properties.containsKey(Context.PROVIDER_URL));

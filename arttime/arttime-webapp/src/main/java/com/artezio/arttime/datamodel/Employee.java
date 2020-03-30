@@ -6,7 +6,6 @@ import com.artezio.javax.jpa.abac.ParamValue;
 import org.apache.commons.lang.WordUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
-import org.osgi.service.useradmin.User;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

@@ -8,6 +8,13 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import net.sf.uadetector.ReadableUserAgent;
 import net.sf.uadetector.UserAgent;
 import net.sf.uadetector.UserAgentFamily;
@@ -15,13 +22,6 @@ import net.sf.uadetector.UserAgentStringParser;
 import net.sf.uadetector.UserAgentType;
 import net.sf.uadetector.VersionNumber;
 import net.sf.uadetector.service.UADetectorServiceFactory;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({UADetectorServiceFactory.class})

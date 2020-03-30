@@ -1,23 +1,31 @@
 package com.artezio.arttime.repositories;
 
-import com.artezio.arttime.datamodel.*;
-
-import java.util.*;
 import static java.util.Arrays.asList;
+import static junitx.util.PrivateAccessor.setField;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 
-import static junitx.util.PrivateAccessor.setField;
-import static org.easymock.EasyMock.*;
-import org.easymock.Mock;
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.datamodel.HourType;
+import com.artezio.arttime.datamodel.Hours;
+import com.artezio.arttime.datamodel.Project;
+import com.artezio.arttime.datamodel.TeamFilter;
+import com.artezio.arttime.datamodel.WorkdaysCalendar;
 
 @RunWith(PowerMockRunner.class)
 public class ProjectRepositoryTest {
@@ -25,7 +33,6 @@ public class ProjectRepositoryTest {
     private EntityManager entityManager;
     private EntityManagerFactory entityManagerFactory;
     private ProjectRepository projectRepository;
-    @Mock
     private EmployeeRepository employeeRepository;
 
     @Before
@@ -37,6 +44,7 @@ public class ProjectRepositoryTest {
         entityManager = entityManagerFactory.createEntityManager();
         setField(projectRepository, "entityManager", entityManager);
         entityManager.getTransaction().begin();
+        employeeRepository = createMock(EmployeeRepository.class);
     }
 
     @After

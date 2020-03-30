@@ -981,13 +981,6 @@
                     </structure>
                 </list-property>
             </structure>
-            <method name="onFetch"><![CDATA[var hourTypes = row["accountableHours"];
-var accountableHourTypes = vars["accountableHourTypes"];
-for (var index = 0; index < hourTypes.length; index++) {
-	accountableHourTypes.add(hoursTypes[index].getId());
-}
-vars["accountableHourTypes"] = accountableHourTypes;
-]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -3026,14 +3019,6 @@ vars["accountableHourTypes"] = accountableHourTypes;
                     <property name="alias">masterCode</property>
                     <property name="analysis">dimension</property>
                 </structure>
-                <structure>
-                    <property name="columnName">approved</property>
-                    <property name="alias">approved</property>
-                </structure>
-                <structure>
-                    <property name="columnName">project_userName</property>
-                    <property name="alias">project_userName</property>
-                </structure>
             </list-property>
             <list-property name="filter">
                 <structure>
@@ -3637,9 +3622,15 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                     <property name="dataType">string</property>
                                     <property name="columnName">employeeFullName</property>
                                 </tabular-level>
-                                <tabular-level name="projectCode" id="544">
+                                <tabular-level name="projectCodeM" id="544">
                                     <property name="dataType">string</property>
                                     <property name="levelType">dynamic</property>
+                                    <list-property name="attributes">
+                                        <structure>
+                                            <property name="name">masterCode</property>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
                                     <property name="columnName">rootCode</property>
                                 </tabular-level>
                             </property>
@@ -3685,6 +3676,17 @@ vars["accountableHourTypes"] = accountableHourTypes;
             <property name="contentType">html</property>
             <text-property name="content"><![CDATA[From <value-of format="dd.MM.yyyy"> params["startDate"].value </value-of> to <value-of format="dd.MM.yyyy"> params["endDate"] </value-of>]]></text-property>
         </text>
+        <text id="459">
+            <property name="fontFamily">"Arial"</property>
+            <property name="fontSize">12pt</property>
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[Departments:
+	<value-of>
+		params["departments"].value
+			.map(function(dep) {return dep == '' ? 'No department' : dep})
+			.join(', ')
+	</value-of>]]></text-property>
+        </text>
         <list id="717">
             <property name="dataSet">Projects</property>
             <list-property name="visibility">
@@ -3700,18 +3702,6 @@ vars["accountableHourTypes"] = accountableHourTypes;
                     <expression name="expression" type="javascript">dataSetRow["id"]</expression>
                     <property name="dataType">decimal</property>
                 </structure>
-                <structure>
-                    <property name="name">code</property>
-                    <text-property name="displayName">code</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["code"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">AccountableHours</property>
-                    <text-property name="displayName">AccountableHours</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["AccountableHours"]</expression>
-                    <property name="dataType">javaObject</property>
-                </structure>
             </list-property>
             <header>
                 <text id="725">
@@ -3720,22 +3710,11 @@ vars["accountableHourTypes"] = accountableHourTypes;
                 </text>
             </header>
             <detail>
-                <data id="718">
+                <data id="728">
                     <property name="resultSetColumn">id</property>
                 </data>
             </detail>
         </list>
-        <text id="459">
-            <property name="fontFamily">"Arial"</property>
-            <property name="fontSize">12pt</property>
-            <property name="contentType">html</property>
-            <text-property name="content"><![CDATA[Departments:
-	<value-of>
-		params["departments"].value
-			.map(function(dep) {return dep == '' ? 'No department' : dep})
-			.join(', ')
-	</value-of>]]></text-property>
-        </text>
         <text id="534"/>
         <grid id="664">
             <property name="dataSet">Hours-EmptyHourTypes</property>
@@ -3782,24 +3761,26 @@ vars["accountableHourTypes"] = accountableHourTypes;
                     <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="537">
                         <property name="cube">EmployeesReport Data Cube</property>
                         <property name="measures">
-                            <extended-item extensionName="MeasureView" id="690">
+                            <extended-item extensionName="MeasureView" id="620">
                                 <property name="measure">quantity</property>
                                 <property name="detail">
-                                    <extended-item extensionName="AggregationCell" id="691">
-                                        <property name="aggregationOnRow">Employee_Project/projectCode</property>
+                                    <extended-item extensionName="AggregationCell" id="621">
+                                        <property name="aggregationOnRow">Employee_Project/projectCodeM</property>
                                         <property name="aggregationOnColumn">HourTypes/hourType</property>
+                                        <property name="verticalAlign">middle</property>
                                         <property name="content">
-                                            <data id="692">
+                                            <data id="626">
                                                 <property name="fontFamily">"Arial"</property>
-                                                <property name="resultSetColumn">quantity_Employee_Project/projectCode_HourTypes/hourType</property>
+                                                <property name="fontSize">10pt</property>
+                                                <property name="resultSetColumn">quantity_Employee_Project/projectCode_HourTypes/Hours::hourType</property>
                                             </data>
                                         </property>
                                     </extended-item>
                                 </property>
                                 <property name="header">
-                                    <extended-item extensionName="CrosstabCell" id="693">
+                                    <extended-item extensionName="CrosstabCell" id="623">
                                         <property name="content">
-                                            <label id="694">
+                                            <label id="624">
                                                 <text-property name="text">quantity</text-property>
                                             </label>
                                         </property>
@@ -3810,10 +3791,10 @@ vars["accountableHourTypes"] = accountableHourTypes;
                         <property name="rows">
                             <extended-item extensionName="CrosstabView" id="545">
                                 <property name="views">
-                                    <extended-item extensionName="DimensionView" id="672">
+                                    <extended-item extensionName="DimensionView" id="546">
                                         <property name="dimension">Employee_Project</property>
                                         <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View" id="673">
+                                            <extended-item extensionName="LevelView" name="NewLevel View4" id="547">
                                                 <property name="level">Employee_Project/project_userName</property>
                                                 <property name="filter">
                                                     <filter-condition-element>
@@ -3824,45 +3805,59 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                                 </property>
                                                 <property name="sort">
                                                     <sort-element>
-                                                        <expression name="key" type="javascript">BirtStr.toLower(data["project_userName"])</expression>
+                                                        <expression name="key" type="javascript">BirtStr.toLower(dimension["Employee_Project"]["project_userName"])</expression>
+                                                        <property name="direction">asc</property>
+                                                        <property name="strength">-1</property>
+                                                    </sort-element>
+                                                    <sort-element>
+                                                        <expression name="key" type="javascript">BirtStr.toLower(data["projectCodeM"] + data["projectCodeS"])</expression>
                                                         <property name="direction">asc</property>
                                                         <property name="strength">-1</property>
                                                     </sort-element>
                                                 </property>
                                                 <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="674">
+                                                    <extended-item extensionName="CrosstabCell" id="548">
                                                         <property name="content">
-                                                            <data name="project_userName" id="675">
+                                                            <data name="employeeUserName1" id="549">
                                                                 <property name="fontFamily">"Arial"</property>
+                                                                <property name="fontSize">10pt</property>
+                                                                <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeUserName</property>
                                                             </data>
                                                         </property>
+                                                        <property name="verticalAlign">middle</property>
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
-                                            <extended-item extensionName="LevelView" name="NewLevel View1" id="676">
+                                            <extended-item extensionName="LevelView" name="NewLevel View5" id="551">
                                                 <property name="level">Employee_Project/employeeFullName</property>
                                                 <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="677">
+                                                    <extended-item extensionName="CrosstabCell" id="552">
                                                         <property name="content">
-                                                            <data name="employeeFullName" id="679">
+                                                            <data name="employeeFullName1" id="554">
                                                                 <property name="fontFamily">"Arial"</property>
+                                                                <property name="fontSize">10pt</property>
+                                                                <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">employeeFullName</property>
                                                             </data>
                                                         </property>
+                                                        <property name="verticalAlign">middle</property>
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
-                                            <extended-item extensionName="LevelView" name="NewLevel View2" id="681">
-                                                <property name="level">Employee_Project/projectCode</property>
+                                            <extended-item extensionName="LevelView" name="NewLevel View6" id="556">
+                                                <property name="level">Employee_Project/projectCodeM</property>
                                                 <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="682">
+                                                    <extended-item extensionName="CrosstabCell" id="557">
                                                         <property name="content">
-                                                            <data name="projectCode" id="684">
+                                                            <data name="masterCode" id="559">
                                                                 <property name="fontFamily">"Arial"</property>
-                                                                <property name="resultSetColumn">projectCode</property>
+                                                                <property name="fontSize">10pt</property>
+                                                                <property name="textAlign">left</property>
+                                                                <property name="resultSetColumn">projectCodeM</property>
                                                             </data>
                                                         </property>
+                                                        <property name="verticalAlign">middle</property>
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
@@ -3874,14 +3869,14 @@ vars["accountableHourTypes"] = accountableHourTypes;
                         <property name="columns">
                             <extended-item extensionName="CrosstabView" id="566">
                                 <property name="views">
-                                    <extended-item extensionName="DimensionView" id="686">
+                                    <extended-item extensionName="DimensionView" id="567">
                                         <property name="dimension">HourTypes</property>
                                         <property name="levels">
-                                            <extended-item extensionName="LevelView" name="NewLevel View3" id="687">
+                                            <extended-item extensionName="LevelView" name="NewLevel View8" id="568">
                                                 <property name="level">HourTypes/hourType</property>
                                                 <property name="filter">
                                                     <filter-condition-element>
-                                                        <expression name="expr" type="javascript">vars["accountableHourTypes"].contains("" + data["hourTypeId_1"])</expression>
+                                                        <expression name="expr" type="javascript">vars["accountableHourTypes"].contains(""+data["HourType_Id"])</expression>
                                                         <property name="operator">is-true</property>
                                                         <property name="updateAggregation">true</property>
                                                     </filter-condition-element>
@@ -3904,10 +3899,11 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                                     </sort-element>
                                                 </property>
                                                 <property name="member">
-                                                    <extended-item extensionName="CrosstabCell" id="688">
+                                                    <extended-item extensionName="CrosstabCell" id="569">
                                                         <property name="content">
-                                                            <data name="hourType" id="689">
+                                                            <data name="Hours::hourType1" id="570">
                                                                 <property name="fontFamily">"Arial"</property>
+                                                                <property name="fontSize">10pt</property>
                                                                 <property name="whiteSpace">pre</property>
                                                                 <property name="resultSetColumn">hourType</property>
                                                             </data>
@@ -3915,6 +3911,7 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                                         <property name="verticalAlign">top</property>
                                                         <property name="borderBottomStyle">solid</property>
                                                         <property name="borderBottomWidth">thin</property>
+                                                        <property name="borderBottomColor">#000000</property>
                                                     </extended-item>
                                                 </property>
                                             </extended-item>
@@ -3924,9 +3921,9 @@ vars["accountableHourTypes"] = accountableHourTypes;
                             </extended-item>
                         </property>
                         <property name="header">
-                            <extended-item extensionName="CrosstabCell" id="558">
+                            <extended-item extensionName="CrosstabCell" id="538">
                                 <property name="content">
-                                    <label id="560">
+                                    <label id="550">
                                         <property name="fontFamily">"Arial"</property>
                                         <property name="fontSize">10pt</property>
                                         <property name="textAlign">left</property>
@@ -3938,33 +3935,39 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                 <property name="borderBottomWidth">thin</property>
                                 <property name="borderBottomColor">#000000</property>
                             </extended-item>
-                            <extended-item extensionName="CrosstabCell" id="678">
+                            <extended-item extensionName="CrosstabCell" id="553">
                                 <property name="content">
-                                    <label id="680">
+                                    <label id="555">
                                         <property name="fontFamily">"Arial"</property>
+                                        <property name="fontSize">10pt</property>
+                                        <property name="textAlign">left</property>
                                         <text-property name="text">Employee</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
-                            <extended-item extensionName="CrosstabCell" id="683">
+                            <extended-item extensionName="CrosstabCell" id="558">
                                 <property name="content">
-                                    <label id="685">
+                                    <label id="560">
                                         <property name="fontFamily">"Arial"</property>
+                                        <property name="fontSize">10pt</property>
+                                        <property name="textAlign">left</property>
                                         <text-property name="text">Project</text-property>
                                     </label>
                                 </property>
                                 <property name="verticalAlign">top</property>
                                 <property name="borderBottomStyle">solid</property>
                                 <property name="borderBottomWidth">thin</property>
+                                <property name="borderBottomColor">#000000</property>
                             </extended-item>
                         </property>
                         <property name="hideMeasureHeader">true</property>
                         <list-property name="boundDataColumns">
                             <structure>
-                                <property name="name">project_userName</property>
+                                <property name="name">employeeUserName</property>
                                 <expression name="expression" type="javascript">dimension["Employee_Project"]["project_userName"]["employeeUserName"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
@@ -3974,37 +3977,23 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
-                                <property name="name">projectCode</property>
-                                <expression name="expression">dimension["Employee_Project"]["projectCode"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
-                                <property name="name">quantity_Employee_Project/projectCode</property>
-                                <expression name="expression">measure["quantity"]</expression>
+                                <property name="name">quantity_Employee_Project/projectCode_HourTypes/Hours::hourType</property>
                                 <property name="dataType">decimal</property>
                                 <simple-property-list name="aggregateOn">
-                                    <value>Employee_Project/projectCode</value>
-                                </simple-property-list>
-                                <property name="aggregateFunction">SUM</property>
-                            </structure>
-                            <structure>
-                                <property name="name">hourType</property>
-                                <expression name="expression">dimension["HourTypes"]["hourType"]</expression>
-                                <property name="dataType">string</property>
-                            </structure>
-                            <structure>
-                                <property name="name">quantity_Employee_Project/projectCode_HourTypes/hourType</property>
-                                <expression name="expression">measure["quantity"]</expression>
-                                <property name="dataType">decimal</property>
-                                <simple-property-list name="aggregateOn">
-                                    <value>Employee_Project/projectCode</value>
+                                    <value>Employee_Project/projectCodeM</value>
                                     <value>HourTypes/hourType</value>
                                 </simple-property-list>
                                 <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">measure["quantity"]</expression>
+                                    </structure>
+                                </list-property>
                             </structure>
                             <structure>
-                                <property name="name">employeeUserName</property>
-                                <expression name="expression" type="javascript">dimension["Employee_Project"]["project_userName"]["employeeUserName"]</expression>
+                                <property name="name">hourType</property>
+                                <expression name="expression" type="javascript">dimension["HourTypes"]["hourType"]</expression>
                                 <property name="dataType">string</property>
                             </structure>
                             <structure>
@@ -4018,8 +4007,47 @@ vars["accountableHourTypes"] = accountableHourTypes;
                                 <property name="dataType">integer</property>
                             </structure>
                             <structure>
-                                <property name="name">hourTypeId_1</property>
-                                <expression name="expression">dimension["HourTypes"]["hourType"]["hourTypeId"]</expression>
+                                <property name="name">projectCodeM</property>
+                                <expression name="expression" type="javascript">if (dimension["Employee_Project"]["projectCodeM"]["masterCode"] == null) {&#13;
+	dimension["Employee_Project"]["projectCodeM"];&#13;
+} else {&#13;
+	dimension["Employee_Project"]["projectCodeM"]["masterCode"];&#13;
+}</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">quantity_Employee_Project/projectCodeM_HourType/hourType</property>
+                                <property name="dataType">decimal</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>Employee_Project/projectCodeM</value>
+                                    <value>HourTypes/hourType</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">measure["quantity"]</expression>
+                                    </structure>
+                                </list-property>
+                            </structure>
+                            <structure>
+                                <property name="name">project_userName</property>
+                                <expression name="expression" type="javascript">data["projectCodeM"] + "/" + data["employeeUserName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">project_userName_1</property>
+                                <expression name="expression">dimension["Employee_Project"]["project_userName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">projectCodeM_1</property>
+                                <expression name="expression">dimension["Employee_Project"]["projectCodeM"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">HourType_Id</property>
+                                <expression name="expression" type="javascript">dimension["HourTypes"]["hourType"]["hourTypeId"]</expression>
                                 <property name="dataType">decimal</property>
                             </structure>
                         </list-property>

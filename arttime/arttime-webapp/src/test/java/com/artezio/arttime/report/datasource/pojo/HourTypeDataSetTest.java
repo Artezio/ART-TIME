@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +23,12 @@ import com.artezio.arttime.services.HourTypeService;
 public class HourTypeDataSetTest {
 
     private HourTypeDataSet hourTypeDataSet;
-    @Mock
     private HourTypeService hourTypeService;
 
     @Before
     public void setUp() throws Exception {
         hourTypeDataSet = PowerMock.createPartialMock(HourTypeDataSet.class, "getHourTypeService");
+        hourTypeService = PowerMock.createMock(HourTypeService.class);
     }
 
     @Test

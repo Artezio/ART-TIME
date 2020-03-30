@@ -1,30 +1,41 @@
 package com.artezio.arttime.repositories;
 
-import com.artezio.arttime.datamodel.*;
-import com.artezio.arttime.datamodel.Project.Status;
 import static com.artezio.arttime.test.utils.CalendarUtils.getOffsetDate;
+import static java.util.Arrays.asList;
+import static junitx.util.PrivateAccessor.setField;
+import static org.junit.Assert.*;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import static java.util.Arrays.asList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PessimisticLockException;
 
-import com.artezio.javax.jpa.abac.hibernate.AbacEntityManager;
-import junitx.framework.ListAssert;
-import static junitx.util.PrivateAccessor.setField;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.artezio.arttime.datamodel.Employee;
+import com.artezio.arttime.datamodel.HourType;
+import com.artezio.arttime.datamodel.Hours;
+import com.artezio.arttime.datamodel.Period;
+import com.artezio.arttime.datamodel.Project;
+
+import junitx.framework.ListAssert;
 
 @RunWith(PowerMockRunner.class)
 public class HoursRepositoryTest {
@@ -644,201 +655,168 @@ public class HoursRepositoryTest {
     }
     
     @Test
-    public void testGetManagersByEmployee() {
-        Date start = new Date();
-        Date finish = getOffsetDate(3);
+    public void testGetManagersForUnapprovedHours() {
+        Date start = new GregorianCalendar(2020, 2, 1).getTime();
+        Date finish = new GregorianCalendar(2020, 2, 29).getTime();
         Period period = new Period(start, finish);
+        
         Employee manager1 = new Employee("manager1");
         Employee manager2 = new Employee("manager2");
         Employee manager3 = new Employee("manager3");
-        Employee manager4 = new Employee("manager4");
-        Employee manager5 = new Employee("manager5");
-        Project project1 = new Project(); 
-        project1.setManagers(Arrays.asList(manager1)); 
-        Project project2 = new Project(); 
+        
+        Project project1 = new Project();
+        project1.setManagers(Arrays.asList(manager1, manager2));
+        Project project2 = new Project();
         project2.setManagers(Arrays.asList(manager2, manager3));
-        Project project3 = new Project(); 
-        project3.setManagers(Arrays.asList(manager2, manager4, manager5));
-        Employee employee1 = new Employee("employee1");
-        Employee employee2 = new Employee("employee2");
-        HourType actualType = new HourType("actual type");
-        actualType.setActualTime(true);
-        Hours hours1 = createHours(project1, employee1, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours2 = createHours(project2, employee1, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours3 = createHours(project3, employee1, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours4 = createHours(project2, employee2, getOffsetDate(2), actualType, new BigDecimal(8));
+        
+        Hours hours1 = new Hours();
+        hours1.setApproved(false);
+        hours1.setDate(new GregorianCalendar(2020, 2, 15).getTime());
+        hours1.setProject(project1);
+        hours1.setQuantity(BigDecimal.valueOf(8));
+        
+        Hours hours2 = new Hours();
+        hours2.setApproved(false);
+        hours2.setDate(new GregorianCalendar(2020, 2, 10).getTime());
+        hours2.setProject(project2);
+        hours2.setQuantity(BigDecimal.valueOf(1));
         
         entityManager.persist(manager1);
         entityManager.persist(manager2);
         entityManager.persist(manager3);
-        entityManager.persist(manager4);
-        entityManager.persist(manager5);
-        entityManager.persist(actualType);
-        entityManager.persist(employee1);
-        entityManager.persist(employee2);
         entityManager.persist(project1);
         entityManager.persist(project2);
-        entityManager.persist(project3);
         entityManager.persist(hours1);
         entityManager.persist(hours2);
-        entityManager.persist(hours3);
-        entityManager.persist(hours4);
         
-        Map<Employee, List<Employee>> actual = hoursRepository
-                .getManagersByEmployee(Arrays.asList(employee1, employee2), period);
+        List<Employee> actual = hoursRepository.new HoursQuery(true).getManagers();
+//        List<Employee> actual = hoursRepository.getManagersForUnapprovedHours(period);
         
-        assertEquals(2, actual.size());
-        ListAssert.assertEquals(Arrays.asList(manager1, manager2, manager3, manager4, manager5), actual.get(employee1));
-        ListAssert.assertEquals(Arrays.asList(manager2, manager3), actual.get(employee2));
+        List<Employee> expected = Arrays.asList(manager1, manager2, manager3);
+        ListAssert.assertEquals(expected, actual);
     }
     
-    @Test
-    public void testGetManagersByEmployee_byPeriod() {
-        Date start = new Date();
-        Date finish = getOffsetDate(3);
+    /*@Test
+    public void testGetManagersForUnapprovedHours_ifApproved() {
+        Date start = new GregorianCalendar(2020, 2, 1).getTime();
+        Date finish = new GregorianCalendar(2020, 2, 29).getTime();
         Period period = new Period(start, finish);
+        
         Employee manager1 = new Employee("manager1");
         Employee manager2 = new Employee("manager2");
         Employee manager3 = new Employee("manager3");
-        Employee manager4 = new Employee("manager4");
-        Employee manager5 = new Employee("manager5");
-        Project project1 = new Project(); project1.setManagers(Arrays.asList(manager1)); 
-        Project project2 = new Project(); project2.setManagers(Arrays.asList(manager2));
-        Project project3 = new Project(); project3.setManagers(Arrays.asList(manager3));
-        Project project4 = new Project(); project4.setManagers(Arrays.asList(manager4));
-        Project project5 = new Project(); project5.setManagers(Arrays.asList(manager5));
-        Employee employee = new Employee("employee");
-        HourType actualType = new HourType("actual type");
-        actualType.setActualTime(true);
-        Hours hours1 = createHours(project1, employee, getOffsetDate(-1), actualType, new BigDecimal(8));
-        Hours hours2 = createHours(project2, employee, start, actualType, new BigDecimal(8));
-        Hours hours3 = createHours(project3, employee, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours4 = createHours(project4, employee, finish, actualType, new BigDecimal(8));
-        Hours hours5 = createHours(project5, employee, getOffsetDate(4), actualType, new BigDecimal(8));
+        
+        Project project1 = new Project();
+        project1.setManagers(Arrays.asList(manager1, manager2));
+        Project project2 = new Project();
+        project2.setManagers(Arrays.asList(manager2, manager3));
+        
+        Hours unapprovedHours = new Hours();
+        unapprovedHours.setApproved(false);
+        unapprovedHours.setDate(new GregorianCalendar(2020, 2, 15).getTime());
+        unapprovedHours.setProject(project1);
+        unapprovedHours.setQuantity(BigDecimal.valueOf(8));
+        
+        Hours approvedHours = new Hours();
+        approvedHours.setApproved(true);
+        approvedHours.setDate(new GregorianCalendar(2020, 2, 10).getTime());
+        approvedHours.setProject(project2);
+        approvedHours.setQuantity(BigDecimal.valueOf(1));
         
         entityManager.persist(manager1);
         entityManager.persist(manager2);
         entityManager.persist(manager3);
-        entityManager.persist(manager4);
-        entityManager.persist(manager5);
-        entityManager.persist(actualType);
-        entityManager.persist(employee);
         entityManager.persist(project1);
         entityManager.persist(project2);
-        entityManager.persist(project3);
-        entityManager.persist(project4);
-        entityManager.persist(project5);
-        entityManager.persist(hours1);
-        entityManager.persist(hours2);
-        entityManager.persist(hours3);
-        entityManager.persist(hours4);
-        entityManager.persist(hours5);
+        entityManager.persist(unapprovedHours);
+        entityManager.persist(approvedHours);
         
-        Map<Employee, List<Employee>> actual = hoursRepository
-                .getManagersByEmployee(Arrays.asList(employee), period);
+        List<Employee> actual = hoursRepository.getManagersForUnapprovedHours(period);
         
-        ListAssert.assertEquals(Arrays.asList(manager2, manager3, manager4), actual.get(employee));
+        List<Employee> expected = Arrays.asList(manager1, manager2);
+        ListAssert.assertEquals(expected, actual);
     }
     
     @Test
-    public void testGetManagersByEmployee_byEmployee() {
-        Date start = new Date();
-        Date finish = getOffsetDate(3);
+    public void testGetManagersForUnapprovedHours_ifOutOfPeriod() {
+        Date start = new GregorianCalendar(2020, 2, 1).getTime();
+        Date finish = new GregorianCalendar(2020, 2, 29).getTime();
         Period period = new Period(start, finish);
+        
         Employee manager1 = new Employee("manager1");
         Employee manager2 = new Employee("manager2");
-        Project project1 = new Project(); project1.setManagers(Arrays.asList(manager1)); 
-        Project project2 = new Project(); project2.setManagers(Arrays.asList(manager2));
-        Employee employee1 = new Employee("employee1");
-        Employee employee2 = new Employee("employee2");
-        HourType actualType = new HourType("actual type");
-        actualType.setActualTime(true);
-        Hours hours1 = createHours(project1, employee1, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours2 = createHours(project2, employee2, getOffsetDate(2), actualType, new BigDecimal(8));
+        Employee manager3 = new Employee("manager3");
+        
+        Project project1 = new Project();
+        project1.setManagers(Arrays.asList(manager1, manager2));
+        Project project2 = new Project();
+        project2.setManagers(Arrays.asList(manager2, manager3));
+        
+        Hours hoursOutOfPeriod = new Hours();
+        hoursOutOfPeriod.setApproved(false);
+        hoursOutOfPeriod.setDate(new GregorianCalendar(2020, 1, 1).getTime());
+        hoursOutOfPeriod.setProject(project1);
+        hoursOutOfPeriod.setQuantity(BigDecimal.valueOf(8));
+        
+        Hours hoursInPeriod = new Hours();
+        hoursInPeriod.setApproved(false);
+        hoursInPeriod.setDate(new GregorianCalendar(2020, 2, 10).getTime());
+        hoursInPeriod.setProject(project2);
+        hoursInPeriod.setQuantity(BigDecimal.valueOf(1));
         
         entityManager.persist(manager1);
         entityManager.persist(manager2);
-        entityManager.persist(actualType);
-        entityManager.persist(employee1);
-        entityManager.persist(employee2);
+        entityManager.persist(manager3);
         entityManager.persist(project1);
         entityManager.persist(project2);
-        entityManager.persist(hours1);
-        entityManager.persist(hours2);
+        entityManager.persist(hoursOutOfPeriod);
+        entityManager.persist(hoursInPeriod);
         
-        Map<Employee, List<Employee>> actual = hoursRepository
-                .getManagersByEmployee(Arrays.asList(employee1), period);
+        List<Employee> actual = hoursRepository.getManagersForUnapprovedHours(period);
         
-        ListAssert.assertEquals(Arrays.asList(manager1), actual.get(employee1));
-    }
-    
-    
-    @Test
-    public void testGetManagersByEmployee_ifNotActualTime() {
-        Date start = new Date();
-        Date finish = getOffsetDate(3);
-        Period period = new Period(start, finish);
-        Employee manager1 = new Employee("manager1");
-        Employee manager2 = new Employee("manager2");
-        Project project1 = new Project(); project1.setManagers(Arrays.asList(manager1)); 
-        Project project2 = new Project(); project2.setManagers(Arrays.asList(manager2));
-        Employee employee = new Employee("employee");
-        HourType actualType = new HourType("actual type");
-        actualType.setActualTime(true);
-        HourType notActualType = new HourType("not actual type");
-        Hours hours1 = createHours(project1, employee, getOffsetDate(2), notActualType, new BigDecimal(8));
-        Hours hours2 = createHours(project2, employee, getOffsetDate(2), actualType, new BigDecimal(8));
-        
-        entityManager.persist(manager1);
-        entityManager.persist(manager2);
-        entityManager.persist(actualType);
-        entityManager.persist(notActualType);
-        entityManager.persist(employee);
-        entityManager.persist(project1);
-        entityManager.persist(project2);
-        entityManager.persist(hours1);
-        entityManager.persist(hours2);
-        
-        Map<Employee, List<Employee>> actual = hoursRepository
-                .getManagersByEmployee(Arrays.asList(employee), period);
-        
-        ListAssert.assertEquals(Arrays.asList(manager2), actual.get(employee));
+        List<Employee> expected = Arrays.asList(manager2, manager3);
+        ListAssert.assertEquals(expected, actual);
     }
     
     @Test
-    public void testGetManagersByEmployee_ifQuantityIsNull() {
-        Date start = new Date();
-        Date finish = getOffsetDate(3);
+    public void testGetManagersForUnapprovedHours_ifQuantityIsNull() {
+        Date start = new GregorianCalendar(2020, 2, 1).getTime();
+        Date finish = new GregorianCalendar(2020, 2, 29).getTime();
         Period period = new Period(start, finish);
+        
         Employee manager1 = new Employee("manager1");
         Employee manager2 = new Employee("manager2");
-        Project project1 = new Project(); project1.setManagers(Arrays.asList(manager1)); 
-        Project project2 = new Project(); project2.setManagers(Arrays.asList(manager2));
-        Employee employee1 = new Employee("employee1");
-        Employee employee2 = new Employee("employee2");
-        HourType actualType = new HourType("actual type");
-        actualType.setActualTime(true);
-        Hours hours1 = createHours(project1, employee1, getOffsetDate(2), actualType, new BigDecimal(8));
-        Hours hours2 = createHours(project2, employee1, getOffsetDate(2), actualType, null);
-        Hours hours3 = createHours(project1, employee2, getOffsetDate(2), actualType, null);
+        Employee manager3 = new Employee("manager3");
+        
+        Project project1 = new Project();
+        project1.setManagers(Arrays.asList(manager1, manager2));
+        Project project2 = new Project();
+        project2.setManagers(Arrays.asList(manager2, manager3));
+        
+        Hours hoursNotNullQuantity = new Hours();
+        hoursNotNullQuantity.setApproved(false);
+        hoursNotNullQuantity.setDate(new GregorianCalendar(2020, 2, 15).getTime());
+        hoursNotNullQuantity.setProject(project1);
+        hoursNotNullQuantity.setQuantity(BigDecimal.valueOf(8));
+        
+        Hours hoursNullQuantity = new Hours();
+        hoursNullQuantity.setApproved(false);
+        hoursNullQuantity.setDate(new GregorianCalendar(2020, 2, 10).getTime());
+        hoursNullQuantity.setProject(project2);
         
         entityManager.persist(manager1);
         entityManager.persist(manager2);
-        entityManager.persist(actualType);
-        entityManager.persist(employee1);
-        entityManager.persist(employee2);
+        entityManager.persist(manager3);
         entityManager.persist(project1);
         entityManager.persist(project2);
-        entityManager.persist(hours1);
-        entityManager.persist(hours2);
-        entityManager.persist(hours3);
+        entityManager.persist(hoursNotNullQuantity);
+        entityManager.persist(hoursNullQuantity);
         
-        Map<Employee, List<Employee>> actual = hoursRepository
-                .getManagersByEmployee(Arrays.asList(employee1, employee2), period);
+        List<Employee> actual = hoursRepository.getManagersForUnapprovedHours(period);
         
-        assertEquals(1, actual.size());
-        ListAssert.assertEquals(Arrays.asList(manager1), actual.get(employee1));
-    }
+        List<Employee> expected = Arrays.asList(manager1, manager2);
+        ListAssert.assertEquals(expected, actual);
+    }*/
     
     private Hours createHours(Project project, Employee employee, Date date, HourType actualType, BigDecimal quantity) {
         return createHours(project, employee, date, actualType, quantity, false);

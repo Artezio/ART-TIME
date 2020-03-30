@@ -383,5 +383,21 @@ public class Settings implements Serializable {
     public Duration getKeycloakCacheRefreshInterval() {
         return Duration.ofMinutes(getKeycloakCacheRefreshIntervalMinutes());
     }
+    
+    public boolean isIncorrectTimesheetNotificationEnabled() {
+        return getAsBoolean(Setting.Name.INCORRECT_TIMESHEET_NOTIFICATION_ENABLED);
+    }
+
+    public void setIncorrectTimesheetNotificationEnabled(boolean incorrectTimesheetNotificationEnabled) {
+        set(Setting.Name.INCORRECT_TIMESHEET_NOTIFICATION_ENABLED, incorrectTimesheetNotificationEnabled);
+    }
+
+    public boolean isUnapprovedHoursNotificationEnabled() {
+        return getAsBoolean(Setting.Name.UNAPPROVED_HOURS_NOTIFICATION_ENABLED);
+    }
+    
+    public void setUnapprovedHoursNotificationEnabled(boolean unapprovedHoursNotificationEnabled) {
+        set(Setting.Name.UNAPPROVED_HOURS_NOTIFICATION_ENABLED, unapprovedHoursNotificationEnabled);
+    }
 
 }

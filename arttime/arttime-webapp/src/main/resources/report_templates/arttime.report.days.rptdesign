@@ -4210,7 +4210,7 @@ return false;]]></method>
                         <property name="pageBreakInterval">0</property>
                         <list-property name="sort">
                             <structure>
-                                <expression name="key" type="javascript">row["projectCode"]</expression>
+                                <expression name="key" type="javascript">BirtStr.toLower(row["projectCode"])</expression>
                                 <property name="direction">asc</property>
                                 <property name="strength">-1</property>
                             </structure>

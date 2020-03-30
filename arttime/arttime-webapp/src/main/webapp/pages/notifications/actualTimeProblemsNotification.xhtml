@@ -83,8 +83,11 @@
 						<f:convertNumber pattern="#0.00"/>
 				   </h:outputText>
 			   </p:column>
-			   <p:column headerText="#{messages['notifications.label.notApprovedHours']}" width="115" styleClass="numeric">
-				   <h:outputText value="#{workTime.unapprovedTime}">
+			   <p:column width="115" styleClass="numeric">
+					<f:facet name="header">
+						<p:outputLabel value="#{messages['notifications.label.notApprovedHours']}" escape="false" />
+					</f:facet>
+					<h:outputText value="#{workTime.unapprovedTime}">
 						<f:convertNumber pattern="#0.00"/>
 				   </h:outputText>
 			   </p:column>

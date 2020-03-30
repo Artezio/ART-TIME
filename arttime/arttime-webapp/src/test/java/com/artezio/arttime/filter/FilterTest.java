@@ -4,12 +4,12 @@ import com.artezio.arttime.datamodel.Period;
 import com.artezio.arttime.datamodel.Project;
 import com.artezio.arttime.web.criteria.RangePeriodSelector;
 import com.artezio.arttime.web.criteria.RangePeriodSelector.Range;
-import com.ibm.icu.text.SimpleDateFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.reflect.Whitebox;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 

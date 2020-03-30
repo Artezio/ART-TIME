@@ -11,6 +11,8 @@ import com.artezio.arttime.utils.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.text.MessageFormat;
@@ -40,6 +42,7 @@ public class TeamSynchronizer {
     @Inject
     private EmployeeService employeeService;
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void importTeam(Project project) {
         try {
             if (!project.isTeamFilterDisabled()

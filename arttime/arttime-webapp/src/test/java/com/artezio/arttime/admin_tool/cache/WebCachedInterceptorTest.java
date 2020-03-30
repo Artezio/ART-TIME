@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artezio.arttime.admin_tool.cache.WebCached.Scope;
+import com.sun.faces.config.InitFacesContext;
 
 public class WebCachedInterceptorTest {
 
@@ -237,6 +238,16 @@ public class WebCachedInterceptorTest {
 
 		assertNull(actual);
 	}
+	
+	@Test
+        public void testGetContextProperties_ifFacesContextIsInitFacesContext() throws NoSuchFieldException {
+	        facesContextMock = createMock(InitFacesContext.class);
+                FacesContextMocker.setFacesContext(facesContextMock);
+
+                Map<String, Object> actual = interceptor.getContextProperties(Scope.APPLICATION_SCOPED);
+
+                assertNull(actual);
+        }
 
 	@Test
 	public void testGetContextProperties_forApplicationScope() {
