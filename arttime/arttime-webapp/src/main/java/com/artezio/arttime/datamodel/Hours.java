@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.artezio.arttime.security.AbacContexts.*;
 
@@ -149,9 +150,9 @@ public class Hours implements Serializable {
     }
 
     public void setQuantity(BigDecimal quantity) {
-        this.quantity = (BigDecimal.ZERO.equals(quantity))
-                ? null
-                : quantity;
+        this.quantity = Optional.ofNullable(quantity)
+            .filter(q -> BigDecimal.ZERO.compareTo(quantity) != 0)
+            .orElse(null);
     }
 
     @XmlTransient

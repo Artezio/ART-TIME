@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -419,12 +420,12 @@ public class HoursServiceTest {
     }
 
     @Test
-    public void testApply_whenHoursNotExists_expectPersist() {
+    public void testApply_HoursNotExists() {
         Employee employee = new Employee("empl1");
         Project project = new Project();
         project.setCode("BBBCode");
         HourType hourType = new HourType("off");
-        Date date1 = new Date(2016, 5, 5);
+        Date date1 = new GregorianCalendar(2016, 5, 5).getTime();
         Hours hours = new Hours(project, date1, employee, hourType);
         HoursChange hoursChange = new HoursChange(project.getCode(), date1, employee.getUserName(), 1L);
         hoursChange.setQuantityDelta(BigDecimal.valueOf(5.0));
@@ -465,18 +466,20 @@ public class HoursServiceTest {
     }
 
     @Test
-    public void testApply_HoursExists() {
+    public void testApply_HoursExists_quantityIsNotNull_commentIsNotNull() {
         Employee employee = new Employee("empl1");
         Project project = new Project();
         project.setCode("CodeProject");
         HourType hourType = new HourType("off");
-        Date date1 = new Date(2016, 5, 5);
+        Date date1 = new GregorianCalendar(2016, 5, 5).getTime();;
         HoursChange hoursChange = new HoursChange(project.getCode(), date1, employee.getUserName(), 4L);
         hoursChange.setQuantityDelta(BigDecimal.valueOf(5.0));
+        hoursChange.setComment("comment");
         Hours persistedHours = new Hours(project, date1, employee, hourType);
         persistedHours.setQuantity(BigDecimal.valueOf(8.0));
         Hours expectedHours = new Hours(project, date1, employee, hourType);
-        expectedHours.setQuantity(hoursChange.getQuantityDelta().add(persistedHours.getQuantity()));
+        expectedHours.setQuantity(BigDecimal.valueOf(13.0));
+        expectedHours.setComment("comment");
         HoursRepository.HoursQuery query = Mockito.mock(HoursRepository.HoursQuery.class, Mockito.RETURNS_DEEP_STUBS);
 
         EasyMock.expect(hoursRepository.query()).andReturn(query);
@@ -504,7 +507,145 @@ public class HoursServiceTest {
         ).getSingleResultOrNull();
 
         assertEquals(expectedHours, persistedHours);
+        assertEquals(expectedHours.getComment(), persistedHours.getComment());
+        assertEquals(expectedHours.getQuantity(), persistedHours.getQuantity());
     }
+    
+    @Test
+    public void testApply_HoursExists_quantityIsNotNull_commentIsNull() {
+        Employee employee = new Employee("empl1");
+        Project project = new Project();
+        project.setCode("CodeProject");
+        HourType hourType = new HourType("off");
+        Date date1 = new GregorianCalendar(2016, 5, 5).getTime();;
+        HoursChange hoursChange = new HoursChange(project.getCode(), date1, employee.getUserName(), 4L);
+        hoursChange.setQuantityDelta(BigDecimal.valueOf(5.0));
+        Hours persistedHours = new Hours(project, date1, employee, hourType);
+        persistedHours.setQuantity(BigDecimal.valueOf(8.0));
+        Hours expectedHours = new Hours(project, date1, employee, hourType);
+        expectedHours.setQuantity(BigDecimal.valueOf(13.0));
+        HoursRepository.HoursQuery query = Mockito.mock(HoursRepository.HoursQuery.class, Mockito.RETURNS_DEEP_STUBS);
+
+        EasyMock.expect(hoursRepository.query()).andReturn(query);
+        Mockito.when(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+                .getSingleResultOrNull()).thenReturn(persistedHours);
+        hoursRepository.lock(employee);
+        EasyMock.expect(employeeRepository.get(employee.getUserName())).andReturn(employee).anyTimes();
+        EasyMock.expect(hoursRepository.update(expectedHours)).andReturn(expectedHours);
+        EasyMock.replay(hoursRepository, employeeRepository);
+
+        hoursService.apply(hoursChange);
+
+        EasyMock.verify(hoursRepository, employeeRepository);
+        Mockito.verify(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+        ).getSingleResultOrNull();
+
+        assertEquals(expectedHours, persistedHours);
+        assertNull(persistedHours.getComment());
+        assertEquals(expectedHours.getQuantity(), persistedHours.getQuantity());
+    }
+    
+    @Test
+    public void testApply_HoursExists_quantityIsNull_commentIsNotNull() {
+        Employee employee = new Employee("empl1");
+        Project project = new Project();
+        project.setCode("CodeProject");
+        HourType hourType = new HourType("off");
+        Date date1 = new GregorianCalendar(2016, 5, 5).getTime();;
+        HoursChange hoursChange = new HoursChange(project.getCode(), date1, employee.getUserName(), 4L);
+        hoursChange.setQuantityDelta(BigDecimal.valueOf(-8.0));
+        hoursChange.setComment("comment");
+        Hours persistedHours = new Hours(project, date1, employee, hourType);
+        persistedHours.setQuantity(BigDecimal.valueOf(8.0));
+        Hours expectedHours = new Hours(project, date1, employee, hourType);
+        expectedHours.setQuantity(null);
+        expectedHours.setComment("comment");
+        HoursRepository.HoursQuery query = Mockito.mock(HoursRepository.HoursQuery.class, Mockito.RETURNS_DEEP_STUBS);
+
+        EasyMock.expect(hoursRepository.query()).andReturn(query);
+        Mockito.when(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+                .getSingleResultOrNull()).thenReturn(persistedHours);
+        hoursRepository.lock(employee);
+        EasyMock.expect(employeeRepository.get(employee.getUserName())).andReturn(employee).anyTimes();
+        EasyMock.expect(hoursRepository.update(expectedHours)).andReturn(expectedHours);
+        EasyMock.replay(hoursRepository, employeeRepository);
+
+        hoursService.apply(hoursChange);
+
+        EasyMock.verify(hoursRepository, employeeRepository);
+        Mockito.verify(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+        ).getSingleResultOrNull();
+
+        assertEquals(expectedHours, persistedHours);
+        assertEquals(expectedHours.getComment(), persistedHours.getComment());
+        assertNull(persistedHours.getQuantity());
+    }
+    
+    @Test
+    public void testApply_HoursExists_quantityIsNull_commentIsNull() {
+        Employee employee = new Employee("empl1");
+        Project project = new Project();
+        project.setCode("CodeProject");
+        HourType hourType = new HourType("off");
+        Date date1 = new GregorianCalendar(2016, 5, 5).getTime();;
+        HoursChange hoursChange = new HoursChange(project.getCode(), date1, employee.getUserName(), 4L);
+        hoursChange.setQuantityDelta(BigDecimal.valueOf(-8.0));
+        Hours persistedHours = new Hours(project, date1, employee, hourType);
+        persistedHours.setQuantity(BigDecimal.valueOf(8.0));
+        Hours expectedHours = new Hours(project, date1, employee, hourType);
+        expectedHours.setQuantity(null);
+        HoursRepository.HoursQuery query = Mockito.mock(HoursRepository.HoursQuery.class, Mockito.RETURNS_DEEP_STUBS);
+
+        EasyMock.expect(hoursRepository.query()).andReturn(query);
+        Mockito.when(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+                .getSingleResultOrNull()).thenReturn(persistedHours);
+        hoursRepository.lock(employee);
+        EasyMock.expect(employeeRepository.get(employee.getUserName())).andReturn(employee).anyTimes();
+        hoursRepository.remove(expectedHours);
+        EasyMock.replay(hoursRepository, employeeRepository);
+
+        hoursService.apply(hoursChange);
+
+        EasyMock.verify(hoursRepository, employeeRepository);
+        Mockito.verify(query
+                .employee(hoursChange.getEmployeeUsername())
+                .project(hoursChange.getProjectCode())
+                .hourType(hoursChange.getTypeId())
+                .date(hoursChange.getDate())
+                .uncached()
+        ).getSingleResultOrNull();
+
+        assertEquals(expectedHours, persistedHours);
+        assertNull(persistedHours.getComment());
+        assertNull(persistedHours.getQuantity());
+    }
+    
+    
 
     @Test
     public void testGetHours() {
@@ -524,11 +665,11 @@ public class HoursServiceTest {
         EasyMock.expect(hoursRepository.query()).andReturn(hoursQuery);
         Mockito.when(hoursQuery
                 .approved(filter.isApproved())
-                .projects(Mockito.anyListOf(Project.class))
-                .departments(Mockito.anyListOf(String.class))
-                .types(Mockito.anyListOf(HourType.class))
+                .projects(Mockito.anyList())
+                .departments(Mockito.anyList())
+                .types(Mockito.anyList())
                 .period(filter.getPeriod())
-                .employees(Mockito.anyListOf(Employee.class))
+                .employees(Mockito.anyList())
                 .list()
         ).thenReturn(asList(hour));
         EasyMock.replay(hoursRepository);
@@ -539,7 +680,7 @@ public class HoursServiceTest {
         EasyMock.verify(hoursRepository);
         Mockito.verify(hoursQuery
                 .approved(filter.isApproved())
-                .projects(Mockito.anyListOf(Project.class))
+                .projects(Mockito.anyList())
                 .departments(filter.getDepartments())
                 .types(filter.getHourTypes())
                 .period(filter.getPeriod())

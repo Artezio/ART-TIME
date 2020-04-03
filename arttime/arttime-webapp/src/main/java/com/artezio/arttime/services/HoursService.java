@@ -6,7 +6,6 @@ import com.artezio.arttime.exceptions.SaveApprovedHoursException;
 import com.artezio.arttime.filter.Filter;
 import com.artezio.arttime.repositories.EmployeeRepository;
 import com.artezio.arttime.repositories.HoursRepository;
-import com.artezio.arttime.repositories.HoursRepository.HoursQuery;
 import com.artezio.arttime.repositories.ProjectRepository;
 import com.artezio.arttime.web.interceptors.FacesMessage;
 import com.artezio.javax.jpa.abac.AbacContext;
@@ -140,10 +139,13 @@ public class HoursService {
         Hours existedHours = getHours(change);
         if (existedHours != null) {
             existedHours.add(change.getQuantityDelta());
-            if (change.getComment() != null) {
+            if (change.getComment() != null)
                 existedHours.setComment(change.getComment());
+            if (existedHours.getQuantity() == null && existedHours.getComment() == null) {
+                hoursRepository.remove(existedHours);
+            } else {
+                hoursRepository.update(existedHours);
             }
-            hoursRepository.update(existedHours);
         } else {
             Hours newHours = toHours(change);
             hoursRepository.create(newHours);

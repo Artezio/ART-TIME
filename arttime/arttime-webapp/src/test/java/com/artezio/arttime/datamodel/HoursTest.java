@@ -18,12 +18,16 @@ public class HoursTest {
     @Test
     public void testSetQuantity_ifNewQuantityZero() {
         Hours hours = new Hours();
-
         hours.setQuantity(BigDecimal.ZERO);
 
         assertNull(hours.getQuantity());
+        
+        hours = new Hours();
+        hours.setQuantity(BigDecimal.valueOf(0.0));
+        
+        assertNull(hours.getQuantity());
     }
-
+    
     @Test
     public void testSetQuantity_ifNewQuantityIsNotZero() {
         Hours hours = new Hours();
@@ -31,6 +35,15 @@ public class HoursTest {
         hours.setQuantity(BigDecimal.ONE);
 
         assertEquals(BigDecimal.ONE, hours.getQuantity());
+    }
+    
+    @Test
+    public void testSetQuantity_ifNewQuantityIsNull() {
+        Hours hours = new Hours();
+
+        hours.setQuantity(null);
+
+        assertNull(hours.getQuantity());
     }
 
     @Test
