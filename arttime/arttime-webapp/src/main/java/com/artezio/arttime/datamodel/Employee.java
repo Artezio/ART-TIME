@@ -9,6 +9,7 @@ import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -84,14 +85,14 @@ public class Employee implements Serializable {
     @Id
     @NotNull
     private String userName;
-    @NotNull
+    @NotEmpty
     private String firstName;
-    @NotNull
+    @NotEmpty
     private String lastName;
-    @NotNull
+    @NotEmpty
     private String email;
     @XmlTransient
-    @NotNull
+    @NotNull 
     private Integer workLoad = 100;
     @NotNull
     private String department;
