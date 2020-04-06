@@ -172,6 +172,7 @@ a.filter-pin-button .stick-left {
     position: relative;
 }
 
+#form\:timesheet,
 #form\:manageEffortsSheet_tbl {
     position: relative;
     transform-origin: top left;
