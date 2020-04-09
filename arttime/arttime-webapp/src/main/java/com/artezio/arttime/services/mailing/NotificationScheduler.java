@@ -36,8 +36,7 @@ public class NotificationScheduler {
     @Inject
     private HoursService hoursService;
 
-//    @Schedule(dayOfMonth="1", persistent = false, info = NOTIFY_ABOUT_INCORRECT_TIMESHEET_INFO)
-    @Schedule(hour = "*", persistent = false, info = NOTIFY_ABOUT_INCORRECT_TIMESHEET_INFO)
+    @Schedule(dayOfMonth="1", persistent = false, info = NOTIFY_ABOUT_INCORRECT_TIMESHEET_INFO)
     public void notifyAboutIncorrectTimesheet() {
         if (settingsService.getSettings().isIncorrectTimesheetNotificationEnabled()) {
             List<Employee> employees = employeeService.getCurrent();
@@ -46,8 +45,7 @@ public class NotificationScheduler {
         }
     }
     
-//    @Schedule(dayOfMonth="2", persistent = false, info = NOTIFY_ABOUT_UNAPPROVED_HOURS_INFO)
-    @Schedule(hour = "*", persistent = false, info = NOTIFY_ABOUT_UNAPPROVED_HOURS_INFO)
+    @Schedule(dayOfMonth="2", persistent = false, info = NOTIFY_ABOUT_UNAPPROVED_HOURS_INFO)
     public void notifyAboutUnapprovedHours() {
         if (settingsService.getSettings().isUnapprovedHoursNotificationEnabled()) {
             Period period = getPeriodForPreviousMonth();
