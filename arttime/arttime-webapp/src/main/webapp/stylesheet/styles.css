@@ -2399,6 +2399,10 @@ td.totalColumn {
     overflow: auto;
 }
 
+.container.timesheet-container {
+    overflow: hidden;
+}
+
 td.myFaces_panelTabbedPane_inactiveHeaderCell, td.myFaces_panelTabbedPane_activeHeaderCell, tr.myFaces_pannelTabbedPane_subHeaderRow, td.myFaces_panelTabbedPane_emptyHeaderCell{
  display: none;
 }
