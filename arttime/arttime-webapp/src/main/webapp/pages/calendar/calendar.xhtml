@@ -142,7 +142,8 @@
                         beforeShowDay="highlightDaysOffAndHolidays"
                         styleClass="calendar"
                         widgetVar="calendarWidget"
-                        navigator="">
+                        navigator=""
+                        pattern="dd.MM.yyyy">
                 <p:ajax event="dateSelect"
                         listener="#{workdaysCalendarBean.onDateSelect}"
                         update="inputDaysOff inputHolidays @this #{p:component('dayShifts')}"
@@ -188,9 +189,8 @@
                         <f:facet name="footer">
                             <p:calendar id="shiftFrom"
                                         value="#{workdaysCalendarBean.shiftFrom}"
-                                        mindate="#{workdaysCalendarBean.period.start}"
-                                        maxdate="#{workdaysCalendarBean.period.finish}"
-                                        styleClass="calendar-control"/>
+                                        styleClass="calendar-control"
+                                        pattern="dd.MM.yyyy"/>
                             <p:message for="shiftFrom" display="tooltip"/>
                         </f:facet>
                     </p:column>
@@ -203,7 +203,8 @@
                         <f:facet name="footer">
                             <p:calendar id="shiftTo"
                                         value="#{workdaysCalendarBean.shiftTo}"
-                                        styleClass="calendar-control"/>
+                                        styleClass="calendar-control"
+                                        pattern="dd.MM.yyyy"/>
                             <p:message for="shiftTo" display="tooltip"/>
                         </f:facet>
                     </p:column>
