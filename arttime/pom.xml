@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.artezio</groupId>
 	<artifactId>arttime</artifactId>
-	<version>3.93</version>
+	<version>3.94</version>
 	<packaging>pom</packaging>
 
 	<properties>
