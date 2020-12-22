@@ -10,6 +10,11 @@
         var observer;
         var globalTimeout = null;
         var monthCount = 0;
+
+        var selectedDay;
+        var selectedMonth;
+        var selectedYear;
+
         $(document).ready(initCalendarBehavior);
 
         function initCalendarBehavior() {
@@ -47,6 +52,7 @@
                 }
             }
 
+            saveCalendarState();
             addClassToCalendar();
             MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
             observer = new MutationObserver(function (mutations, observer) {
@@ -99,10 +105,36 @@
             return day + '-' + month + '-' + year;
         }
 
+        function saveCalendarState() {
+            const calendar = getCalendarWidgetInst();
+            if (calendar) {
+                selectedDay = calendar.selectedDay;
+                selectedMonth = calendar.selectedMonth;
+                selectedYear = calendar.selectedYear;
+            }
+        }
+
+        function restoreCalendarState() {
+            const calendar = getCalendarWidgetInst();
+            if (calendar) {
+                let dayToSelect = selectedDay != null ? selectedDay : calendar.selectedDay;
+                let monthToSelect = selectedMonth != null ? selectedMonth : calendar.selectedMonth;
+                let yearToSelect = selectedYear != null ? selectedYear : calendar.selectedYear;
+                $.datepicker._setDate(calendar, new Date(yearToSelect, monthToSelect, dayToSelect), false);
+            }
+            subscribeToMutations();
+        }
+
         function refreshCalendar() {
-            var datePicker = $.datepicker;
-            var inst = datePicker._getInst(PrimeFaces.widgets['calendarWidget'].jqEl[0]);
+            const datePicker = $.datepicker;
+            const inst = datePicker._getInst(PrimeFaces.widgets['calendarWidget'].jqEl[0]);
             datePicker._updateDatepicker(inst);
+            saveCalendarState();
+        }
+
+        function getCalendarWidgetInst() {
+            let jqElElement = PrimeFaces.widgets['calendarWidget']?.jqEl[0];
+            return jqElElement ?  $.datepicker._getInst(jqElElement) : null;
         }
     </script>
 
@@ -189,6 +221,8 @@
                         <f:facet name="footer">
                             <p:calendar id="shiftFrom"
                                         value="#{workdaysCalendarBean.shiftFrom}"
+                                        mindate="#{workdaysCalendarBean.period.start}"
+                                        maxdate="#{workdaysCalendarBean.period.finish}"
                                         styleClass="calendar-control"
                                         pattern="dd.MM.yyyy"/>
                             <p:message for="shiftFrom" display="tooltip"/>
@@ -196,7 +230,9 @@
                     </p:column>
 
                     <p:column>
-                        <f:facet name="header">#{messages['calendar.label.day.shiftTo']}</f:facet>
+                        <f:facet name="header">
+                            <h:outputText value="#{messages['calendar.label.day.shiftTo']}"/>
+                        </f:facet>
                         <h:outputText value="#{day.shiftedTo}">
                             <f:convertDateTime pattern="dd.MM.yyyy"/>
                         </h:outputText>
@@ -222,7 +258,7 @@
                                          id="deleteButton"
                                          onstart="return confirm('#{messages['label.confirm.delete']}');"
                                          action="#{workdaysCalendarBean.removeDayShift(day)}"
-                                         oncomplete="subscribeToMutations()"
+                                         oncomplete="restoreCalendarState()"
                                          update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendarPanel')} #{p:component('inputHolidays')}"
                                          icon="fa fa-trash"
                                          process="@this"
@@ -237,7 +273,7 @@
                                              icon="fa fa-plus"
                                              id="addButton"
                                              action="#{workdaysCalendarBean.addDayShift()}"
-                                             oncomplete="subscribeToMutations()"
+                                             oncomplete="restoreCalendarState()"
                                              update="#{p:component('dayShifts')} #{p:component('inputDaysOff')} #{p:component('calendar')} #{p:component('inputHolidays')}"
                                              styleClass="avoidChangeTracking invisibleBorder"
                                              label="#{messages['button.addNewDayShift']}">
