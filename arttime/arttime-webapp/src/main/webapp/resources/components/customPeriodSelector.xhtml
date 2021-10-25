@@ -15,12 +15,14 @@
             <p:calendar id="customPeriodStart"
                         value="#{cc.attrs.period.start}"
                         required="true"
+                        pattern="dd.MM.yyyy"
                         styleClass="calendar fa fa-calendar">
             </p:calendar>
 
             <p:calendar id="customPeriodFinish"
                         value="#{cc.attrs.period.finish}"
                         required="true"
+                        pattern="dd.MM.yyyy"
                         validator="periodValidator"
                         styleClass="calendar fa fa-calendar">
                 <f:attribute name="start" value="customPeriodStart"/>
