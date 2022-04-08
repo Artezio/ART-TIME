@@ -10,7 +10,8 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<powermock.version>2.0.5</powermock.version>
+		<powermock.version>2.0.9</powermock.version>
+		<junit.version>4.13.1</junit.version>
 		<wildfly.version>17.0.1.Final</wildfly.version>
 		<richfaces.version>4.5.17.Final</richfaces.version>
 		<birt-extensions.version>1.0.1</birt-extensions.version>
@@ -196,6 +197,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito2</artifactId>
 			<version>${powermock.version}</version>
@@ -206,6 +213,12 @@
 			<artifactId>powermock-module-junit4</artifactId>
 			<version>${powermock.version}</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
@@ -554,12 +567,12 @@
 							<dependency>
 								<groupId>org.apache.ant</groupId>
 								<artifactId>ant-junit</artifactId>
-								<version>1.10.2</version>
+								<version>1.10.11</version>
 							</dependency>
 							<dependency>
 								<groupId>org.apache.ant</groupId>
 								<artifactId>ant-junit4</artifactId>
-								<version>1.10.2</version>
+								<version>1.10.11</version>
 							</dependency>
 							<dependency>
 								<groupId>org.openclover</groupId>

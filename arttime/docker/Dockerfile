@@ -8,8 +8,8 @@ RUN cd / &&\
 	git clone https://github.com/Artezio/ART-TIME.git &&\
 	cd /ART-TIME/arttime &&\
     git checkout -b app_build_docker $ARTTIME_VERSION &&\
-	mvn clean package -Pproduction &&\
-    rm -rf ~/.m2
+	mvn clean install -Pproduction &&\
+    rm -rf ~/.m2 && rm -rf /tmp/*
 
 
 # ----------------------------------------------------------------------------------
