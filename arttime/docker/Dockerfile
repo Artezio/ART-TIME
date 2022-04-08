@@ -2,10 +2,14 @@
 # Download and build arttime from source code
 FROM maven:3.6.3-jdk-11 as maven_builder
 
+ARG ARTTIME_VERSION=master
+
 RUN cd / &&\
 	git clone https://github.com/Artezio/ART-TIME.git &&\
 	cd /ART-TIME/arttime &&\
-	mvn clean install -Pproduction
+    git checkout -b app_build_docker $ARTTIME_VERSION &&\
+	mvn clean package -Pproduction &&\
+    rm -rf ~/.m2
 
 
 # ----------------------------------------------------------------------------------
